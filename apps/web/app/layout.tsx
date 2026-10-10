@@ -1,6 +1,22 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import localFont from "next/font/local";
 import "@toolbox/ui/styles.css";
+import { AppFooter } from "./_components/site-footer";
+import { AppHeader } from "./_components/site-header";
+
+const geist = localFont({
+  src: "./_fonts/geist-latin.woff2",
+  variable: "--font-geist",
+  display: "swap",
+  weight: "100 900",
+});
+const geistMono = localFont({
+  src: "./_fonts/geist-mono-latin.woff2",
+  variable: "--font-geist-mono",
+  display: "swap",
+  weight: "100 900",
+  preload: false,
+});
 
 export const metadata: Metadata = {
   title: {
@@ -13,37 +29,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
+      <body className="flex min-h-screen flex-col">
         <a
-          className="sr-only absolute left-4 top-4 z-10 rounded-md bg-white px-4 py-2 text-indigo-900 focus:not-sr-only"
+          className="sr-only absolute left-4 top-4 z-10 rounded-md bg-surface px-4 py-3 text-primary focus:not-sr-only"
           href="#main-content"
-          // Explicit participation keeps the skip link tabbable in WebKit's restricted link mode.
           tabIndex={0}
         >
           Skip to main content
         </a>
-        <header className="border-b border-border bg-surface">
-          <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4">
-            <Link className="text-lg font-bold tracking-tight text-foreground" href="/">
-              Toolbox
-            </Link>
-            <nav
-              aria-label="Main navigation"
-              className="flex items-center gap-5 text-sm font-medium"
-            >
-              <Link className="rounded-sm underline-offset-4 hover:underline" href="/tools">
-                Tools
-              </Link>
-            </nav>
-          </div>
-        </header>
+        <AppHeader />
         {children}
-        <footer className="mt-16 border-t border-border bg-surface">
-          <div className="mx-auto max-w-6xl px-5 py-6 text-sm text-muted">
-            Toolbox is in foundation development. No tools are published yet.
-          </div>
-        </footer>
+        <AppFooter />
       </body>
     </html>
   );

@@ -34,3 +34,7 @@
 
 ## Definition of Done
 A tool is done ONLY if published route works on real fixtures, standard states work on touch/keyboard, tests pass, limits are honest, SEO copy is unique, and privacy claims reflect implementation.
+
+## UI foundation automation (TBX-003)
+
+The suite now covers registered route semantics, real unpublished/unknown HTTP 404s, publication-aware search/category/reset with synthetic private fixtures, query errors, keyboard focus, reduced motion, native GET with JavaScript disabled, metadata-only file selection bounds/removal/drop/repeated selection, workspace UI states and fixture download. Responsive coverage uses 320/390/768/1440px in Chromium and WebKit and fails on runtime/console/hydration errors. Desktop/mobile screenshots are retained as [review evidence](development/TBX-003-REPORT.md). Unit checks cover token contrast, typed query bounds and pure published filtering. Web typecheck runs the installed Next.js `typegen` before strict TypeScript; generated route validators are regenerated, not ignored or removed from checks. The UI foundation does not satisfy any converter's binary-fixture publication gate.
