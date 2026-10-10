@@ -1,0 +1,9 @@
+{
+  "extends": "@toolbox/config/tsconfig.nest.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"]
+}

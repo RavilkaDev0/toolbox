@@ -1,0 +1,26 @@
+{
+  "name": "toolbox",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.11.2",
+  "engines": {
+    "node": ">=24.0.0 <25",
+    "pnpm": ">=12.11.2 <13"
+  },
+  "scripts": {
+    "dev": "pnpm run build:packages && pnpm --parallel --stream --filter @toolbox/web --filter @toolbox/api run dev",
+    "build:packages": "pnpm --parallel --filter @toolbox/contracts --filter @toolbox/core --filter @toolbox/ui --filter @toolbox/browser-engines run build",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "typecheck": "pnpm run build:packages && pnpm --parallel --filter @toolbox/contracts --filter @toolbox/core --filter @toolbox/ui --filter @toolbox/browser-engines --filter @toolbox/api --filter @toolbox/web run typecheck",
+    "test": "pnpm run build:packages && vitest run && pnpm --filter @toolbox/web run test:e2e",
+    "build": "pnpm run build:packages && pnpm --filter @toolbox/api run build && pnpm --filter @toolbox/web run build"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
