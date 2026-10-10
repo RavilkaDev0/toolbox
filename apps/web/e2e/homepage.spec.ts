@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 
-test("homepage has accessible landmarks and a keyboard-accessible skip link", async ({ page }) => {
+test("homepage has accessible landmarks and a keyboard-accessible skip link", async ({
+  page,
+}, testInfo) => {
   const response = await page.goto("/");
   expect(response?.ok()).toBe(true);
 
@@ -20,5 +22,9 @@ test("homepage has accessible landmarks and a keyboard-accessible skip link", as
   );
   await expect(page.getByText("No tools have been published yet")).toBeVisible();
 
-  await page.screenshot({ path: "test-results/homepage.png", fullPage: true });
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("main")).toBeFocused();
+  await expect(page).toHaveURL(/\/#main-content$/);
+
+  await page.screenshot({ path: testInfo.outputPath("homepage.png"), fullPage: true });
 });

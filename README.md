@@ -31,13 +31,17 @@ pnpm test
 pnpm build
 ```
 
-The browser smoke test uses Playwright Chromium. Install that browser once before running tests locally:
+The homepage smoke test runs in Playwright Chromium and WebKit (Desktop Safari profile). Install both browsers before running tests locally:
 
 ```sh
-pnpm --filter @toolbox/web exec playwright install chromium
+pnpm --filter @toolbox/web exec playwright install chromium webkit
 ```
 
-GitHub Actions runs the frozen-lockfile install and all four quality gates, including the homepage browser smoke test.
+GitHub Actions runs the frozen-lockfile install and all four quality gates, including both browser profiles, for PRs targeting `dev` or `main` and pushes to either branch. On Linux, use `playwright install --with-deps chromium webkit` to install system dependencies too.
+
+## Git workflow
+
+`main` represents production; `dev` integrates development. Start `feat/*`, `fix/*`, `refactor/*`, `chore/*` or `docs/*` from `dev`, then open a PR to `dev`. Release via `dev` → `main`; direct PRs to `main` are reserved for critical production hotfixes. See [Git workflow and repository settings](docs/09-GIT-WORKFLOW.md).
 
 ## Architecture
 
@@ -68,7 +72,7 @@ Direct dependencies are limited to the selected frameworks, schema validation, U
 | TypeScript, Node/React type packages | Strict static checking; TypeScript Apache-2.0, type packages MIT | Build-time only; low runtime impact | Plain JavaScript does not meet the strict typing requirement |
 | Biome | Single lint and formatter tool; MIT | Small toolchain footprint; active releases | ESLint plus Prettier would add a second tool/configuration |
 | Vitest | Typed unit and API integration tests; MIT | Build-time only; moderate toolchain tree | Node's built-in runner would need additional TypeScript/decorator setup |
-| Playwright Test | Accessible homepage browser smoke and screenshot evidence; Apache-2.0 | Browser download is large; Chromium only is installed in CI | Static markup checks cannot verify keyboard focus or rendered landmarks |
+| Playwright Test | Accessible homepage browser smoke and screenshot evidence; Apache-2.0 | Browser downloads are large; Chromium and WebKit are installed in CI | Static markup checks cannot verify keyboard focus or rendered landmarks |
 | Nest CLI | Standard Nest build and watch commands; MIT | Build-time dependency tree; tracks Nest major compatibility | Hand-maintained compiler/watch commands increase configuration |
 
 ## References
@@ -81,5 +85,6 @@ Direct dependencies are limited to the selected frameworks, schema validation, U
 - [Design system](docs/06-DESIGN-SYSTEM.md)
 - [Roadmap](docs/07-ROADMAP.md)
 - [Quality gates](docs/08-QUALITY-GATES.md)
+- [Git workflow and repository settings](docs/09-GIT-WORKFLOW.md)
 - [Foundation task](tasks/TASK-001-FOUNDATION.md)
 - [Foundation decision record](docs/decisions/ADR-0004-foundation.md)

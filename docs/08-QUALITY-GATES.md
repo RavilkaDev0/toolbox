@@ -8,6 +8,14 @@
 - Appropriate docs/ADR changes.
 - Review security/privacy and performance impact.
 
+## Foundation automation
+- The `Quality` workflow runs on PRs targeting `dev` and `main` (including base edits and transition out of Draft), and on pushes to either branch.
+- Its `validate` job installs from the frozen lockfile, then runs Biome (`pnpm lint`), strict TypeScript (`pnpm typecheck`), Vitest and Playwright (`pnpm test`), and production builds (`pnpm build`).
+- Playwright runs the same homepage smoke assertions in Chromium and WebKit's Desktop Safari profile: successful HTTP response, landmarks, keyboard focus on the skip link, catalog navigation and honest unpublished-tool state. Each browser writes its screenshot to a separate test output directory.
+- The Windows WebKit build skips implicit link focus with `Tab`; a minimal browser reproduction confirmed that an explicit `tabIndex={0}` makes the skip link participate in normal document order. The shell includes that attribute, and both profiles must pass real `Tab` focus and `Enter` activation into the main region; no assertion is skipped or replaced with scripted focus.
+- Install local browser binaries with `pnpm --filter @toolbox/web exec playwright install chromium webkit`; Linux CI includes `--with-deps`. This smoke coverage does not replace real Safari/device checks or future processing-fixture tests.
+- Follow [Git workflow](09-GIT-WORKFLOW.md) for PR targets, release review and proposed required-check settings. A successful run is evidence; checks are not enforced until repository protection is configured.
+
 ## Engine tests
 - Input: empty, boundary size, wrong MIME, damaged/truncated, protected (PDF), excessive dimension/page count, filenames with special chars.
 - Processing: cancellation, repeated runs, concurrency, cleanup, abort on navigation, resource/time bounds.

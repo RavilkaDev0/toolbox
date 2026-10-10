@@ -18,6 +18,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <a
           className="sr-only absolute left-4 top-4 z-10 rounded-md bg-white px-4 py-2 text-indigo-900 focus:not-sr-only"
           href="#main-content"
+          // Explicit participation keeps the skip link tabbable in WebKit's restricted link mode.
+          tabIndex={0}
         >
           Skip to main content
         </a>

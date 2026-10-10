@@ -54,3 +54,6 @@ Maintain a privacy-first, fast, accessible collection of independent tools. Foll
 
 ## Commit / PR naming
 Conventional commits (`feat:`, `fix:`, `test:`, `refactor:`, `docs:`, `chore:`). Small PRs; include behavior change and evidence. Keep production migration changes backward compatible.
+
+## Git branching
+`main` is production; `dev` is the integration branch. Create `feat/*`, `fix/*`, `refactor/*`, `chore/*` and `docs/*` from `dev` and target PRs to `dev`. Release through a reviewed `dev` → `main` PR. Only critical production hotfixes may branch from and target `main`; synchronize them back into `dev`. Preserve shared history; no automatic merge/deploy or force-push. See `docs/09-GIT-WORKFLOW.md` for review, release and rollback rules.
