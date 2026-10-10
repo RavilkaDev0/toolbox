@@ -1,6 +1,8 @@
 node_modules/
 **/node_modules/
 *.tsbuildinfo
+.codebase-memory/
+.cbm/
 .next/
 **/.next/
 dist/
