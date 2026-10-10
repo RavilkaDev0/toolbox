@@ -57,3 +57,6 @@ Conventional commits (`feat:`, `fix:`, `test:`, `refactor:`, `docs:`, `chore:`).
 
 ## Git branching
 `main` is production; `dev` is the integration branch. Create `feat/*`, `fix/*`, `refactor/*`, `chore/*` and `docs/*` from `dev` and target PRs to `dev`. Release through a reviewed `dev` → `main` PR. Only critical production hotfixes may branch from and target `main`; synchronize them back into `dev`. Preserve shared history; no automatic merge/deploy or force-push. See `docs/09-GIT-WORKFLOW.md` for review, release and rollback rules.
+
+## AI development tooling
+Use Skills and MCP only for the current task; this contract and the Toolbox design system take precedence over their recommendations, including unpinned CLI examples. Keep global tooling/configuration and indexes outside Git. Codebase Memory is restricted to Toolbox with `.cbmignore`; Playwright MCP may inspect only the local development app in an isolated profile. Send only public-library questions to remote documentation services. See `docs/development/AI_TOOLING.md` for audited versions, permissions, verification and updates, and `docs/development/GITHUB_WORKFLOW.md` for enforced GitHub settings.

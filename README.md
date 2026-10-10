@@ -86,5 +86,7 @@ Direct dependencies are limited to the selected frameworks, schema validation, U
 - [Roadmap](docs/07-ROADMAP.md)
 - [Quality gates](docs/08-QUALITY-GATES.md)
 - [Git workflow and repository settings](docs/09-GIT-WORKFLOW.md)
+- [Enforced GitHub governance](docs/development/GITHUB_WORKFLOW.md)
+- [AI development tooling](docs/development/AI_TOOLING.md)
 - [Foundation task](tasks/TASK-001-FOUNDATION.md)
 - [Foundation decision record](docs/decisions/ADR-0004-foundation.md)

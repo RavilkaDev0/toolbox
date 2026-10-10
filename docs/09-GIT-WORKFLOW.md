@@ -3,7 +3,7 @@
 ## Branch roles and names
 
 - `main`: production history. Integration happens through release PRs from `dev`; merging is separate from deployment and requires an explicit decision.
-- `dev`: the primary integration branch and the recommended default branch after Foundation is integrated.
+- `dev`: the primary integration and default branch after Foundation integration. See [enforced settings](development/GITHUB_WORKFLOW.md) for the TBX-002 audit.
 - Work branches start from current `dev`: `feat/<task>-<description>`, `fix/<task>-<description>`, `refactor/<description>`, `chore/<description>` or `docs/<description>`. Use lowercase words separated by hyphens, for example `feat/tbx-003-catalog-shell`.
 - Commits use Conventional Commits. Keep each PR focused and name its task and behavior change.
 - Normal flow: work branch → `dev` → `main`. Ordinary feature PRs must not target `main`.
@@ -26,7 +26,7 @@ If `dev` is not local yet, use `git switch --track origin/dev`. Read the enginee
 - State scope, module ownership, dependency decisions, verification results and remaining risks. Document architectural deviations in an ADR.
 - Inspect the diff, privacy, accessibility, failure paths and resource bounds. Resolve review conversations and keep failing tests visible.
 - Require a successful `Quality / validate` run on the current PR revision and intended base. The workflow job/check name is `validate`; select the GitHub Actions source when configuring protection.
-- A solo developer performs and records self-review. External review is welcome, but zero approving reviews are required by the proposed protection policy; the author cannot provide their own GitHub approving review.
+- A solo developer performs and records self-review. External review is welcome, but zero approving reviews are required by the enforced protection policy; the author cannot provide their own GitHub approving review.
 - Move Draft to Ready only when scope and mandatory checks are satisfied. Merge is a separate human decision; agents do not merge automatically.
 - Use a merge commit for the existing Foundation PR to preserve its commits. Future short work PRs may use squash with a Conventional Commit message, or a merge commit when individual history matters.
 
@@ -50,7 +50,7 @@ Preserve history with `git revert` in a reviewed fix branch. For a merge commit,
 
 PR #1 was initially opened from `codex/tbx-001-foundation` to `main`. During alignment, `dev` was created at the unchanged initial `main` commit `99f5cdbf4ebdbaead953ca52ce36ae3bbc94700c`, and the existing PR was retargeted to `dev`. The existing head branch name is a one-time legacy exception retained to preserve the PR and published history; future work uses the prefixes above. No duplicate PR, merge, force-push or deployment is part of alignment.
 
-Repository settings observed on 2026-10-11 (local time):
+Historical repository settings observed during TBX-001.1 on 2026-10-11 (local time), before the owner-authorized TBX-002 changes:
 
 | Setting | Observed value |
 | --- | --- |
@@ -61,9 +61,9 @@ Repository settings observed on 2026-10-11 (local time):
 | Allowed merge methods | Merge commit, squash and rebase |
 | Auto-merge / automatic head deletion | Both disabled |
 
-These global settings were inspected but not changed. Until protection is enabled, the workflow policy relies on contributor discipline; target branch filters do not enforce allowed source branches.
+TBX-001.1 inspected these settings without changing them. TBX-002 subsequently applied protection and changed the default to `dev`; [the current configuration record](development/GITHUB_WORKFLOW.md) supersedes this historical table. Target branch filters do not enforce allowed source branches.
 
-## Proposed settings for one developer — approval required
+## Protection policy for one developer
 
 After Foundation merges into `dev`, change the default branch to `dev`. Protect both `dev` and `main` using one active branch ruleset:
 
@@ -73,7 +73,7 @@ After Foundation merges into `dev`, change the default branch to `dev`. Protect 
 - Avoid required deployments, merge queues and mandatory signed commits until the corresponding workflows exist. Normal work follows PR checks; any explicitly configured emergency admin bypass must be recorded and reviewed.
 - Allow merge commits and squash. Recommend disabling rebase merging to simplify published history. Keep automatic deletion and auto-merge disabled so long-lived branches and explicit merge decisions are retained.
 
-Apply only after explicit owner agreement. GitHub UI steps:
+TBX-002 supplied explicit owner agreement and applied these settings. Further changes require agreement. GitHub UI steps for inspecting or reproducing them:
 
 1. Repository **Settings → General → Default branch**: change `main` to `dev` after Foundation integration.
 2. **Settings → Rules → Rulesets → New ruleset → New branch ruleset**: name it `integration-and-production`, set enforcement to **Active**, and include branches by name `dev` and `main`.
