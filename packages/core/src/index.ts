@@ -14,3 +14,4 @@ export {
   toolCatalog,
   validateToolCatalog,
 } from "./catalog.js";
+export { filterPublishedTools } from "./catalog-search.js";

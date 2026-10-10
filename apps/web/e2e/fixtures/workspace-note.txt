@@ -1,0 +1,2 @@
+Toolbox UI fixture. This text is selected to test file-list interaction.
+No conversion engine reads or transforms this file.

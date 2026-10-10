@@ -35,10 +35,10 @@ export default async function ToolPage({ params }: ToolPageProps) {
   }
 
   return (
-    <main className="mx-auto max-w-4xl px-5 py-12" id="main-content" tabIndex={-1}>
+    <main className="container-site page max-w-workspace flex-1" id="main-content" tabIndex={-1}>
       <h1 className="text-3xl font-bold tracking-tight">{tool.title}</h1>
-      <p className="mt-3 text-muted">{tool.description}</p>
-      <p className="mt-8 rounded-xl border border-border bg-surface p-6 text-muted">
+      <p className="mt-3 text-muted-foreground">{tool.description}</p>
+      <p className="mt-8 rounded-xl border border-border bg-surface p-6 text-muted-foreground">
         This tool is not available yet.
       </p>
     </main>

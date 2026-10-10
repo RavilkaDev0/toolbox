@@ -34,7 +34,7 @@ infra/               Docker, nginx snippets, deployment docs
 
 ## Server rendering / client boundaries
 - Default Server Components for SEO/catalog. Keep page layout and metadata server-rendered/prerendered where possible.
-- Client component only for interactive workspace.
+- Client components for interactive workspace and framework-required error boundaries; GET catalog search stays server-rendered.
 - `dynamic(() => import(...))` selectively loads per-tool UI/engine on demand; verify emitted chunks and mobile performance.
 - Tool catalog is typed source control metadata, NOT Postgres rows in MVP.
 - `generateStaticParams` / metadata generation only for published tools; no mass thin content.
@@ -62,6 +62,10 @@ type ToolDefinition = {
 Metadata is typed and statically checked for unique ID/slug, categories, links and missing pages. Implementation is separately lazy-registered so catalog generation never bundles heavy engines.
 
 ## Domain design
+
+### Implemented UI foundation (TBX-003)
+
+`packages/ui` owns tokens and dependency-light shadcn primitives. `apps/web/app/_components` composes route/catalog-aware presentation; workspace controls live in its `workspace` directory and receive callbacks/content from the tool-owned controller. No generic processing orchestrator is introduced. Bounded catalog query schemas live in `packages/contracts`; publication-aware search is pure `packages/core` logic. `/design-fixtures` is explicitly opt-in in development/test and always 404 in production. The 15 production catalog definitions remain draft. See [ADR-0005](decisions/ADR-0005-design-system.md) and [design system](06-DESIGN-SYSTEM.md).
 Common domain types: `ToolId`, `ToolConfig`, `ProcessingResult`, `ToolErrorCode`. Favor pure functions for transformations; interface-based adapters only around external state/IO/variants. In NestJS use controllers (HTTP), use cases/services (application), domain policies (core), adapters (external libs/storage).
 
 ## Error codes
