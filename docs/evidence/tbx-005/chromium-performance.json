@@ -1,0 +1,23 @@
+[
+  {
+    "width": 800,
+    "inputBytes": 295625,
+    "outputBytes": 293962,
+    "elapsedMs": 779,
+    "mainJsHeapBytes": 12700000
+  },
+  {
+    "width": 2000,
+    "inputBytes": 1813611,
+    "outputBytes": 1811947,
+    "elapsedMs": 1457,
+    "mainJsHeapBytes": 12700000
+  },
+  {
+    "width": 4000,
+    "inputBytes": 7220942,
+    "outputBytes": 7219280,
+    "elapsedMs": 2698,
+    "mainJsHeapBytes": 12700000
+  }
+]

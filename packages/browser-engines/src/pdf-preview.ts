@@ -1,7 +1,10 @@
-import { ImagePdfError, imagePdfLimits } from "@toolbox/core";
-import { checkCancelled } from "./images-to-pdf.js";
+import { pdfPreviewLimits } from "@toolbox/core";
 
-// Only generated PDFs enter this viewer. A new document is released after each page.
+function checkCancelled(signal: AbortSignal) {
+  if (signal.aborted) throw new DOMException("PDF preview cancelled", "AbortError");
+}
+
+// Only generated or inspected static PDFs enter this bounded, canvas-only viewer.
 export async function renderPdfPage(
   blob: Blob,
   pageNumber: number,
@@ -10,13 +13,13 @@ export async function renderPdfPage(
   signal: AbortSignal,
 ) {
   if (
-    blob.type !== "application/pdf" ||
-    blob.size > imagePdfLimits.outputBytes ||
+    (blob.type !== "" && blob.type !== "application/pdf") ||
+    blob.size > pdfPreviewLimits.bytes ||
     !Number.isInteger(pageNumber) ||
     pageNumber < 1 ||
-    pageNumber > imagePdfLimits.files
+    pageNumber > pdfPreviewLimits.pages
   )
-    throw new ImagePdfError("INVALID_IMAGE");
+    throw new Error("Invalid PDF preview input");
   const pdfjs = await import("pdfjs-dist");
   checkCancelled(signal);
   const bytes = new Uint8Array(await blob.arrayBuffer());
@@ -25,7 +28,12 @@ export async function renderPdfPage(
   const loading = pdfjs.getDocument({
     data: bytes,
     worker,
-    maxImageSize: imagePdfLimits.pixels,
+    maxImageSize: pdfPreviewLimits.pixels,
+    enableXfa: false,
+    disableAutoFetch: true,
+    disableStream: true,
+    // Library warnings can include PDF data; errors still reject and reach the UI.
+    verbosity: 0,
     useWasm: false,
     stopAtErrors: true,
     isOffscreenCanvasSupported: typeof OffscreenCanvas === "function",
@@ -33,13 +41,13 @@ export async function renderPdfPage(
   });
   type PdfPage = Awaited<ReturnType<Awaited<typeof loading.promise>["getPage"]>>;
   let render: ReturnType<PdfPage["render"]> | undefined;
-  let rejectCancellation: (error: ImagePdfError) => void = () => {};
+  let rejectCancellation: (error: DOMException) => void = () => {};
   const cancelled = new Promise<never>((_, reject) => {
     rejectCancellation = reject;
   });
   const cancel = () => {
     render?.cancel();
-    rejectCancellation(new ImagePdfError("CANCELLED"));
+    rejectCancellation(new DOMException("PDF preview cancelled", "AbortError"));
   };
   signal.addEventListener("abort", cancel, { once: true });
   try {
@@ -52,7 +60,7 @@ export async function renderPdfPage(
     });
     canvas.width = Math.max(1, Math.ceil(viewport.width));
     canvas.height = Math.max(1, Math.ceil(viewport.height));
-    render = page.render({ canvas, viewport });
+    render = page.render({ canvas, viewport, annotationMode: pdfjs.AnnotationMode.DISABLE });
     await Promise.race([render.promise, cancelled]);
     checkCancelled(signal);
   } finally {

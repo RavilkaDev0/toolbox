@@ -1,4 +1,5 @@
 import { imagePdfLimits } from "./images-to-pdf.js";
+import { pdfMergeLimits } from "./merge-pdf.js";
 
 export const categories = [
   {
@@ -71,11 +72,14 @@ export const toolCatalog: readonly ToolDefinition[] = [
     slug: "merge-pdf",
     category: "pdf",
     title: "Merge PDF",
-    description: "Combine PDF documents into one file.",
+    description:
+      "Merge static PDF documents locally. Arrange files, preserve original pages, preview and download the combined PDF.",
     engine: "pdf",
     execution: "browser",
     acceptedMimeTypes: ["application/pdf"],
-    status: "draft",
+    maxInputBytes: pdfMergeLimits.fileBytes,
+    maxInputFiles: pdfMergeLimits.files,
+    status: "published",
     relatedSlugs: ["split-pdf", "images-to-pdf"],
   },
   {

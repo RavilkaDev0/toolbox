@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ImagesWorkspace from "../images-to-pdf/images-workspace";
+import { MergePage } from "../merge-pdf/merge-page";
 
 type ToolPageProps = {
   params: Promise<{ slug: string }>;
@@ -33,6 +34,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const { slug } = await params;
   const tool = getToolBySlug(slug);
 
+  if (tool?.slug === "merge-pdf") return <MergePage tool={tool} />;
   if (tool?.slug !== "images-to-pdf") {
     notFound();
   }
@@ -92,6 +94,9 @@ export default async function ToolPage({ params }: ToolPageProps) {
         </p>
         <Link className="text-link" href="/categories/pdf">
           Explore the PDF category
+        </Link>
+        <Link className="text-link" href="/tools/merge-pdf">
+          Combine existing PDF documents
         </Link>
       </section>
     </main>

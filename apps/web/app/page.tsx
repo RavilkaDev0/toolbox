@@ -29,7 +29,7 @@ export default function HomePage() {
         </div>
         <p className="text-sm text-muted-foreground">
           {tools.length
-            ? "Images to PDF is ready to use. Create and preview your PDF locally, without registration."
+            ? "Images to PDF and Merge PDF are ready to use. Create, combine and preview PDFs locally, without registration."
             : "No tools have been published yet. Each tool will appear after its behavior and limits have been tested."}
         </p>
         <Link className="text-link" href="/tools">

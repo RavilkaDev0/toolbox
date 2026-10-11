@@ -69,7 +69,7 @@ Metadata is typed and statically checked for unique ID/slug, categories, links a
 
 ### Images to PDF (TBX-004)
 
-Only `images-to-pdf` is published; 14 planned tools remain draft. `core` owns image signature/dimension inspection (including PNG CRC integrity and WebP internal/container agreement), memory limits, ordering and page geometry. `contracts` owns strict option/file metadata schemas and depends on these pure core definitions. Packages therefore build topologically. `browser-engines` owns decoding/normalization, pdf-lib generation and serialized-output checks, plus PDF.js rendering of actual result pages. Web owns presentation and two browser worker entry adapters. No API/worker service is involved.
+At TBX-004 only `images-to-pdf` was published; 14 planned tools remained draft. `core` owns image signature/dimension inspection (including PNG CRC integrity and WebP internal/container agreement), memory limits, ordering and page geometry. `contracts` owns strict option/file metadata schemas and depends on these pure core definitions. Packages therefore build topologically. `browser-engines` owns decoding/normalization, pdf-lib generation and serialized-output checks, plus PDF.js rendering of actual result pages. Web owns presentation and two browser worker entry adapters. No API/worker service is involved.
 
 Conversion terminates its worker on cancellation/reset/unmount. WebKit's missing OffscreenCanvas uses a sequential main-thread canvas adapter with AbortSignal and stale-result protection. Preview renders a single generated PDF page in a bounded canvas and releases its PDF document/worker afterward. Source metadata is stripped; JPEG is re-encoded, alpha is retained for PNG/WebP. See [ADR-0006](decisions/ADR-0006-images-to-pdf.md) for limits, dependency decisions and browser tradeoffs, and [verification report](development/TBX-004-REPORT.md).
 Common domain types: `ToolId`, `ToolConfig`, `ProcessingResult`, `ToolErrorCode`. Favor pure functions for transformations; interface-based adapters only around external state/IO/variants. In NestJS use controllers (HTTP), use cases/services (application), domain policies (core), adapters (external libs/storage).
@@ -86,3 +86,7 @@ User messages must explain remediation; log structured non-sensitive technical c
 
 ## Do not build before demanded
 Persistent tool execution history, user roles, multi-tenancy, Kafka, Kubernetes, event sourcing, distributed caching, generic plugin marketplace or global rule engine.
+
+### Merge PDF (TBX-005)
+
+`merge-pdf` joins Images to PDF after binary/browser gates; the other 13 tools remain draft. Core owns PDF limits and shared immutable ordering, contracts metadata validation, browser-engines strict static-PDF inspection/non-rasterizing copy/serialized checks, and web conversion-worker cancellation/timeout and accessible selection UI. The existing PDF.js viewer now lives in shared workspace presentation. See [ADR-0007](decisions/ADR-0007-merge-pdf.md), [acceptance criteria](../tasks/TASK-005-MERGE-PDF.md), and [report](development/TBX-005-REPORT.md). Remaining tools share the [long-lived workflow](development/TOOL-SUITE-WORKFLOW.md).

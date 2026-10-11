@@ -19,10 +19,12 @@ test("registered public pages exclude drafts and private fixtures", async ({ pag
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.getByRole("main")).toBeVisible();
     const hasPublished = ["/", "/tools", "/categories/pdf"].includes(route);
-    await expect(page.locator('a[href^="/tools/"]')).toHaveCount(hasPublished ? 1 : 0);
-    await expect(page.locator('a[href^="/tools/"]:not([href="/tools/images-to-pdf"])')).toHaveCount(
-      0,
-    );
+    await expect(page.locator('a[href^="/tools/"]')).toHaveCount(hasPublished ? 2 : 0);
+    await expect(
+      page.locator(
+        'a[href^="/tools/"]:not([href="/tools/images-to-pdf"]):not([href="/tools/merge-pdf"])',
+      ),
+    ).toHaveCount(0);
     await expect(page.locator('a[href="/design-fixtures"]')).toHaveCount(0);
   }
 });
@@ -47,7 +49,7 @@ test("category navigation and empty state", async ({ page }) => {
 });
 
 test("draft tools and unknown categories return real 404s", async ({ page }) => {
-  for (const route of ["/tools/merge-pdf", "/tools/password-generator", "/categories/unknown"]) {
+  for (const route of ["/tools/split-pdf", "/tools/password-generator", "/categories/unknown"]) {
     const response = await page.goto(route);
     expect(response?.status()).toBe(404);
     await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
@@ -69,9 +71,11 @@ test("catalog form preserves bounded search, category and reset in the URL", asy
     await page.goto(`/tools?${query}`);
     await expect(page.getByRole("main").getByRole("alert")).toContainText("Check your search");
     await expect(page.locator('a[href="/tools/images-to-pdf"]')).toHaveCount(1);
-    await expect(page.locator('a[href^="/tools/"]:not([href="/tools/images-to-pdf"])')).toHaveCount(
-      0,
-    );
+    await expect(
+      page.locator(
+        'a[href^="/tools/"]:not([href="/tools/images-to-pdf"]):not([href="/tools/merge-pdf"])',
+      ),
+    ).toHaveCount(0);
   }
 });
 

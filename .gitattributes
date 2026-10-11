@@ -1,0 +1,2 @@
+# PDF fixtures and downloads must retain byte offsets and original line endings.
+*.pdf binary
