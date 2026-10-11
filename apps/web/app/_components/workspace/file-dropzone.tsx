@@ -10,12 +10,14 @@ export function FileDropzone({
   description,
   inputLabel = "Choose files",
   disabled = false,
+  multiple = true,
 }: {
   onFiles: (files: File[]) => void;
   accept: string;
   description: string;
   inputLabel?: string;
   disabled?: boolean;
+  multiple?: boolean;
 }) {
   const input = useRef<HTMLInputElement>(null);
   const descriptionId = useId();
@@ -44,6 +46,7 @@ export function FileDropzone({
         {description}
       </p>
       <Button
+        type="button"
         disabled={disabled}
         aria-describedby={descriptionId}
         onClick={() => input.current?.click()}
@@ -54,7 +57,7 @@ export function FileDropzone({
         ref={input}
         type="file"
         accept={accept}
-        multiple
+        multiple={multiple}
         hidden
         disabled={disabled}
         aria-label={inputLabel}

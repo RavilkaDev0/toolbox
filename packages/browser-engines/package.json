@@ -25,6 +25,7 @@
   "dependencies": {
     "@toolbox/contracts": "workspace:*",
     "@toolbox/core": "workspace:*",
+    "fflate": "0.8.3",
     "pdf-lib": "1.17.1",
     "pdfjs-dist": "6.3.289"
   }

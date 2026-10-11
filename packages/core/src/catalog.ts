@@ -1,5 +1,6 @@
 import { imagePdfLimits } from "./images-to-pdf.js";
 import { pdfMergeLimits } from "./merge-pdf.js";
+import { pdfSplitLimits } from "./split-pdf.js";
 
 export const categories = [
   {
@@ -65,7 +66,7 @@ export const toolCatalog: readonly ToolDefinition[] = [
     maxInputBytes: imagePdfLimits.fileBytes,
     maxInputFiles: imagePdfLimits.files,
     status: "published",
-    relatedSlugs: ["merge-pdf", "image-resizer"],
+    relatedSlugs: ["merge-pdf", "split-pdf"],
   },
   {
     id: "merge-pdf",
@@ -87,12 +88,15 @@ export const toolCatalog: readonly ToolDefinition[] = [
     slug: "split-pdf",
     category: "pdf",
     title: "Split PDF",
-    description: "Save selected pages from a PDF as separate files.",
+    description:
+      "Extract selected pages into one PDF or split pages into individual PDFs in a ZIP. Preserves page content and geometry locally, within clear file and page limits.",
     engine: "pdf",
     execution: "browser",
     acceptedMimeTypes: ["application/pdf"],
-    status: "draft",
-    relatedSlugs: ["merge-pdf", "rotate-pdf"],
+    maxInputBytes: pdfSplitLimits.fileBytes,
+    maxInputFiles: 1,
+    status: "published",
+    relatedSlugs: ["merge-pdf", "images-to-pdf"],
   },
   {
     id: "rotate-pdf",

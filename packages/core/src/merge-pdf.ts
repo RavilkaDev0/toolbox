@@ -1,10 +1,6 @@
-export const pdfMergeLimits = {
-  files: 10,
+export const pdfDocumentLimits = {
   fileBytes: 8 * 1024 * 1024,
-  totalBytes: 24 * 1024 * 1024,
   filePages: 100,
-  pages: 200,
-  outputBytes: 48 * 1024 * 1024,
   objects: 20_000,
   nodes: 100_000,
   depth: 32,
@@ -12,6 +8,13 @@ export const pdfMergeLimits = {
   totalImagePixels: 24_000_000,
   pageSide: 14_400,
   jobMilliseconds: 45_000,
+} as const;
+export const pdfMergeLimits = {
+  ...pdfDocumentLimits,
+  files: 10,
+  totalBytes: 24 * 1024 * 1024,
+  pages: 200,
+  outputBytes: 48 * 1024 * 1024,
 } as const;
 // Shared viewer ceilings; generation limits remain owned by each tool.
 export const pdfPreviewLimits = { bytes: 64 * 1024 * 1024, pages: 200, pixels: 12_000_000 };
@@ -21,7 +24,8 @@ export type PdfMergeErrorCode =
   | "UNSUPPORTED_FEATURE"
   | "RESOURCE_LIMIT"
   | "CANCELLED"
-  | "MERGE_FAILED";
+  | "MERGE_FAILED"
+  | "SPLIT_FAILED";
 const messages: Record<PdfMergeErrorCode, string> = {
   INVALID_PDF: "A PDF is empty, damaged or has the wrong type. Choose a valid PDF and retry.",
   DOCUMENT_PROTECTED:
@@ -32,6 +36,7 @@ const messages: Record<PdfMergeErrorCode, string> = {
     "This selection exceeds the limits or processing time. Use smaller PDFs or split the batch.",
   CANCELLED: "Operation cancelled. Your selected documents are still available.",
   MERGE_FAILED: "The browser could not merge these PDFs. Try smaller documents, then retry.",
+  SPLIT_FAILED: "The browser could not extract these pages. Try a smaller selection, then retry.",
 };
 export class PdfMergeError extends Error {
   constructor(readonly code: PdfMergeErrorCode) {
@@ -39,6 +44,9 @@ export class PdfMergeError extends Error {
     this.name = "PdfMergeError";
   }
 }
+export type { PdfMergeErrorCode as PdfProcessingErrorCode };
+// PDF inspection and resource policy now serve both Merge PDF and Split PDF.
+export { PdfMergeError as PdfProcessingError };
 export function assertPdfSelection(
   files: readonly { size: number; name: string; type: string }[],
   merging = false,

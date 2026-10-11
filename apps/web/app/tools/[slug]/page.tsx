@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ImagesWorkspace from "../images-to-pdf/images-workspace";
 import { MergePage } from "../merge-pdf/merge-page";
+import { SplitPage } from "../split-pdf/split-page";
 
 type ToolPageProps = {
   params: Promise<{ slug: string }>;
@@ -35,6 +36,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const tool = getToolBySlug(slug);
 
   if (tool?.slug === "merge-pdf") return <MergePage tool={tool} />;
+  if (tool?.slug === "split-pdf") return <SplitPage tool={tool} />;
   if (tool?.slug !== "images-to-pdf") {
     notFound();
   }
@@ -97,6 +99,9 @@ export default async function ToolPage({ params }: ToolPageProps) {
         </Link>
         <Link className="text-link" href="/tools/merge-pdf">
           Combine existing PDF documents
+        </Link>
+        <Link className="text-link" href="/tools/split-pdf">
+          Extract pages from a PDF
         </Link>
       </section>
     </main>

@@ -61,6 +61,9 @@ export function MergePage({ tool }: { tool: ToolDefinition }) {
         <Link className="text-link" href="/tools/images-to-pdf">
           Turn images into a PDF
         </Link>
+        <Link className="text-link" href="/tools/split-pdf">
+          Extract or split PDF pages
+        </Link>
         <Link className="text-link" href="/categories/pdf">
           Explore PDF tools
         </Link>

@@ -2,11 +2,15 @@ import { describe, expect, it } from "vitest";
 import { getPublishedTools, toolCatalog, validateToolCatalog } from "./catalog.js";
 
 describe("tool catalog", () => {
-  it("publishes only the two verified PDF tools", () => {
+  it("publishes only the three verified PDF tools", () => {
     expect(() => validateToolCatalog(toolCatalog)).not.toThrow();
     expect(toolCatalog).toHaveLength(15);
-    expect(getPublishedTools().map((tool) => tool.slug)).toEqual(["images-to-pdf", "merge-pdf"]);
-    expect(toolCatalog.filter((tool) => tool.status === "draft")).toHaveLength(13);
+    expect(getPublishedTools().map((tool) => tool.slug)).toEqual([
+      "images-to-pdf",
+      "merge-pdf",
+      "split-pdf",
+    ]);
+    expect(toolCatalog.filter((tool) => tool.status === "draft")).toHaveLength(12);
   });
 
   it("rejects duplicate ids and slugs", () => {
