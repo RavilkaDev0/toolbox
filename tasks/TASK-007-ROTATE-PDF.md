@@ -25,4 +25,4 @@ Implement and verify `/tools/rotate-pdf` as a browser-only tool on the shared `f
 - [x] Chromium and WebKit route tests for picker/drop, selected/all pages, all rotation choices, preview, download, cancellation/retry/reset, keyboard use, mobile widths, and no upload requests.
 - [x] Independently compare output using pypdf and PDFium, including page rotations, page boxes, text/content streams, and transformed render output.
 - [x] Exercise the production standalone build; retain download, performance, screenshot, and verification evidence in `docs/evidence/tbx-007/`.
-- [ ] Run `pnpm install --frozen-lockfile`, lint, typecheck, tests, and production build; obtain a green GitHub Actions `validate` on the pushed task commit before checking the shared Draft PR item.
+- [x] Run `pnpm install --frozen-lockfile`, lint, typecheck, tests, and production build; obtain a green GitHub Actions `validate` on the pushed task commit before checking the shared Draft PR item. GitHub Actions `validate` passed on `e5f8c6b1502f91f1d63151fd0a52c2a6626509e8`.

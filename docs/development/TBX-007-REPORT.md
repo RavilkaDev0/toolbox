@@ -61,7 +61,7 @@ Latest command and CI results are recorded below after the final quality-gate ru
 | `pnpm test` | Passed; 57 unit tests and 68 Playwright tests |
 | `pnpm build` | Passed; Next.js production build and standalone output |
 | Production standalone Chromium/WebKit E2E | Passed; real output parsed and downloaded |
-| GitHub Actions `validate` | Pending push |
+| GitHub Actions `validate` | Passed on `e5f8c6b1502f91f1d63151fd0a52c2a6626509e8` in 6m23s ([run 38158453761](https://github.com/RavilkaDev0/toolbox/actions/runs/38158453761)) |
 
 ## Remaining risks
 
