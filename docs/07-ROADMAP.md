@@ -2,6 +2,10 @@
 
 These are planning estimates, not guarantees. Solo evenings/weekends, with AI assistance. The release gate prioritizes correctness over the number of tools.
 
+## Current tool delivery plan
+
+TBX-004 Images to PDF is integrated. The owner has reassigned the remaining tool IDs to TBX-005–018 and selected one long-lived branch/Draft PR. The authoritative mapping and sequential completion rules are in [Tool suite workflow](development/TOOL-SUITE-WORKFLOW.md); [Merge PDF acceptance criteria](../tasks/TASK-005-MERGE-PDF.md) define the current task. The earlier milestone numbering below is retained as historical planning, not the active task mapping.
+
 ## Week 1 — foundation and vertical slice
 The current TBX-004 specification combines workspace/file handling with the real Images to PDF reference tool. It supersedes the original 004/005 split below; the original TBX-005 acceptance scope is covered by TBX-004. Subsequent ticket numbers are unchanged.
 - **TBX-001** [P0] Repository scaffold (Next.js + NestJS Fastify + pnpm workspaces + packages; no DB, no worker). Acceptance: clean install/lint/typecheck/build and local dev.

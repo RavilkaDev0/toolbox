@@ -23,6 +23,8 @@ If `dev` is not local yet, use `git switch --track origin/dev`. Read the enginee
 
 ## PR review
 
+For the remaining Toolbox tools, the owner's [long-lived suite workflow](development/TOOL-SUITE-WORKFLOW.md) supersedes per-tool PR/Ready rules: TBX-005–018 share one feature branch and one Draft PR to dev, with separate tool commits and CI-backed checklist updates. Do not propose Ready until a separately assigned final audit of all 14 additions passes.
+
 - State scope, module ownership, dependency decisions, verification results and remaining risks. Document architectural deviations in an ADR.
 - Inspect the diff, privacy, accessibility, failure paths and resource bounds. Resolve review conversations and keep failing tests visible.
 - Require a successful `Quality / validate` run on the current PR revision and intended base. The workflow job/check name is `validate`; select the GitHub Actions source when configuring protection.
