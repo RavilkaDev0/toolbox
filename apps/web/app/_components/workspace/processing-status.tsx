@@ -14,7 +14,7 @@ const labels: Record<WorkspaceState, string> = {
   processing: "Processing… You can cancel this operation.",
   succeeded: "Your result is ready.",
   failed: "Processing could not finish. Review the error and try again.",
-  cancelled: "Operation cancelled. Select files again when you are ready.",
+  cancelled: "Operation cancelled. You can try again or reset.",
 };
 
 export function ProcessingStatus({ state }: { state: WorkspaceState }) {

@@ -91,6 +91,7 @@ export function WorkspaceFixture() {
       <ToolWorkspace>
         <div className="flex flex-col gap-6 lg:col-span-2">
           <FileDropzone
+            inputLabel="Choose fixture files"
             onFiles={selectFiles}
             accept=".txt,text/plain"
             description="UI fixture: TXT, up to 1 MiB each, 10 files total. Metadata checks only; contents are never read."

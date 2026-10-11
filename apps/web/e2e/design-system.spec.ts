@@ -18,7 +18,11 @@ test("registered public pages exclude drafts and private fixtures", async ({ pag
     expect(response?.ok()).toBe(true);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.getByRole("main")).toBeVisible();
-    await expect(page.locator('a[href^="/tools/"]')).toHaveCount(0);
+    const hasPublished = ["/", "/tools", "/categories/pdf"].includes(route);
+    await expect(page.locator('a[href^="/tools/"]')).toHaveCount(hasPublished ? 1 : 0);
+    await expect(page.locator('a[href^="/tools/"]:not([href="/tools/images-to-pdf"])')).toHaveCount(
+      0,
+    );
     await expect(page.locator('a[href="/design-fixtures"]')).toHaveCount(0);
   }
 });
@@ -30,6 +34,8 @@ test("category navigation and empty state", async ({ page }) => {
   await page.getByRole("link", { name: /^PDF Tools/ }).click();
   await categoryNavigation;
   await expect(page).toHaveURL(/\/categories\/pdf$/);
+  await expect(page.getByRole("heading", { name: "Images to PDF", exact: true })).toBeVisible();
+  await page.goto("/categories/image");
   await expect(
     page.getByRole("heading", { name: "No tools are published in this category yet." }),
   ).toBeVisible();
@@ -56,13 +62,16 @@ test("catalog form preserves bounded search, category and reset in the URL", asy
   await expect(page).toHaveURL(/q=PDF&category=pdf$/);
   await expect(page.getByRole("searchbox")).toHaveValue("PDF");
   await expect(page.getByLabel("Category", { exact: true })).toHaveValue("pdf");
-  await expect(page.getByRole("heading", { name: "No tools are published yet" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Images to PDF", exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Clear filters" }).click();
   await expect(page).toHaveURL(/\/tools$/);
   for (const query of ["q=a&q=b", "category=unknown", `q=${"x".repeat(101)}`]) {
     await page.goto(`/tools?${query}`);
     await expect(page.getByRole("main").getByRole("alert")).toContainText("Check your search");
-    await expect(page.locator('a[href^="/tools/"]')).toHaveCount(0);
+    await expect(page.locator('a[href="/tools/images-to-pdf"]')).toHaveCount(1);
+    await expect(page.locator('a[href^="/tools/"]:not([href="/tools/images-to-pdf"])')).toHaveCount(
+      0,
+    );
   }
 });
 
@@ -202,8 +211,14 @@ test.describe("progressive enhancement", () => {
     await page.getByLabel("Category", { exact: true }).selectOption("utility");
     await page.getByRole("button", { name: "Search", exact: true }).click();
     await expect(page).toHaveURL(/q=text&category=utility$/);
-    await expect(page.getByRole("heading", { name: "No tools are published yet" })).toBeVisible();
-    await page.getByRole("link", { name: "Explore categories" }).click();
+    await expect(page.getByRole("heading", { name: "No tools match your search" })).toBeVisible();
+    await page.getByRole("link", { name: "Clear filters" }).first().click();
+    await expect(page).toHaveURL(/\/tools$/);
+    await expect(page.getByRole("heading", { name: "Images to PDF", exact: true })).toBeVisible();
+    await page
+      .getByRole("navigation", { name: "Main navigation" })
+      .getByRole("link", { name: "Categories", exact: true })
+      .click();
     await expect(page.getByRole("heading", { name: "A place for every task" })).toBeVisible();
   });
 });

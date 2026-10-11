@@ -10,11 +10,13 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@toolbox/browser-engines": "workspace:*",
     "@toolbox/contracts": "workspace:*",
     "@toolbox/core": "workspace:*",
     "@toolbox/ui": "workspace:*",
     "lucide-react": "1.50.0",
     "next": "catalog:",
+    "pdfjs-dist": "6.3.289",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
@@ -24,6 +26,7 @@
     "@toolbox/config": "workspace:*",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "pdf-lib": "1.17.1",
     "postcss": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:"

@@ -3,6 +3,7 @@
 These are planning estimates, not guarantees. Solo evenings/weekends, with AI assistance. The release gate prioritizes correctness over the number of tools.
 
 ## Week 1 — foundation and vertical slice
+The current TBX-004 specification combines workspace/file handling with the real Images to PDF reference tool. It supersedes the original 004/005 split below; the original TBX-005 acceptance scope is covered by TBX-004. Subsequent ticket numbers are unchanged.
 - **TBX-001** [P0] Repository scaffold (Next.js + NestJS Fastify + pnpm workspaces + packages; no DB, no worker). Acceptance: clean install/lint/typecheck/build and local dev.
 - **TBX-002** [P0] Engineering conventions and CI. Acceptance: enforced quality gates, deterministic lockfile, PR checklist, one passing test.
 - **TBX-003** [P0] Design tokens, header, home, catalog, categories, tool route. Acceptance: mobile-first accessible responsive pages, static SEO metadata and typed catalog validation.

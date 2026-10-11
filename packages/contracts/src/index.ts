@@ -9,3 +9,4 @@ export {
   liveHealthResponseSchema,
   readyHealthResponseSchema,
 } from "./health.js";
+export { imagePdfFileSchema, imagePdfOptionsSchema } from "./images-to-pdf.js";
