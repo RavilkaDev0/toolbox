@@ -61,6 +61,7 @@ it("rejects corrupt, encrypted, active, empty and excessive-page PDFs safely", a
     ["link.pdf", "UNSUPPORTED_FEATURE"],
     ["form.pdf", "UNSUPPORTED_FEATURE"],
     ["launch.pdf", "UNSUPPORTED_FEATURE"],
+    ["layers.pdf", "UNSUPPORTED_FEATURE"],
   ]) {
     if (!name) throw Error("Missing fixture");
     await expect(inspectPdfs([fixture(name)])).rejects.toMatchObject({ code });

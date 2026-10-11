@@ -11,7 +11,8 @@ export default defineConfig({
   },
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
-    { name: "webkit", use: { ...devices["Desktop Safari"] } },
+    // Large image/PDF fixtures compete for codec/canvas resources in WebKit.
+    { name: "webkit", workers: 1, use: { ...devices["Desktop Safari"] } },
   ],
   webServer: {
     command: "pnpm dev --hostname 127.0.0.1 --port 3100",

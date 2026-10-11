@@ -34,6 +34,7 @@ const blockedKeys = new Set([
   "RichMediaContent",
   "Collection",
   "ByteRange",
+  "OCProperties",
 ]);
 const blockedNames = new Set([
   "JavaScript",
@@ -51,6 +52,8 @@ const blockedNames = new Set([
   "Filespec",
   "Sig",
   "Action",
+  "OCG",
+  "OCMD",
 ]);
 async function inspectStructure(document: PDFDocument, signal?: AbortSignal) {
   const { PDFArray, PDFDict, PDFName, PDFNumber, PDFRawStream, PDFRef } = await import("pdf-lib");

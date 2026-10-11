@@ -27,7 +27,7 @@ const messages: Record<PdfMergeErrorCode, string> = {
   DOCUMENT_PROTECTED:
     "Encrypted PDFs are not supported. Export an unprotected copy using an authorized PDF editor.",
   UNSUPPORTED_FEATURE:
-    "This PDF contains forms, annotations, actions or attachments. Export a plain static PDF first. Signed PDFs are not supported.",
+    "This PDF contains forms, annotations, layers, actions or attachments. Export a plain static PDF first. Signed PDFs are not supported.",
   RESOURCE_LIMIT:
     "This selection exceeds the limits or processing time. Use smaller PDFs or split the batch.",
   CANCELLED: "Operation cancelled. Your selected documents are still available.",

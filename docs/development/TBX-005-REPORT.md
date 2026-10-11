@@ -32,6 +32,8 @@ A decoded 12 MP image costs about 48 MB for one RGBA buffer, before decoder/rend
 
 No sanitization or external-reader safety is claimed. Bookmarks, metadata and accessibility structure are not preserved. Signed/interactive PDFs must first be exported as authorized plain static documents; there is no silent flattening or rasterization fallback.
 
+Optional-content layers are also refused. A synthetic default-OFF layer rendered with SHA-256 `9170178160d67231af65c4f74863b0f7a4c4670b0ca7b402f40bd3c45646a00f`; naive page copying without its document-level visibility configuration rendered `1813545f2d58432e1bf9caf69e7ed633e22b71119d12f6cd0a7f82bd4510e559`. The new real layers.pdf fixture verifies refusal in engine and browser checks instead of silently changing visible content. Export a plain static PDF in an authorized editor first.
+
 ## Dependencies and tooling
 
 No package or lockfile changes. Reuse pinned pdf-lib 1.17.1 (MIT) for non-rasterizing page copying and pdfjs-dist 6.3.289 (Apache-2.0) for actual local previews. The writer loads on inspection/conversion; the viewer loads on preview. Both are hosted locally. Existing installed sizes/alternatives are recorded in [TBX-004](TBX-004-REPORT.md); pdf-lib's older release and the substantial PDF.js preview download remain maintenance/transfer risks. Native viewer-only previews are inconsistent across tested profiles, while rasterization would destroy required fidelity.
@@ -47,12 +49,14 @@ Independent verification uses the already bundled Python pypdf/PDFium tools, not
 | `pnpm install --frozen-lockfile` | Passed; lockfile unchanged, supply-chain policy check passed |
 | `pnpm lint` | Passed; final 112 source/test/evidence files |
 | `pnpm typecheck` | Passed; six workspaces, including Next route type generation |
-| `pnpm test` | Passed; 39 unit/integration tests in 12 files, 58 Chromium/WebKit scenarios in 2.3 minutes |
-| `pnpm build` | Passed; API and optimized Next build, web compilation 956 ms on warm cache |
-| Standalone production converter suite | Passed; all 30 Images/Merge Chromium/WebKit scenarios in 1.4 minutes |
+| `pnpm test` | Passed; 39 unit/integration tests in 12 files, 58 Chromium/WebKit scenarios in 3.9 minutes |
+| `pnpm build` | Passed; API and optimized Next build with both real public tool pages |
+| Standalone production converter suite | Passed; all 30 Images/Merge Chromium/WebKit scenarios in 2.1 minutes |
 | Independent pypdf/PDFium verification | Passed; all three original/output page bitmap hashes match |
 
-The final public-route gates were rerun after correcting preview of validated PDFs with empty MIME. Production ran the built standalone server with copied local static assets, not `next dev`. Its converter suite includes all 16 existing Images to PDF scenarios and 14 new Merge PDF scenarios. No tests, lint rules or type checks were disabled. GitHub `validate` on the pushed implementation commit is linked in the shared PR's completion entry.
+The public-route gates were rerun after correcting preview of validated PDFs with empty MIME. Production ran the built standalone server with copied local static assets, not `next dev`. Its converter suite includes all 16 existing Images to PDF scenarios and 14 new Merge PDF scenarios. No tests, lint rules or type checks were disabled. GitHub `validate` on the pushed verification head is linked in the shared PR's completion entry.
+
+The initial implementation CI passed. An automatic second run after editing the PR exposed one Chromium clock-test failure (57/58): after a single virtual-time jump, the test did not observe the watchdog UI. The deadline test now waits for initial page loading, pauses the clock before selection, observes worker dispatch, runs every timer callback, asserts no termination at 44,999 ms and termination at exactly 45,000 ms, then advances one rendering frame before checking the error UI. This follows [Playwright Clock guidance](https://playwright.dev/docs/clock). The stronger assertions use the original timeouts and no retries. Processing/runtime code did not change. Repeated Chromium/WebKit checks and the final full gates verify the correction.
 
 The retained Chromium ordered download is 7,191 bytes and three pages: rotated Letter MediaBox 612 × 792 pt / CropBox (12,20)–(580,760), rotation 90°; A4 portrait 595.2756 × 841.8898 pt; A4 landscape 841.8898 × 595.2756 pt. Its SHA-256 and independent bitmap hashes are in the comparison JSON.
 
@@ -64,17 +68,21 @@ Independent pypdf checks exact text, content operators, boxes and rotation of th
 
 Screenshots: [Chromium desktop](../evidence/tbx-005/chromium-merge-1440.png), [Chromium mobile](../evidence/tbx-005/chromium-merge-390.png), [WebKit desktop](../evidence/tbx-005/webkit-merge-1440.png), [WebKit mobile](../evidence/tbx-005/webkit-merge-390.png). All were visually reviewed. The [production audit](../evidence/tbx-005/production-assets.json) verifies canonicals, both published tools, draft/private 404s and no PDF library download on the homepage.
 
+The strengthened deadline test passed 20 diagnostic repeats (10 per browser). A later full local run exposed two five-second preview waits on large WebKit retry PDFs; the trace showed verified downloads, with one preview completing immediately after the assertion expired. To bound test CPU/memory pressure, the WebKit project now uses one worker while Chromium retains two. No assertion, fixture size, timeout or retry was relaxed. These are isolated browser fixture jobs, not a claim that two simultaneous large-document tabs meet a five-second preview budget. The final required gates and standalone checks were repeated after this resource setting.
+
+A separate WebKit pointer action stalled after the drag/add/preview sequence before conversion started. The merge-output test helper now explicitly focuses the button before its real pointer click; visibility/stability checks and download assertions remain unchanged. That sequence passed ten WebKit diagnostic repeats. This restores explicit focus after the programmatic file-picker sequence without a forced click or synthetic processing delay.
+
 ## Performance and memory
 
-| Embedded JPEG + Letter PDF | Total input bytes | Output bytes (both browsers) | Chromium elapsed | WebKit elapsed |
+| Embedded JPEG + Letter PDF | Total input bytes | Output bytes Chromium / WebKit | Chromium elapsed | WebKit elapsed |
 | --- | --- | --- | --- | --- |
-| 800 × 600, 0.48 MP | 295,625 | 293,962 | 779 ms | 1,003 ms |
-| 2000 × 1500, 3 MP | 1,813,611 | 1,811,947 | 1,457 ms | 1,551 ms |
-| 4000 × 3000, 12 MP | 7,220,942 | 7,219,280 | 2,698 ms | 4,858 ms |
+| 800 × 600, 0.48 MP | 295,625 | 293,961 / 293,961 | 1,133 ms | 1,084 ms |
+| 2000 × 1500, 3 MP | 1,813,611 | 1,811,947 / 1,811,946 | 1,665 ms | 2,311 ms |
+| 4000 × 3000, 12 MP | 7,220,942 | 7,219,279 / 7,219,279 | 3,805 ms | 5,257 ms |
 
-Chromium reported 12,700,000 bytes of main-realm JS heap after each run; the coarse identical readings cannot establish peak usage or absence of leaks. WebKit recorded null. The output reductions here are small document serialization differences, not image recompression. The preserved source image streams are checked directly.
+Chromium reported 10,600,000 bytes of main-realm JS heap after each run; the coarse identical readings cannot establish peak usage or absence of leaks. WebKit recorded null. The output reductions here are small document serialization differences, not image recompression. The preserved source image streams are checked directly.
 
-Windows machine, pinned Playwright 1.64.0, standalone production, two test workers. Each datum is one run without CPU throttling; not a percentile or physical-mobile benchmark. Inputs are existing deterministic noisy JPEGs embedded in actual PDFs, plus Letter text/vector/image PDF. Timing begins after selection/inspection and includes merge, serialized verification, first-page rendering, download and parsing. Original image streams remain unchanged; PDF compression is not promised. Repeat operations preserve semantics, but timestamps may vary binary hashes.
+Windows machine, pinned Playwright 1.64.0, standalone production, two global test workers with WebKit limited to one. Each datum is one run without CPU throttling; not a percentile or physical-mobile benchmark. Inputs are existing deterministic noisy JPEGs embedded in actual PDFs, plus Letter text/vector/image PDF. Timing begins after selection/inspection and includes merge, serialized verification, first-page rendering, download and parsing. Original image streams remain unchanged; PDF compression is not promised. Repeat operations preserve semantics, but timestamps may vary binary hashes.
 
 The reported Chromium `performance.memory.usedJSHeapSize` is main-realm heap after completion; it excludes conversion/preview workers, native codecs/canvases and peak allocations. WebKit exposes no corresponding value and records null. Resource lifecycle tests assert zero outstanding tracked Blob URLs and native workers after reset/navigation/cancellation; they do not establish a mobile memory peak. Raw [Chromium](../evidence/tbx-005/chromium-performance.json) and [WebKit](../evidence/tbx-005/webkit-performance.json) measurements retain these limitations.
 

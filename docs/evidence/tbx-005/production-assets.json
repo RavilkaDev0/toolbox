@@ -3,9 +3,9 @@
   "homeHeavyLibraries": [],
   "heavyAssets": [
     {
-      "name": "0325qdg2nfdha.js",
-      "bytes": 26360,
-      "gzipBytes": 8386,
+      "name": "03ezgrvo6hwu7.js",
+      "bytes": 11173,
+      "gzipBytes": 4191,
       "library": "pdf-lib"
     },
     {
@@ -13,6 +13,12 @@
       "bytes": 1183192,
       "gzipBytes": 363687,
       "library": "pdfjs"
+    },
+    {
+      "name": "0gvet6ac30f0q.js",
+      "bytes": 26396,
+      "gzipBytes": 8408,
+      "library": "pdf-lib"
     },
     {
       "name": "0xisb_ecskh6b.js",
@@ -27,15 +33,9 @@
       "library": "pdf-lib"
     },
     {
-      "name": "26w7_wo2i0314.js",
-      "bytes": 26715,
-      "gzipBytes": 8495,
-      "library": "pdf-lib"
-    },
-    {
-      "name": "3jl2m2n2lliae.js",
-      "bytes": 11145,
-      "gzipBytes": 4175,
+      "name": "2sv2flo_czi5h.js",
+      "bytes": 26751,
+      "gzipBytes": 8518,
       "library": "pdf-lib"
     }
   ],

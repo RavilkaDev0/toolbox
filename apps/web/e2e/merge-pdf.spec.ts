@@ -13,6 +13,7 @@ async function select(page: Page, names: string[]) {
   ).toBeVisible();
 }
 async function output(page: Page, info: TestInfo, name: string) {
+  await page.getByRole("button", { name: "Merge PDFs", exact: true }).focus();
   await page.getByRole("button", { name: "Merge PDFs", exact: true }).click();
   await expect(page.getByRole("link", { name: "Download PDF", exact: true })).toBeVisible();
   await expect(page.getByText(/^Showing PDF page 1 of/)).toBeVisible();
@@ -138,6 +139,7 @@ test("invalid, encrypted, active and resource-limited PDFs preserve the valid se
     "link.pdf",
     "form.pdf",
     "launch.pdf",
+    "layers.pdf",
     "large-number.pdf",
     "too-many-pages.pdf",
     "empty-pages.pdf",
@@ -250,13 +252,15 @@ test("desktop/mobile screens, real preview and touch-sized controls", async ({ p
   expect(errors).toEqual([]);
 });
 test("hung worker times out and is terminated with a recoverable error", async ({ page }) => {
-  await page.clock.install();
+  await page.clock.install({ time: new Date("2030-01-01T00:00:00Z") });
   await page.addInitScript(() => {
     const NativeWorker = Worker;
     let terminated = 0;
+    let started = 0;
     window.Worker = class extends NativeWorker {
       override postMessage() {
         /* Fault injection: a worker never answers. */
+        started++;
       }
       override terminate() {
         terminated++;
@@ -264,14 +268,24 @@ test("hung worker times out and is terminated with a recoverable error", async (
       }
     };
     Object.defineProperty(window, "terminatedWorkers", { get: () => terminated });
+    Object.defineProperty(window, "startedWorkers", { get: () => started });
   });
   await page.goto(toolUrl);
+  await page.waitForLoadState("networkidle");
+  await page.clock.pauseAt(new Date("2030-01-01T00:01:00Z"));
   await page.getByLabel("Choose PDFs", { exact: true }).setInputFiles(fixture("letter.pdf"));
+  await expect.poll(() => page.evaluate(() => Reflect.get(window, "startedWorkers"))).toBe(1);
+  await page.clock.runFor(44_999);
   await expect(page.getByText("Checking files…", { exact: true })).toBeVisible();
-  await page.clock.fastForward(45_000);
-  await expect(page.getByRole("main").getByRole("alert")).toContainText("processing time");
+  await expect(page.getByRole("main").getByRole("alert")).toHaveCount(0);
+  expect(await page.evaluate(() => Reflect.get(window, "terminatedWorkers"))).toBe(0);
+  await page.clock.runFor(1);
   expect(await page.evaluate(() => Reflect.get(window, "terminatedWorkers"))).toBe(1);
-  await page.getByRole("button", { name: "Reset", exact: true }).click();
+  // Advance one render frame after asserting termination at the exact deadline.
+  await page.clock.runFor(16);
+  await expect(page.getByRole("main").getByRole("alert")).toContainText("processing time");
+  await page.getByRole("button", { name: "Reset", exact: true }).press("Enter");
+  await page.clock.runFor(16);
   await expect(page.getByRole("heading", { name: "No PDFs selected", exact: true })).toBeVisible();
 });
 test("benchmarks real input/output at three sizes", async ({ page }, info) => {

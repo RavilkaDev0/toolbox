@@ -48,9 +48,10 @@ export function MergePage({ tool }: { tool: ToolDefinition }) {
           accessibility tags are not preserved.
         </p>
         <p className="text-muted-foreground">
-          Encrypted PDFs, interactive forms, annotations (including links), actions, digital
-          signatures and attachments are not supported. Export a plain static PDF from an authorized
-          editor first. This tool does not sanitize PDFs or guarantee safety outside this viewer.
+          Encrypted PDFs, interactive forms, annotations (including links), optional-content layers,
+          actions, digital signatures and attachments are not supported. Export a plain static PDF
+          from an authorized editor first. This tool does not sanitize PDFs or guarantee safety
+          outside this viewer.
         </p>
         <p className="text-muted-foreground">
           First-page previews are optional and may fail for unsupported visual features. Use smaller
