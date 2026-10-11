@@ -1,3 +1,5 @@
+import { imagePdfLimits } from "./images-to-pdf.js";
+
 export const categories = [
   {
     id: "pdf",
@@ -54,11 +56,14 @@ export const toolCatalog: readonly ToolDefinition[] = [
     slug: "images-to-pdf",
     category: "pdf",
     title: "Images to PDF",
-    description: "Combine JPEG, PNG or WebP images into a PDF.",
+    description:
+      "Convert JPEG, PNG and WebP images to PDF locally. Arrange pages, choose A4, Letter or Auto, then preview and download.",
     engine: "pdf",
     execution: "browser",
     acceptedMimeTypes: ["image/jpeg", "image/png", "image/webp"],
-    status: "draft",
+    maxInputBytes: imagePdfLimits.fileBytes,
+    maxInputFiles: imagePdfLimits.files,
+    status: "published",
     relatedSlugs: ["merge-pdf", "image-resizer"],
   },
   {

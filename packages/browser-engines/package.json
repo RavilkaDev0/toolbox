@@ -21,5 +21,11 @@
   "devDependencies": {
     "@toolbox/config": "workspace:*",
     "typescript": "catalog:"
+  },
+  "dependencies": {
+    "@toolbox/contracts": "workspace:*",
+    "@toolbox/core": "workspace:*",
+    "pdf-lib": "1.17.1",
+    "pdfjs-dist": "6.3.289"
   }
 }

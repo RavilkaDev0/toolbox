@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "pnpm run build:packages && pnpm --parallel --stream --filter @toolbox/web --filter @toolbox/api run dev",
-    "build:packages": "pnpm --parallel --filter @toolbox/contracts --filter @toolbox/core --filter @toolbox/ui --filter @toolbox/browser-engines run build",
+    "build:packages": "pnpm -r --filter @toolbox/contracts --filter @toolbox/core --filter @toolbox/ui --filter @toolbox/browser-engines run build",
     "lint": "biome check .",
     "format": "biome format --write .",
     "format:check": "biome format .",

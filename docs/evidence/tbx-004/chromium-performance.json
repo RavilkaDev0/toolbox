@@ -1,0 +1,20 @@
+[
+  {
+    "pixels": 480000,
+    "inputBytes": 289744,
+    "outputBytes": 412585,
+    "elapsedMs": 902
+  },
+  {
+    "pixels": 3000000,
+    "inputBytes": 1807723,
+    "outputBytes": 2570888,
+    "elapsedMs": 1608
+  },
+  {
+    "pixels": 12000000,
+    "inputBytes": 7215056,
+    "outputBytes": 10240356,
+    "elapsedMs": 2774
+  }
+]

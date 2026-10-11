@@ -1,0 +1,30 @@
+{
+  "server": "Next.js production standalone, loopback only",
+  "homeHeavyLibraries": [],
+  "heavyAssets": [
+    {
+      "name": "0nsrgr5x5g-oo.js",
+      "bytes": 1183190,
+      "gzipBytes": 363684,
+      "library": "pdfjs"
+    },
+    {
+      "name": "0xisb_ecskh6b.js",
+      "bytes": 455728,
+      "gzipBytes": 135395,
+      "library": "pdfjs"
+    },
+    {
+      "name": "12ulc6qp_gwla.js",
+      "bytes": 429791,
+      "gzipBytes": 177262,
+      "library": "pdf-lib"
+    }
+  ],
+  "statuses": {
+    "/design-fixtures": 404,
+    "/design-fixtures/images-to-pdf": 404,
+    "/tools/merge-pdf": 404,
+    "/tools/password-generator": 404
+  }
+}

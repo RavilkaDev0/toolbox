@@ -8,7 +8,9 @@ describe("published search", () => {
     status: index === 0 ? ("draft" as const) : ("published" as const),
   }));
   it("excludes drafts before filtering", () => {
-    expect(filterPublishedTools(toolCatalog, { q: "", category: "all" })).toEqual([]);
+    expect(
+      filterPublishedTools(toolCatalog, { q: "", category: "all" }).map((tool) => tool.slug),
+    ).toEqual(["images-to-pdf"]);
     expect(filterPublishedTools(fixtures, { q: "", category: "all" })).toHaveLength(5);
   });
   it("matches title and description without case sensitivity", () => {
@@ -22,6 +24,6 @@ describe("published search", () => {
       filterPublishedTools(fixtures, { q: "", category: "pdf-render" }).map((t) => t.slug),
     ).toEqual(["pdf-to-png"]);
     expect(filterPublishedTools(fixtures, { q: "merge", category: "image" })).toEqual([]);
-    expect(toolCatalog.every((tool) => tool.status === "draft")).toBe(true);
+    expect(toolCatalog.filter((tool) => tool.status === "draft")).toHaveLength(14);
   });
 });

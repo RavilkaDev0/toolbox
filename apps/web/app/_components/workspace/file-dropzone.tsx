@@ -8,11 +8,13 @@ export function FileDropzone({
   onFiles,
   accept,
   description,
+  inputLabel = "Choose files",
   disabled = false,
 }: {
   onFiles: (files: File[]) => void;
   accept: string;
   description: string;
+  inputLabel?: string;
   disabled?: boolean;
 }) {
   const input = useRef<HTMLInputElement>(null);
@@ -55,7 +57,7 @@ export function FileDropzone({
         multiple
         hidden
         disabled={disabled}
-        aria-label="Choose fixture files"
+        aria-label={inputLabel}
         onChange={(event) => {
           onFiles(Array.from(event.currentTarget.files ?? []));
           event.currentTarget.value = "";

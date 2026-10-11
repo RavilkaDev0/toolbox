@@ -65,7 +65,13 @@ Metadata is typed and statically checked for unique ID/slug, categories, links a
 
 ### Implemented UI foundation (TBX-003)
 
-`packages/ui` owns tokens and dependency-light shadcn primitives. `apps/web/app/_components` composes route/catalog-aware presentation; workspace controls live in its `workspace` directory and receive callbacks/content from the tool-owned controller. No generic processing orchestrator is introduced. Bounded catalog query schemas live in `packages/contracts`; publication-aware search is pure `packages/core` logic. `/design-fixtures` is explicitly opt-in in development/test and always 404 in production. The 15 production catalog definitions remain draft. See [ADR-0005](decisions/ADR-0005-design-system.md) and [design system](06-DESIGN-SYSTEM.md).
+`packages/ui` owns tokens and dependency-light shadcn primitives. `apps/web/app/_components` composes route/catalog-aware presentation; workspace controls live in its `workspace` directory and receive callbacks/content from the tool-owned controller. No generic processing orchestrator is introduced. Bounded catalog query schemas live in `packages/contracts`; publication-aware search is pure `packages/core` logic. `/design-fixtures` is explicitly opt-in in development/test and always 404 in production. At TBX-003 all 15 definitions were draft. See [ADR-0005](decisions/ADR-0005-design-system.md) and [design system](06-DESIGN-SYSTEM.md).
+
+### Images to PDF (TBX-004)
+
+Only `images-to-pdf` is published; 14 planned tools remain draft. `core` owns image signature/dimension inspection (including PNG CRC integrity and WebP internal/container agreement), memory limits, ordering and page geometry. `contracts` owns strict option/file metadata schemas and depends on these pure core definitions. Packages therefore build topologically. `browser-engines` owns decoding/normalization, pdf-lib generation and serialized-output checks, plus PDF.js rendering of actual result pages. Web owns presentation and two browser worker entry adapters. No API/worker service is involved.
+
+Conversion terminates its worker on cancellation/reset/unmount. WebKit's missing OffscreenCanvas uses a sequential main-thread canvas adapter with AbortSignal and stale-result protection. Preview renders a single generated PDF page in a bounded canvas and releases its PDF document/worker afterward. Source metadata is stripped; JPEG is re-encoded, alpha is retained for PNG/WebP. See [ADR-0006](decisions/ADR-0006-images-to-pdf.md) for limits, dependency decisions and browser tradeoffs, and [verification report](development/TBX-004-REPORT.md).
 Common domain types: `ToolId`, `ToolConfig`, `ProcessingResult`, `ToolErrorCode`. Favor pure functions for transformations; interface-based adapters only around external state/IO/variants. In NestJS use controllers (HTTP), use cases/services (application), domain policies (core), adapters (external libs/storage).
 
 ## Error codes

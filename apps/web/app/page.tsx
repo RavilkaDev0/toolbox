@@ -28,8 +28,9 @@ export default function HomePage() {
           <ToolSearch />
         </div>
         <p className="text-sm text-muted-foreground">
-          No tools have been published yet. Each tool will appear after its behavior and limits have
-          been tested.
+          {tools.length
+            ? "Images to PDF is ready to use. Create and preview your PDF locally, without registration."
+            : "No tools have been published yet. Each tool will appear after its behavior and limits have been tested."}
         </p>
         <Link className="text-link" href="/tools">
           Browse available tools
