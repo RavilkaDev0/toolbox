@@ -110,7 +110,11 @@ export function staticPdfBytesIdentity(bytes: Uint8Array) {
   return `${bytes.byteLength}:${hash}`;
 }
 
-export async function staticPdfPageIdentity(page: PDFPage, memo: Map<PDFObject, string>) {
+export async function staticPdfPageIdentity(
+  page: PDFPage,
+  memo: Map<PDFObject, string>,
+  options: { includeRotation?: boolean } = {},
+) {
   const { PDFArray, PDFDict, PDFName, PDFRawStream, PDFRef } = await import("pdf-lib");
   const ancestors = new Set<PDFObject>();
   function fingerprint(input: PDFObject): string {
@@ -155,7 +159,7 @@ export async function staticPdfPageIdentity(page: PDFPage, memo: Map<PDFObject, 
     page.getBleedBox(),
     page.getTrimBox(),
     page.getArtBox(),
-    page.getRotation().angle,
+    options.includeRotation === false ? null : page.getRotation().angle,
     hashes,
     resources ? fingerprint(resources) : null,
     page.doc.context.lookup(page.node.get(PDFName.of("UserUnit")))?.toString() ?? null,

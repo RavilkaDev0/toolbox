@@ -59,6 +59,9 @@ export function SplitPage({ tool }: { tool: ToolDefinition }) {
         <Link className="text-link" href="/tools/images-to-pdf">
           Turn images into a PDF
         </Link>
+        <Link className="text-link" href="/tools/rotate-pdf">
+          Rotate PDF pages
+        </Link>
         <Link className="text-link" href="/categories/pdf">
           Explore PDF tools
         </Link>

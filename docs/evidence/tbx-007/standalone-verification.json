@@ -1,0 +1,179 @@
+{
+  "fixture": "split-pages.pdf",
+  "fixtureBytes": 6542,
+  "independentParser": "pypdf: strict parse, count, rotation, boxes, text and decoded content streams",
+  "independentRenderer": "PDFium: source render with an additional quarter-turn exactly matches the output render",
+  "outputs": {
+    "selectedRight": {
+      "file": "selected-right.pdf",
+      "bytes": 5103,
+      "sha256": "c7c6b547db2a2f072f36bd767c34f44e7478be350cf2b596656d55f9247cf2e6",
+      "pages": [
+        {
+          "page": 1,
+          "rotation": 0,
+          "delta": 0,
+          "boxesMatch": true,
+          "textMatches": true,
+          "contentStreamsMatch": true,
+          "pdfiumRasterSha256": "40a18f0a6f0248067755c5c7f558f250531fb15755c03a17e6f15241c73b92dc",
+          "expectedRasterSha256": "40a18f0a6f0248067755c5c7f558f250531fb15755c03a17e6f15241c73b92dc"
+        },
+        {
+          "page": 2,
+          "rotation": 180,
+          "delta": 90,
+          "boxesMatch": true,
+          "textMatches": true,
+          "contentStreamsMatch": true,
+          "pdfiumRasterSha256": "d449fe239866d04b2dcfd9465b245e6174f7b305339eb3a0cf9b34878b6f33d2",
+          "expectedRasterSha256": "d449fe239866d04b2dcfd9465b245e6174f7b305339eb3a0cf9b34878b6f33d2"
+        },
+        {
+          "page": 3,
+          "rotation": 0,
+          "delta": 0,
+          "boxesMatch": true,
+          "textMatches": true,
+          "contentStreamsMatch": true,
+          "pdfiumRasterSha256": "5dd23bdb9b88a091b05f91d9621e2a7ad83bb52dcb7b915ca636f1ba290d0131",
+          "expectedRasterSha256": "5dd23bdb9b88a091b05f91d9621e2a7ad83bb52dcb7b915ca636f1ba290d0131"
+        },
+        {
+          "page": 4,
+          "rotation": 0,
+          "delta": 90,
+          "boxesMatch": true,
+          "textMatches": true,
+          "contentStreamsMatch": true,
+          "pdfiumRasterSha256": "a3da78acbfc36aca2c32d35d5f9e6a217ad242964eef2accf05c38073f768cef",
+          "expectedRasterSha256": "a3da78acbfc36aca2c32d35d5f9e6a217ad242964eef2accf05c38073f768cef"
+        },
+        {
+          "page": 5,
+          "rotation": 0,
+          "delta": 0,
+          "boxesMatch": true,
+          "textMatches": true,
+          "contentStreamsMatch": true,
+          "pdfiumRasterSha256": "953eb034614e0708fe40050478e83efefa6cca908504cc9abc65c4337adbbefd",
+          "expectedRasterSha256": "953eb034614e0708fe40050478e83efefa6cca908504cc9abc65c4337adbbefd"
+        }
+      ]
+    },
+    "selectedLeft": {
+      "file": "selected-left.pdf",
+      "bytes": 5100,
+      "sha256": "3885143510dd848d1053db71ad4d78e61a79ffe2594ef37831daada5c4032160",
+      "pages": [
+        {
+          "page": 1,
+          "rotation": 0,
+          "delta": 0,
+          "boxesMatch": true,
+          "textMatches": true,
+          "contentStreamsMatch": true,
+          "pdfiumRasterSha256": "40a18f0a6f0248067755c5c7f558f250531fb15755c03a17e6f15241c73b92dc",
+          "expectedRasterSha256": "40a18f0a6f0248067755c5c7f558f250531fb15755c03a17e6f15241c73b92dc"
+        },
+        {
+          "page": 2,
+          "rotation": 0,
+          "delta": 270,
+          "boxesMatch": true,
+          "textMatches": true,
+          "contentStreamsMatch": true,
+          "pdfiumRasterSha256": "c91f3498535f40b02e21ad030ab449c3961f41133fbeabccbf04eb72c3bc4134",
+          "expectedRasterSha256": "c91f3498535f40b02e21ad030ab449c3961f41133fbeabccbf04eb72c3bc4134"
+        },
+        {
+          "page": 3,
+          "rotation": 0,
+          "delta": 0,
+          "boxesMatch": true,
+          "textMatches": true,
+          "contentStreamsMatch": true,
+          "pdfiumRasterSha256": "5dd23bdb9b88a091b05f91d9621e2a7ad83bb52dcb7b915ca636f1ba290d0131",
+          "expectedRasterSha256": "5dd23bdb9b88a091b05f91d9621e2a7ad83bb52dcb7b915ca636f1ba290d0131"
+        },
+        {
+          "page": 4,
+          "rotation": 180,
+          "delta": 270,
+          "boxesMatch": true,
+          "textMatches": true,
+          "contentStreamsMatch": true,
+          "pdfiumRasterSha256": "072f2e877c66f2d698bb7f2b223cbfd88e1e5e46d34c65a041bdc8e41459c2be",
+          "expectedRasterSha256": "072f2e877c66f2d698bb7f2b223cbfd88e1e5e46d34c65a041bdc8e41459c2be"
+        },
+        {
+          "page": 5,
+          "rotation": 0,
+          "delta": 0,
+          "boxesMatch": true,
+          "textMatches": true,
+          "contentStreamsMatch": true,
+          "pdfiumRasterSha256": "953eb034614e0708fe40050478e83efefa6cca908504cc9abc65c4337adbbefd",
+          "expectedRasterSha256": "953eb034614e0708fe40050478e83efefa6cca908504cc9abc65c4337adbbefd"
+        }
+      ]
+    },
+    "all180": {
+      "file": "all-180.pdf",
+      "bytes": 5113,
+      "sha256": "4fc53d8f23dfbb6d20e66ceace4635a08d90a96da937edd09047b71cfa85de0b",
+      "pages": [
+        {
+          "page": 1,
+          "rotation": 180,
+          "delta": 180,
+          "boxesMatch": true,
+          "textMatches": true,
+          "contentStreamsMatch": true,
+          "pdfiumRasterSha256": "c25d0341af154182f773d279ea5ec634c9b23ae6989ff9366f02874d3bc1f1cf",
+          "expectedRasterSha256": "c25d0341af154182f773d279ea5ec634c9b23ae6989ff9366f02874d3bc1f1cf"
+        },
+        {
+          "page": 2,
+          "rotation": 270,
+          "delta": 180,
+          "boxesMatch": true,
+          "textMatches": true,
+          "contentStreamsMatch": true,
+          "pdfiumRasterSha256": "caed7ad1391417d5ecfce6236dad1fcae90f99fb5f0be98306708cff64341fbc",
+          "expectedRasterSha256": "caed7ad1391417d5ecfce6236dad1fcae90f99fb5f0be98306708cff64341fbc"
+        },
+        {
+          "page": 3,
+          "rotation": 180,
+          "delta": 180,
+          "boxesMatch": true,
+          "textMatches": true,
+          "contentStreamsMatch": true,
+          "pdfiumRasterSha256": "6cb7c88cc2b7392153a8b21dc21893063773d34ee8c7a7dd94d1a9ea1b7d8d86",
+          "expectedRasterSha256": "6cb7c88cc2b7392153a8b21dc21893063773d34ee8c7a7dd94d1a9ea1b7d8d86"
+        },
+        {
+          "page": 4,
+          "rotation": 90,
+          "delta": 180,
+          "boxesMatch": true,
+          "textMatches": true,
+          "contentStreamsMatch": true,
+          "pdfiumRasterSha256": "ad6b5d523e31fa7e7edefca9e797845299a185d886b31fb9e67646764272071d",
+          "expectedRasterSha256": "ad6b5d523e31fa7e7edefca9e797845299a185d886b31fb9e67646764272071d"
+        },
+        {
+          "page": 5,
+          "rotation": 180,
+          "delta": 180,
+          "boxesMatch": true,
+          "textMatches": true,
+          "contentStreamsMatch": true,
+          "pdfiumRasterSha256": "0ccb0a480f987d3557b4884595037b89e786edfc30126c2dba9caac98cf72e27",
+          "expectedRasterSha256": "0ccb0a480f987d3557b4884595037b89e786edfc30126c2dba9caac98cf72e27"
+        }
+      ]
+    }
+  }
+}

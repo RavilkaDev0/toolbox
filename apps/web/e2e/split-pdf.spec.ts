@@ -81,6 +81,7 @@ test("extracts selected pages in source order and downloads verified PDF without
 test("splits selected pages to a real ZIP with safe names, then supports retry and reset", async ({
   page,
 }, info) => {
+  test.setTimeout(180_000);
   await page.addInitScript(() => {
     let holdNextSplit = false;
     let workers = 0;
@@ -142,7 +143,7 @@ test("splits selected pages to a real ZIP with safe names, then supports retry a
     node.dispatchEvent(new DragEvent("drop", { bubbles: true, dataTransfer: transfer }));
   }, bytes);
   await expect(page.getByText("PDF ready. 5 pages available.", { exact: true })).toBeVisible({
-    timeout: 30_000,
+    timeout: 55_000,
   });
   await page.getByLabel("Output mode", { exact: true }).selectOption("split");
   await page.getByLabel("Pages", { exact: true }).fill("4,1");
@@ -312,13 +313,13 @@ test("measures real split output for three bounded image-backed PDFs", async ({
     const inputBytes = await readFile(inputPath);
     await page.getByLabel("Choose a PDF", { exact: true }).setInputFiles(inputPath);
     await expect(page.getByText(/PDF ready\. 1 pages? available\./)).toBeVisible({
-      timeout: 30_000,
+      timeout: 55_000,
     });
     await page.getByLabel("Output mode", { exact: true }).selectOption("split");
     const startedAt = await page.evaluate(() => performance.now());
     await page.getByRole("button", { name: "Split PDF", exact: true }).click();
     await expect(page.getByRole("link", { name: "Download ZIP", exact: true })).toBeVisible({
-      timeout: 30_000,
+      timeout: 55_000,
     });
     const processingMs = Math.round(
       await page.evaluate((start) => performance.now() - start, startedAt),

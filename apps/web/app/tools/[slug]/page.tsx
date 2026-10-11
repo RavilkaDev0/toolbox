@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ImagesWorkspace from "../images-to-pdf/images-workspace";
 import { MergePage } from "../merge-pdf/merge-page";
+import { RotatePage } from "../rotate-pdf/rotate-page";
 import { SplitPage } from "../split-pdf/split-page";
 
 type ToolPageProps = {
@@ -37,6 +38,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
   if (tool?.slug === "merge-pdf") return <MergePage tool={tool} />;
   if (tool?.slug === "split-pdf") return <SplitPage tool={tool} />;
+  if (tool?.slug === "rotate-pdf") return <RotatePage tool={tool} />;
   if (tool?.slug !== "images-to-pdf") {
     notFound();
   }
@@ -102,6 +104,9 @@ export default async function ToolPage({ params }: ToolPageProps) {
         </Link>
         <Link className="text-link" href="/tools/split-pdf">
           Extract pages from a PDF
+        </Link>
+        <Link className="text-link" href="/tools/rotate-pdf">
+          Rotate PDF pages
         </Link>
       </section>
     </main>

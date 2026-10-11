@@ -29,7 +29,7 @@ export default function HomePage() {
         </div>
         <p className="text-sm text-muted-foreground">
           {tools.length
-            ? "Images to PDF, Merge PDF and Split PDF are ready to use. Create PDFs from images, combine or extract pages, and preview results locally without registration."
+            ? "Images to PDF, Merge PDF, Split PDF and Rotate PDF are ready to use. Create, combine, extract and rotate pages locally without registration."
             : "No tools have been published yet. Each tool will appear after its behavior and limits have been tested."}
         </p>
         <Link className="text-link" href="/tools">

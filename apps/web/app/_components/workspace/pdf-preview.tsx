@@ -56,6 +56,7 @@ export function PdfPreview({
     void draw();
     return () => {
       controller.abort();
+      worker?.terminate();
       target.width = 0;
       target.height = 0;
     };

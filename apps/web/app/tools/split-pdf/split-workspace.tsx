@@ -120,12 +120,13 @@ export default function SplitWorkspace() {
     }
     const file = files[0];
     if (!file) return;
+    clearResult();
+    setSource(null);
     if (file.size > pdfSplitLimits.fileBytes) {
       setError("This PDF is larger than 8 MiB. Choose a smaller document.");
       setState("failed");
       return;
     }
-    clearResult();
     run({ action: "inspect", file }, (response) => {
       if (response.type !== "inspected") return;
       setSource({ file, info: response.info });

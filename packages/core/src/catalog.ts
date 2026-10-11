@@ -1,12 +1,13 @@
 import { imagePdfLimits } from "./images-to-pdf.js";
 import { pdfMergeLimits } from "./merge-pdf.js";
+import { pdfRotateLimits } from "./rotate-pdf.js";
 import { pdfSplitLimits } from "./split-pdf.js";
 
 export const categories = [
   {
     id: "pdf",
     title: "PDF",
-    description: "Tools for combining, splitting and adjusting PDF documents.",
+    description: "Tools for creating, combining, splitting and rotating PDF documents.",
   },
   {
     id: "pdf-render",
@@ -66,7 +67,7 @@ export const toolCatalog: readonly ToolDefinition[] = [
     maxInputBytes: imagePdfLimits.fileBytes,
     maxInputFiles: imagePdfLimits.files,
     status: "published",
-    relatedSlugs: ["merge-pdf", "split-pdf"],
+    relatedSlugs: ["merge-pdf", "split-pdf", "rotate-pdf"],
   },
   {
     id: "merge-pdf",
@@ -81,7 +82,7 @@ export const toolCatalog: readonly ToolDefinition[] = [
     maxInputBytes: pdfMergeLimits.fileBytes,
     maxInputFiles: pdfMergeLimits.files,
     status: "published",
-    relatedSlugs: ["split-pdf", "images-to-pdf"],
+    relatedSlugs: ["split-pdf", "images-to-pdf", "rotate-pdf"],
   },
   {
     id: "split-pdf",
@@ -96,19 +97,22 @@ export const toolCatalog: readonly ToolDefinition[] = [
     maxInputBytes: pdfSplitLimits.fileBytes,
     maxInputFiles: 1,
     status: "published",
-    relatedSlugs: ["merge-pdf", "images-to-pdf"],
+    relatedSlugs: ["merge-pdf", "images-to-pdf", "rotate-pdf"],
   },
   {
     id: "rotate-pdf",
     slug: "rotate-pdf",
     category: "pdf",
     title: "Rotate PDF",
-    description: "Rotate selected PDF pages in 90-degree increments.",
+    description:
+      "Rotate all or selected pages in a static PDF locally. Preserve page content and geometry, preview the result, and download it without rasterization.",
     engine: "pdf",
     execution: "browser",
     acceptedMimeTypes: ["application/pdf"],
-    status: "draft",
-    relatedSlugs: ["split-pdf", "merge-pdf"],
+    maxInputBytes: pdfRotateLimits.fileBytes,
+    maxInputFiles: 1,
+    status: "published",
+    relatedSlugs: ["split-pdf", "merge-pdf", "images-to-pdf"],
   },
   {
     id: "pdf-to-png",
