@@ -316,7 +316,9 @@ test("measures real split output for three bounded image-backed PDFs", async ({
   for (const input of ["image-800.pdf", "image-2000.pdf", "image-4000.pdf"]) {
     const inputPath = resolve("e2e/fixtures/pdfs", input);
     const inputBytes = await readFile(inputPath);
-    await page.getByLabel("Choose a PDF", { exact: true }).setInputFiles(inputPath);
+    const chooserPromise = page.waitForEvent("filechooser");
+    await page.getByRole("button", { name: "Choose files", exact: true }).click();
+    await (await chooserPromise).setFiles(inputPath);
     await expect(page.getByText(/PDF ready\. 1 pages? available\./)).toBeVisible({
       timeout: 55_000,
     });
