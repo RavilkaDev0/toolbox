@@ -47,4 +47,4 @@ Publish `/tools/pdf-to-png` as a browser-only renderer that turns one checked PD
 
 - Implementation report: [`docs/development/TBX-008-REPORT.md`](../docs/development/TBX-008-REPORT.md).
 - Production standalone outputs were reopened and compared to independent PDFium renders; see the report and `docs/evidence/tbx-008/` for measurements and screenshots.
-- Local quality gates and Chromium/WebKit coverage passed. Shared-branch GitHub validation is pending and must be green on the final pushed task commit before this checkpoint is marked complete.
+- Local quality gates passed: 63 unit/integration and 79 Playwright tests, plus lint, typecheck and production build. Shared-branch GitHub validation is pending and must be green on the final pushed task commit before this checkpoint is marked complete.

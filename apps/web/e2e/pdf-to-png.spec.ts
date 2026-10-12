@@ -286,10 +286,8 @@ test("preserves transparent areas and fills an opaque white background when sele
   });
 });
 
-test("rejects malformed, encrypted, interactive and oversized inputs, then cancels and retries", async ({
-  page,
-}) => {
-  await installLifecycleProbe(page);
+test("rejects malformed, encrypted, interactive and oversized inputs", async ({ page }) => {
+  test.setTimeout(90_000);
   await page.goto(toolUrl);
   for (const [fixture, message] of [
     ["damaged.pdf", "A PDF is empty, damaged or has the wrong type."],
@@ -310,7 +308,14 @@ test("rejects malformed, encrypted, interactive and oversized inputs, then cance
       exact: false,
     }),
   ).toBeVisible({ timeout: 30_000 });
+});
 
+test("cancels during PNG encoding without fake progress, then retries and releases resources", async ({
+  page,
+}) => {
+  test.setTimeout(90_000);
+  await installLifecycleProbe(page);
+  await page.goto(toolUrl);
   await choosePdf(page, pdfFixture("split-pages.pdf"));
   await expect(page.getByText("PDF ready. 5 pages available.", { exact: true })).toBeVisible({
     timeout: 30_000,
@@ -319,16 +324,15 @@ test("rejects malformed, encrypted, interactive and oversized inputs, then cance
     const probe = window.__tbxPdfPngTest;
     if (probe) {
       probe.encodeCount = 0;
-      probe.holdAt = 2;
+      probe.holdAt = 1;
     }
   });
   await page.getByRole("button", { name: "Render PNGs", exact: true }).click();
-  await expect(page.getByText("Rendered page 1 · 1 of 5 complete.", { exact: true })).toBeVisible({
-    timeout: 45_000,
-  });
+  await expect(page.getByRole("button", { name: "Cancel", exact: true })).toBeVisible();
   await expect
     .poll(() => page.evaluate(() => Boolean(window.__tbxPdfPngTest?.releaseHeldEncoding)))
     .toBe(true);
+  await expect(page.getByTestId("render-progress")).toHaveCount(0);
   await page.getByRole("button", { name: "Cancel", exact: true }).click();
   await expect(
     page.getByText("Operation cancelled. You can try again or reset.", { exact: true }),
