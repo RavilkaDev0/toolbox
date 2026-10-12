@@ -1,6 +1,6 @@
 # Toolbox tool suite progress checkpoint
 
-Last verified: 2026-10-12. Repository: `D:\Pet`; branch: `feat/tbx-005-tool-suite`; Draft PR: [#5](https://github.com/RavilkaDev0/toolbox/pull/5) → `dev`. Current HEAD: `cddcd742dd96a7def5a0f331e15bb3712af1cc6c`; the `dev` base is an ancestor.
+Last verified: 2026-10-13. Repository: `D:\Pet`; branch: `feat/tbx-005-tool-suite`; Draft PR: [#5](https://github.com/RavilkaDev0/toolbox/pull/5) → `dev`. Last verified implementation commit: `7f63cd0219b4ef1bc5df09b750b70c6151ced757`; the `dev` base is an ancestor.
 
 The owner authorized autonomous, sequential implementation of TBX-008–018 on 2026-10-12. This supersedes only the workflow's former stop-after-each-tool rule. The same-head WebKit CI instability was fixed and validated green before TBX-008.
 
@@ -11,7 +11,7 @@ The owner authorized autonomous, sequential implementation of TBX-008–018 on 2
 | TBX-006 Split PDF | Complete on shared branch | `9133f3c`; validate run `38145280380` | Local page extraction/ZIP, Chromium/WebKit, standalone and independent output checks | Preserve existing behavior. |
 | TBX-007 Rotate PDF | Implemented and published on branch | Feature `e5f8c6b`; docs `fe439b7`; validate `38158943075` passed, subsequent run `38159357800` failed on the same head | 57 unit/integration and 68 Playwright tests passed on a green run; a later same-SHA run had two WebKit E2E failures | Reestablish stable full CI before advancing. |
 | CI stability preflight | Complete | `cddcd74`; [validate run 38281894537](https://github.com/RavilkaDev0/toolbox/actions/runs/38281894537) passed | Root cause was a Playwright startup race: direct `setInputFiles()` immediately after navigation can run before the file-picker interaction is hydrated. The actual file chooser fixed affected paths. Reset test waits until image validation starts. | Targeted local stress: Images WebKit 10/10 then 5/5; Split Chromium 5/5 and WebKit 5/5; Rotate Chromium performance 5/5. Final local checks passed lint, typecheck, 57 unit/integration, 68 Chromium/WebKit E2E and build. Full GitHub validation passed in 6m10s. Historical failed run had no artifacts; new workflow retains failure diagnostics for 7 days. |
-| TBX-008 PDF to PNG | Local implementation and verification complete; revised GitHub CI pending | `637617e` (implementation); cancellation stability fix pending commit | Real PDF.js browser renderer; independent PDFium comparison; production standalone Chromium/WebKit; 63 unit/integration and 79 Playwright tests; lint/typecheck/build passed. The first CI run exposed a brittle cancellation-progress assertion; the revised scenario passed five WebKit repeats. See `docs/development/TBX-008-REPORT.md` and `docs/evidence/tbx-008/`. | Require green `validate` on the revised commit before marking complete and continuing to TBX-009. |
+| TBX-008 PDF to PNG | Complete on shared branch | `637617e` implementation; `7f63cd0` WebKit cancellation stability; [validate run 38297151318](https://github.com/RavilkaDev0/toolbox/actions/runs/38297151318) passed | PDF.js browser renderer; independent PDFium comparison; production standalone Chromium/WebKit; 63 unit/integration and 79 Playwright tests; lint/typecheck/build passed. First CI run exposed a brittle cancellation-progress assertion; revised scenario passed five WebKit repeats and full CI. See `docs/development/TBX-008-REPORT.md` and `docs/evidence/tbx-008/`. | Continue to TBX-009 under the authorized sequence. |
 | TBX-009 Image Compressor | Not started | — | — | Follow TBX-008. |
 | TBX-010 Image Resizer | Not started | — | — | Follow TBX-009. |
 | TBX-011 PNG/JPG Converter | Not started | — | — | Follow TBX-010. |
@@ -38,6 +38,6 @@ The owner authorized autonomous, sequential implementation of TBX-008–018 on 2
 
 1. Re-read this file, the task attachment for the current assignment, and `git status`/PR head.
 2. The CI stability fix is pushed and green on `cddcd742dd96a7def5a0f331e15bb3712af1cc6c` (run `38281894537`).
-3. TBX-008 implementation, independent output verification, browser coverage and all local quality gates are complete. Require green GitHub `validate` on its pushed commit before marking the row complete.
+3. TBX-008 implementation, independent output verification, browser coverage, all local quality gates, and GitHub `validate` are complete on the shared branch.
 4. Keep one Conventional Commit per tool, update this checkpoint/report/PR after each green implementation commit, and continue sequentially through TBX-018.
 6. After TBX-018, perform the mandated all-15 audit/report. Leave PR #5 Draft; never merge, release or deploy.
