@@ -90,6 +90,7 @@ export default defineConfig({
   use: {
     baseURL: "http://127.0.0.1:3100",
     trace: "retain-on-failure",
+    screenshot: "only-on-failure",
   },
   // Each tool and performance sample gets a fresh browser process so large
   // local-PDF fixtures cannot retain worker/canvas memory across unrelated tests.

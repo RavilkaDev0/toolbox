@@ -28,4 +28,12 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
+      - name: Upload Playwright diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-diagnostics-${{ github.run_id }}
+          path: apps/web/test-results/
+          if-no-files-found: ignore
+          retention-days: 7
       - run: pnpm build

@@ -40,7 +40,9 @@ test("extracts selected pages in source order and downloads verified PDF without
   await expect(
     page.getByRole("link", { name: "Combine PDF documents", exact: true }),
   ).toHaveAttribute("href", "/tools/merge-pdf");
-  await page.getByLabel("Choose a PDF", { exact: true }).setInputFiles(fixture);
+  const chooserPromise = page.waitForEvent("filechooser");
+  await page.getByRole("button", { name: "Choose files", exact: true }).click();
+  await (await chooserPromise).setFiles(fixture);
   await expect(page.getByText("PDF ready. 5 pages available.", { exact: true })).toBeVisible({
     timeout: 30_000,
   });
@@ -211,7 +213,10 @@ test("rejects malformed and oversized documents and remains keyboard accessible 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(toolUrl);
-  await page.getByLabel("Choose a PDF", { exact: true }).setInputFiles(fixture);
+  const chooserPromise = page.waitForEvent("filechooser");
+  await page.getByRole("button", { name: "Choose files", exact: true }).click();
+  await (await chooserPromise).setFiles(fixture);
+  await expect(page.getByText("Checking files…", { exact: true })).toBeVisible();
   await expect(page.getByText("PDF ready. 5 pages available.", { exact: true })).toBeVisible({
     timeout: 30_000,
   });

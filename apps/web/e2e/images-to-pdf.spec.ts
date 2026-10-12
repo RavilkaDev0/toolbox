@@ -211,6 +211,7 @@ test("cancel and reset terminate jobs, revoke URLs, discard stale results and al
   await expect(page.getByRole("img", { name: /^Page / })).toHaveCount(0);
   expect(await page.evaluate(() => Reflect.get(window, "liveBlobUrls"))).toBe(0);
   await page.getByLabel("Choose images", { exact: true }).setInputFiles(fixture("noise-4000.jpg"));
+  await expect(page.getByText("Checking files…", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(page.getByRole("heading", { name: "No images selected" })).toBeVisible();
   await select(page, ["landscape.jpg"]);
