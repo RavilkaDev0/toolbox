@@ -21,6 +21,11 @@ const performanceSuites = [
     files: ["**/split-pdf.spec.ts"],
     title: "measures real split output for three bounded image-backed PDFs",
   },
+  {
+    name: "pdf-to-png",
+    files: ["**/pdf-to-png.spec.ts"],
+    title: "benchmarks real PNG output for three bounded image-backed PDFs",
+  },
 ] as const;
 
 const featureSuites = [
@@ -82,24 +87,28 @@ const isolatedFeatureProjects = [
   ...isolatedSplitScenarioProjects,
 ];
 
+const externalBaseUrl = process.env.PLAYWRIGHT_BASE_URL;
+
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
   workers: 1,
   reporter: "list",
   use: {
-    baseURL: "http://127.0.0.1:3100",
+    baseURL: externalBaseUrl ?? "http://127.0.0.1:3100",
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
   },
   // Each tool and performance sample gets a fresh browser process so large
   // local-PDF fixtures cannot retain worker/canvas memory across unrelated tests.
   projects: [...isolatedPerformanceProjects, ...isolatedFeatureProjects],
-  webServer: {
-    command: "pnpm dev --hostname 127.0.0.1 --port 3100",
-    url: "http://127.0.0.1:3100",
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-    env: { TOOLBOX_UI_FIXTURES: "1" },
-  },
+  webServer: externalBaseUrl
+    ? undefined
+    : {
+        command: "pnpm dev --hostname 127.0.0.1 --port 3100",
+        url: "http://127.0.0.1:3100",
+        reuseExistingServer: !process.env.CI,
+        timeout: 120_000,
+        env: { TOOLBOX_UI_FIXTURES: "1" },
+      },
 });

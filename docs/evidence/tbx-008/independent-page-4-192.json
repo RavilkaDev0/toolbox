@@ -1,0 +1,18 @@
+{
+  "sourceBytes": 6542,
+  "outputBytes": 71710,
+  "dpi": 192,
+  "selectedPages": [4],
+  "independentRenderer": "PDFium via pypdfium2",
+  "independentContainerParser": "PNG decoder via Pillow",
+  "pages": [
+    {
+      "page": 4,
+      "pngBytes": 71710,
+      "pngPixels": [1974, 1515],
+      "pdfiumPixels": [1974, 1515],
+      "meanAbsoluteError": 0.1435,
+      "pixelsOver48DifferenceRatio": 0.000744
+    }
+  ]
+}

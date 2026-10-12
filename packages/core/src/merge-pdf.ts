@@ -26,7 +26,8 @@ export type PdfMergeErrorCode =
   | "CANCELLED"
   | "MERGE_FAILED"
   | "SPLIT_FAILED"
-  | "ROTATE_FAILED";
+  | "ROTATE_FAILED"
+  | "RENDER_FAILED";
 const messages: Record<PdfMergeErrorCode, string> = {
   INVALID_PDF: "A PDF is empty, damaged or has the wrong type. Choose a valid PDF and retry.",
   DOCUMENT_PROTECTED:
@@ -39,6 +40,8 @@ const messages: Record<PdfMergeErrorCode, string> = {
   MERGE_FAILED: "The browser could not merge these PDFs. Try smaller documents, then retry.",
   SPLIT_FAILED: "The browser could not extract these pages. Try a smaller selection, then retry.",
   ROTATE_FAILED: "The browser could not rotate this PDF. Try a smaller document, then retry.",
+  RENDER_FAILED:
+    "The browser could not render this PDF. Try a smaller or simpler document, then retry.",
 };
 export class PdfMergeError extends Error {
   constructor(readonly code: PdfMergeErrorCode) {

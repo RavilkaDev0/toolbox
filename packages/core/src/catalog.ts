@@ -119,12 +119,13 @@ export const toolCatalog: readonly ToolDefinition[] = [
     slug: "pdf-to-png",
     category: "pdf-render",
     title: "PDF to PNG",
-    description: "Render PDF pages as PNG images.",
+    description:
+      "Render selected PDF pages as PNG locally at screen or higher resolution, then download an image or ZIP.",
     engine: "pdf-render",
     execution: "browser",
     acceptedMimeTypes: ["application/pdf"],
-    status: "draft",
-    relatedSlugs: ["images-to-pdf", "image-compressor"],
+    status: "published",
+    relatedSlugs: ["merge-pdf", "split-pdf", "rotate-pdf", "images-to-pdf"],
   },
   {
     id: "image-compressor",

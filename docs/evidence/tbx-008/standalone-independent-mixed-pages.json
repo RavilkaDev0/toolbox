@@ -1,0 +1,50 @@
+{
+  "sourceBytes": 6542,
+  "outputBytes": 163402,
+  "dpi": 96,
+  "selectedPages": [1, 2, 3, 4, 5],
+  "independentRenderer": "PDFium via pypdfium2",
+  "independentContainerParser": "Python zipfile",
+  "pages": [
+    {
+      "page": 1,
+      "pngBytes": 34508,
+      "pngPixels": [794, 1123],
+      "pdfiumPixels": [794, 1123],
+      "meanAbsoluteError": 0.2827,
+      "pixelsOver48DifferenceRatio": 0.00177
+    },
+    {
+      "page": 2,
+      "pngBytes": 36162,
+      "pngPixels": [794, 1123],
+      "pdfiumPixels": [794, 1123],
+      "meanAbsoluteError": 0.3154,
+      "pixelsOver48DifferenceRatio": 0.0025
+    },
+    {
+      "page": 3,
+      "pngBytes": 33759,
+      "pngPixels": [816, 1056],
+      "pdfiumPixels": [816, 1056],
+      "meanAbsoluteError": 0.3133,
+      "pixelsOver48DifferenceRatio": 0.002241
+    },
+    {
+      "page": 4,
+      "pngBytes": 24604,
+      "pngPixels": [987, 758],
+      "pdfiumPixels": [987, 758],
+      "meanAbsoluteError": 0.2238,
+      "pixelsOver48DifferenceRatio": 0.001482
+    },
+    {
+      "page": 5,
+      "pngBytes": 33767,
+      "pngPixels": [816, 1056],
+      "pdfiumPixels": [816, 1056],
+      "meanAbsoluteError": 0.3123,
+      "pixelsOver48DifferenceRatio": 0.002227
+    }
+  ]
+}

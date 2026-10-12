@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ImagesWorkspace from "../images-to-pdf/images-workspace";
 import { MergePage } from "../merge-pdf/merge-page";
+import { PdfToPngPage } from "../pdf-to-png/pdf-to-png-page";
 import { RotatePage } from "../rotate-pdf/rotate-page";
 import { SplitPage } from "../split-pdf/split-page";
 
@@ -39,6 +40,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   if (tool?.slug === "merge-pdf") return <MergePage tool={tool} />;
   if (tool?.slug === "split-pdf") return <SplitPage tool={tool} />;
   if (tool?.slug === "rotate-pdf") return <RotatePage tool={tool} />;
+  if (tool?.slug === "pdf-to-png") return <PdfToPngPage tool={tool} />;
   if (tool?.slug !== "images-to-pdf") {
     notFound();
   }

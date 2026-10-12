@@ -1,0 +1,12 @@
+{
+  "environment": "Next.js standalone production build on loopback, Playwright Chromium",
+  "dpi": 96,
+  "pagePixels": [794, 1123],
+  "measurements": [
+    { "inputBytes": 291341, "outputBytes": 1548941, "renderMilliseconds": 448 },
+    { "inputBytes": 1809327, "outputBytes": 1497599, "renderMilliseconds": 1198 },
+    { "inputBytes": 7216658, "outputBytes": 1325843, "renderMilliseconds": 5035 }
+  ],
+  "mainRealmHeapBytes": null,
+  "memoryNote": "Peak total memory was not measured; page heap would exclude PDF.js worker and browser-native image/canvas allocations."
+}

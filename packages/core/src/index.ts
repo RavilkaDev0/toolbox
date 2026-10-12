@@ -17,5 +17,6 @@ export {
 export { filterPublishedTools } from "./catalog-search.js";
 export * from "./images-to-pdf.js";
 export * from "./merge-pdf.js";
+export * from "./pdf-to-png.js";
 export * from "./rotate-pdf.js";
 export * from "./split-pdf.js";

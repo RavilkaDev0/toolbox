@@ -18,11 +18,16 @@ test("registered public pages exclude drafts and private fixtures", async ({ pag
     expect(response?.ok()).toBe(true);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.getByRole("main")).toBeVisible();
-    const hasPublished = ["/", "/tools", "/categories/pdf"].includes(route);
-    await expect(page.locator('a[href^="/tools/"]')).toHaveCount(hasPublished ? 4 : 0);
+    const publishedLinksByRoute: Record<string, number> = {
+      "/": 5,
+      "/tools": 5,
+      "/categories/pdf": 4,
+      "/categories/pdf-render": 1,
+    };
+    await expect(page.locator('a[href^="/tools/"]')).toHaveCount(publishedLinksByRoute[route] ?? 0);
     await expect(
       page.locator(
-        'a[href^="/tools/"]:not([href="/tools/images-to-pdf"]):not([href="/tools/merge-pdf"]):not([href="/tools/split-pdf"]):not([href="/tools/rotate-pdf"])',
+        'a[href^="/tools/"]:not([href="/tools/images-to-pdf"]):not([href="/tools/merge-pdf"]):not([href="/tools/split-pdf"]):not([href="/tools/rotate-pdf"]):not([href="/tools/pdf-to-png"])',
       ),
     ).toHaveCount(0);
     await expect(page.locator('a[href="/design-fixtures"]')).toHaveCount(0);
@@ -73,7 +78,7 @@ test("catalog form preserves bounded search, category and reset in the URL", asy
     await expect(page.locator('a[href="/tools/images-to-pdf"]')).toHaveCount(1);
     await expect(
       page.locator(
-        'a[href^="/tools/"]:not([href="/tools/images-to-pdf"]):not([href="/tools/merge-pdf"]):not([href="/tools/split-pdf"]):not([href="/tools/rotate-pdf"])',
+        'a[href^="/tools/"]:not([href="/tools/images-to-pdf"]):not([href="/tools/merge-pdf"]):not([href="/tools/split-pdf"]):not([href="/tools/rotate-pdf"]):not([href="/tools/pdf-to-png"])',
       ),
     ).toHaveCount(0);
   }

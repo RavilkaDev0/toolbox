@@ -1,8 +1,8 @@
 # Toolbox tool suite progress checkpoint
 
-Last verified: 2026-10-12. Repository: `D:\Pet`; branch: `feat/tbx-005-tool-suite`; Draft PR: [#5](https://github.com/RavilkaDev0/toolbox/pull/5) → `dev`. The preflight began from `fe439b73d357766ae3199e6b4ee60f4443620367` with `dev` as an ancestor and no uncommitted implementation changes; CI status is tracked below.
+Last verified: 2026-10-12. Repository: `D:\Pet`; branch: `feat/tbx-005-tool-suite`; Draft PR: [#5](https://github.com/RavilkaDev0/toolbox/pull/5) → `dev`. Current HEAD: `cddcd742dd96a7def5a0f331e15bb3712af1cc6c`; the `dev` base is an ancestor.
 
-The owner authorized autonomous, sequential implementation of TBX-008–018 on 2026-10-12. This supersedes only the workflow's former stop-after-each-tool rule. The current mandatory preflight is to diagnose and fix the same-head WebKit CI instability before TBX-008.
+The owner authorized autonomous, sequential implementation of TBX-008–018 on 2026-10-12. This supersedes only the workflow's former stop-after-each-tool rule. The same-head WebKit CI instability was fixed and validated green before TBX-008.
 
 | Ticket | Status | Commit / CI | Tests and implementation | Risks / next step |
 | --- | --- | --- | --- | --- |
@@ -10,8 +10,8 @@ The owner authorized autonomous, sequential implementation of TBX-008–018 on 2
 | TBX-005 Merge PDF | Complete on shared branch | `fe0ac20`, `853fafd`; existing CI evidence in PR #5 | Local browser engine, worker UI, Chromium/WebKit and independent PDF checks | Preserve existing behavior. |
 | TBX-006 Split PDF | Complete on shared branch | `9133f3c`; validate run `38145280380` | Local page extraction/ZIP, Chromium/WebKit, standalone and independent output checks | Preserve existing behavior. |
 | TBX-007 Rotate PDF | Implemented and published on branch | Feature `e5f8c6b`; docs `fe439b7`; validate `38158943075` passed, subsequent run `38159357800` failed on the same head | 57 unit/integration and 68 Playwright tests passed on a green run; a later same-SHA run had two WebKit E2E failures | Reestablish stable full CI before advancing. |
-| CI stability preflight | Local gates complete; GitHub validation pending | Historical failed run `38159357800`, head `fe439b73d357766ae3199e6b4ee60f4443620367` | Root cause was a Playwright startup race: direct `setInputFiles()` immediately after navigation can run before the file-picker interaction is hydrated. Two additional local tests reproduced a permanently pending “Checking files…” state with no selected PDF. The actual file chooser fixed those paths. Reset test now waits until image validation has actually started. | Targeted local stress: Images WebKit 10/10 then 5/5; Split Chromium 5/5 and WebKit 5/5; Rotate Chromium performance 5/5. Final local gates passed: lint, typecheck, 57 unit/integration, 68 Chromium/WebKit E2E, build. Stability commit/push and green GitHub `validate` are still required before TBX-008. Historical run had no artifacts; new workflow uploads failure diagnostics for 7 days. |
-| TBX-008 PDF to PNG | Not started | — | Must use existing PDF.js and bounded local rendering | Start only after the CI stability preflight is green. |
+| CI stability preflight | Complete | `cddcd74`; [validate run 38281894537](https://github.com/RavilkaDev0/toolbox/actions/runs/38281894537) passed | Root cause was a Playwright startup race: direct `setInputFiles()` immediately after navigation can run before the file-picker interaction is hydrated. The actual file chooser fixed affected paths. Reset test waits until image validation starts. | Targeted local stress: Images WebKit 10/10 then 5/5; Split Chromium 5/5 and WebKit 5/5; Rotate Chromium performance 5/5. Final local checks passed lint, typecheck, 57 unit/integration, 68 Chromium/WebKit E2E and build. Full GitHub validation passed in 6m10s. Historical failed run had no artifacts; new workflow retains failure diagnostics for 7 days. |
+| TBX-008 PDF to PNG | Local implementation and verification complete; GitHub CI pending | — | Real PDF.js browser renderer; independent PDFium comparison; production standalone Chromium/WebKit; 63 unit/integration and 77 Playwright tests; lint/typecheck/build passed. See `docs/development/TBX-008-REPORT.md` and `docs/evidence/tbx-008/`. | Push the task commit and require green `validate` before marking complete and continuing to TBX-009. |
 | TBX-009 Image Compressor | Not started | — | — | Follow TBX-008. |
 | TBX-010 Image Resizer | Not started | — | — | Follow TBX-009. |
 | TBX-011 PNG/JPG Converter | Not started | — | — | Follow TBX-010. |
@@ -37,8 +37,7 @@ The owner authorized autonomous, sequential implementation of TBX-008–018 on 2
 ## Resume procedure
 
 1. Re-read this file, the task attachment for the current assignment, and `git status`/PR head.
-2. Commit and push the locally verified stability fix and await a green GitHub `validate` run.
-3. Only then begin TBX-008 and continue sequentially.
-4. Only after green full validation, create `tasks/TASK-008-PDF-TO-PNG.md` and begin TBX-008.
-5. Keep one Conventional Commit per tool, update this checkpoint/report/PR after each green implementation commit, and continue sequentially through TBX-018.
+2. The CI stability fix is pushed and green on `cddcd742dd96a7def5a0f331e15bb3712af1cc6c` (run `38281894537`).
+3. TBX-008 implementation, independent output verification, browser coverage and all local quality gates are complete. Require green GitHub `validate` on its pushed commit before marking the row complete.
+4. Keep one Conventional Commit per tool, update this checkpoint/report/PR after each green implementation commit, and continue sequentially through TBX-018.
 6. After TBX-018, perform the mandated all-15 audit/report. Leave PR #5 Draft; never merge, release or deploy.
