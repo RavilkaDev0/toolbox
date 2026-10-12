@@ -9,6 +9,7 @@ export {
   liveHealthResponseSchema,
   readyHealthResponseSchema,
 } from "./health.js";
+export { imageCompressionOptionsSchema, imageCompressorFileSchema } from "./image-compressor.js";
 export { imagePdfFileSchema, imagePdfOptionsSchema } from "./images-to-pdf.js";
 export { pdfMergeFileSchema } from "./merge-pdf.js";
 export type { PdfToPngSettings } from "./pdf-to-png.js";

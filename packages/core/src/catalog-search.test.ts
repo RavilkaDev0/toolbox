@@ -10,7 +10,14 @@ describe("published search", () => {
   it("excludes drafts before filtering", () => {
     expect(
       filterPublishedTools(toolCatalog, { q: "", category: "all" }).map((tool) => tool.slug),
-    ).toEqual(["images-to-pdf", "merge-pdf", "split-pdf", "rotate-pdf", "pdf-to-png"]);
+    ).toEqual([
+      "images-to-pdf",
+      "merge-pdf",
+      "split-pdf",
+      "rotate-pdf",
+      "pdf-to-png",
+      "image-compressor",
+    ]);
     expect(filterPublishedTools(fixtures, { q: "", category: "all" })).toHaveLength(5);
   });
   it("matches title and description without case sensitivity", () => {
@@ -24,6 +31,6 @@ describe("published search", () => {
       filterPublishedTools(fixtures, { q: "", category: "pdf-render" }).map((t) => t.slug),
     ).toEqual(["pdf-to-png"]);
     expect(filterPublishedTools(fixtures, { q: "merge", category: "image" })).toEqual([]);
-    expect(toolCatalog.filter((tool) => tool.status === "draft")).toHaveLength(10);
+    expect(toolCatalog.filter((tool) => tool.status === "draft")).toHaveLength(9);
   });
 });

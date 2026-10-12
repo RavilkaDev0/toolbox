@@ -26,6 +26,11 @@ const performanceSuites = [
     files: ["**/pdf-to-png.spec.ts"],
     title: "benchmarks real PNG output for three bounded image-backed PDFs",
   },
+  {
+    name: "image-compressor",
+    files: ["**/image-compressor.spec.ts"],
+    title: "measures real image compression at three bounded input sizes",
+  },
 ] as const;
 
 const featureSuites = [

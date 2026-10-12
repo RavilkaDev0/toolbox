@@ -2,6 +2,7 @@ import { getPublishedTools, getToolBySlug } from "@toolbox/core";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ImageCompressorPage } from "../image-compressor/image-compressor-page";
 import ImagesWorkspace from "../images-to-pdf/images-workspace";
 import { MergePage } from "../merge-pdf/merge-page";
 import { PdfToPngPage } from "../pdf-to-png/pdf-to-png-page";
@@ -41,6 +42,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   if (tool?.slug === "split-pdf") return <SplitPage tool={tool} />;
   if (tool?.slug === "rotate-pdf") return <RotatePage tool={tool} />;
   if (tool?.slug === "pdf-to-png") return <PdfToPngPage tool={tool} />;
+  if (tool?.slug === "image-compressor") return <ImageCompressorPage tool={tool} />;
   if (tool?.slug !== "images-to-pdf") {
     notFound();
   }
@@ -109,6 +111,9 @@ export default async function ToolPage({ params }: ToolPageProps) {
         </Link>
         <Link className="text-link" href="/tools/rotate-pdf">
           Rotate PDF pages
+        </Link>
+        <Link className="text-link" href="/tools/image-compressor">
+          Compress an image
         </Link>
       </section>
     </main>

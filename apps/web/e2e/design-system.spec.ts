@@ -19,15 +19,16 @@ test("registered public pages exclude drafts and private fixtures", async ({ pag
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.getByRole("main")).toBeVisible();
     const publishedLinksByRoute: Record<string, number> = {
-      "/": 5,
-      "/tools": 5,
+      "/": 6,
+      "/tools": 6,
       "/categories/pdf": 4,
       "/categories/pdf-render": 1,
+      "/categories/image": 1,
     };
     await expect(page.locator('a[href^="/tools/"]')).toHaveCount(publishedLinksByRoute[route] ?? 0);
     await expect(
       page.locator(
-        'a[href^="/tools/"]:not([href="/tools/images-to-pdf"]):not([href="/tools/merge-pdf"]):not([href="/tools/split-pdf"]):not([href="/tools/rotate-pdf"]):not([href="/tools/pdf-to-png"])',
+        'a[href^="/tools/"]:not([href="/tools/images-to-pdf"]):not([href="/tools/merge-pdf"]):not([href="/tools/split-pdf"]):not([href="/tools/rotate-pdf"]):not([href="/tools/pdf-to-png"]):not([href="/tools/image-compressor"])',
       ),
     ).toHaveCount(0);
     await expect(page.locator('a[href="/design-fixtures"]')).toHaveCount(0);
@@ -43,9 +44,8 @@ test("category navigation and empty state", async ({ page }) => {
   await expect(page).toHaveURL(/\/categories\/pdf$/);
   await expect(page.getByRole("heading", { name: "Images to PDF", exact: true })).toBeVisible();
   await page.goto("/categories/image");
-  await expect(
-    page.getByRole("heading", { name: "No tools are published in this category yet." }),
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Image compressor", exact: true })).toBeVisible();
+  await expect(page.locator('a[href="/tools/image-compressor"]')).toBeVisible();
   await page
     .getByRole("navigation", { name: "Breadcrumb" })
     .getByRole("link", { name: "Tools" })
@@ -78,7 +78,7 @@ test("catalog form preserves bounded search, category and reset in the URL", asy
     await expect(page.locator('a[href="/tools/images-to-pdf"]')).toHaveCount(1);
     await expect(
       page.locator(
-        'a[href^="/tools/"]:not([href="/tools/images-to-pdf"]):not([href="/tools/merge-pdf"]):not([href="/tools/split-pdf"]):not([href="/tools/rotate-pdf"]):not([href="/tools/pdf-to-png"])',
+        'a[href^="/tools/"]:not([href="/tools/images-to-pdf"]):not([href="/tools/merge-pdf"]):not([href="/tools/split-pdf"]):not([href="/tools/rotate-pdf"]):not([href="/tools/pdf-to-png"]):not([href="/tools/image-compressor"])',
       ),
     ).toHaveCount(0);
   }

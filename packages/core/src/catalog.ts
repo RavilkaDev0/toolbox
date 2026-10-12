@@ -1,3 +1,4 @@
+import { imageCompressorLimits } from "./image-compressor.js";
 import { imagePdfLimits } from "./images-to-pdf.js";
 import { pdfMergeLimits } from "./merge-pdf.js";
 import { pdfRotateLimits } from "./rotate-pdf.js";
@@ -132,11 +133,14 @@ export const toolCatalog: readonly ToolDefinition[] = [
     slug: "image-compressor",
     category: "image",
     title: "Image compressor",
-    description: "Reduce the file size of a supported image.",
+    description:
+      "Compress JPEG, PNG and WebP images in your browser. Adjust JPEG/WebP quality, preview the encoded image and compare its real file size before downloading.",
     engine: "image",
     execution: "browser",
     acceptedMimeTypes: ["image/jpeg", "image/png", "image/webp"],
-    status: "draft",
+    maxInputBytes: imageCompressorLimits.fileBytes,
+    maxInputFiles: 1,
+    status: "published",
     relatedSlugs: ["image-resizer", "webp-converter"],
   },
   {
