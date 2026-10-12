@@ -45,4 +45,4 @@ The real JPEG/PNG/WebP output samples (859 B / 1,320 B / 800 B), production benc
 
 ## CI and publication
 
-The feature and report are prepared for the shared Draft PR #5 (`feat/tbx-005-tool-suite` → `dev`). GitHub `validate` for the TBX-009 commit is pending until the implementation is committed and pushed; publication stays on this branch only. No merge, release or deploy was performed.
+TBX-009 is committed on the shared branch as feature commit `125b3b67024aee59bed0a77128aafc347d1ed4d1` (preceded by the Split PDF benchmark file-chooser stabilization commit `6e98b34`). GitHub Actions [`validate` run 38310361835](https://github.com/RavilkaDev0/toolbox/actions/runs/38310361835) passed on that feature commit: frozen install, Chromium/WebKit installation, lint, typecheck, the full unit/integration and browser test suite, and production build all succeeded. The tool and report are included in the existing Draft PR #5 (`feat/tbx-005-tool-suite` → `dev`). No merge, release or deploy was performed.
