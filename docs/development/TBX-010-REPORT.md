@@ -1,6 +1,6 @@
 # TBX-010 — Image Resizer
 
-Status on the feature branch: implemented and published in the branch catalog. Local quality gates and the full Chromium/WebKit suite pass. Implementation commit `33bc61968623fa6ca2a22db8b2bcb8f160520d95` passed exact-head GitHub Actions [`validate` run 38428863488](https://github.com/RavilkaDev0/toolbox/actions/runs/38428863488).
+Status on the feature branch: implemented and published in the branch catalog. Implementation commit `33bc61968623fa6ca2a22db8b2bcb8f160520d95` passed exact-head GitHub Actions [`validate` run 38428863488](https://github.com/RavilkaDev0/toolbox/actions/runs/38428863488). A later full-suite run on docs checkpoint `2657a6e` found an under-bounded WebKit wait in the existing PDF-to-PNG E2E; the wait is fixed and local gates pass again, with exact-head follow-up validation pending.
 
 ## Implementation
 
@@ -25,19 +25,19 @@ An 8 MP RGBA bitmap and same-size output canvas can coexist at roughly 64 MiB of
 
 Addressed unit/contract/browser-engine tests: **15 passed** across core geometry/limits, strict option schemas, real JPEG/PNG/WebP inspection, malformed and animated rejection, output validation, cancellation, repeat operations and resource cleanup. Existing compressor engine tests passed alongside these to cover the shared image-engine refactor. The full workspace unit/integration suite passed **87 tests**.
 
-The resizer Playwright feature suite passed **9 tests** across Chromium and WebKit (five Chromium including its performance case; four WebKit). It exercises real fixture files, actual downloaded image bytes and HTML image decoding, JPEG/PNG/WebP output, EXIF orientation, locked ratio/percentage, intentional stretching, alpha pixels, white JPEG background, picker/drop, empty/corrupt/spoofed/animated/oversized refusal, worker cancellation/retry/reset, keyboard activation, Blob URL cleanup, 320/390/768/1440 px widths, and absence of non-GET requests. The complete browser suite passed **97 scenarios** across Chromium and WebKit. One pre-existing Rotate PDF E2E readiness assertion used a 30-second timeout while that tool's worker watchdog allows 45 seconds; its wait now reflects the operation bound, and the full suite passed on rerun. The production standalone image-domain run remains scheduled after TBX-012 per the long-lived plan.
+The resizer Playwright feature suite passed **9 tests** across Chromium and WebKit (five Chromium including its performance case; four WebKit). It exercises real fixture files, actual downloaded image bytes and HTML image decoding, JPEG/PNG/WebP output, EXIF orientation, locked ratio/percentage, intentional stretching, alpha pixels, white JPEG background, picker/drop, empty/corrupt/spoofed/animated/oversized refusal, worker cancellation/retry/reset, keyboard activation, Blob URL cleanup, 320/390/768/1440 px widths, and absence of non-GET requests. The complete browser suite passed **97 scenarios** across Chromium and WebKit. One pre-existing Rotate PDF E2E readiness assertion used a 30-second timeout while that tool's worker watchdog allows 45 seconds; its wait now reflects the operation bound. A later validation run on docs checkpoint `2657a6e` exposed the same kind of bound mismatch in an existing PDF-to-PNG error assertion: WebKit took 32.1 seconds for the oversized-page scenario while the test expected the visible error within 30 seconds. That assertion now waits 60 seconds so the 45-second engine watchdog can report its limit; the focused WebKit scenario passed 5/5 repeats, followed by another full local suite pass (87 unit/integration, 97 Playwright). The production standalone image-domain run remains scheduled after TBX-012 per the long-lived plan.
 
 The local Chromium performance fixture measured end-to-download elapsed time and output sizes:
 
 | Input fixture | Input bytes | Output bytes | Elapsed |
 | --- | ---: | ---: | ---: |
-| `landscape.jpg` (240 × 120) | 2,619 | 1,222 | 607 ms |
-| `noise-800.jpg` (800 × 600) | 289,744 | 6,133 | 512 ms |
-| `noise-2000.jpg` (2,000 × 1,500) | 1,807,723 | 6,131 | 601 ms |
+| `landscape.jpg` (240 × 120) | 2,619 | 1,222 | 605 ms |
+| `noise-800.jpg` (800 × 600) | 289,744 | 6,133 | 504 ms |
+| `noise-2000.jpg` (2,000 × 1,500) | 1,807,723 | 6,131 | 512 ms |
 
 The test scales each image to 120 px wide, so output sizes are not a claim about same-size JPEG compression. These measurements came from a local desktop Chromium/Next dev run and are not physical-device or production-build performance figures.
 
-Desktop/mobile screenshots, sample downloads and machine-readable timings are in [TBX-010 evidence](../evidence/tbx-010/). `pnpm install --frozen-lockfile`, `pnpm lint`, `pnpm typecheck`, `pnpm test` (87 unit/integration and 97 Playwright tests), and `pnpm build` all passed locally. The route and canonical metadata were also checked through Playwright MCP against the local app. GitHub Actions `validate` passed all required steps on the implementation commit listed above.
+Desktop/mobile screenshots, sample downloads and machine-readable timings are in [TBX-010 evidence](../evidence/tbx-010/). `pnpm install --frozen-lockfile`, `pnpm lint`, `pnpm typecheck`, `pnpm test` (87 unit/integration and 97 Playwright tests), and `pnpm build` all passed locally after the timeout adjustment. The route and canonical metadata were also checked through Playwright MCP against the local app. GitHub Actions `validate` passed all required steps on the implementation commit listed above; exact-head Actions validation for the test-wait follow-up remains pending.
 
 ## Known risks
 

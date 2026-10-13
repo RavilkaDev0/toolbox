@@ -307,7 +307,7 @@ test("rejects malformed, encrypted, interactive and oversized inputs", async ({ 
     page.getByText("This PDF exceeds a file, page, pixel, time, or output limit.", {
       exact: false,
     }),
-  ).toBeVisible({ timeout: 30_000 });
+  ).toBeVisible({ timeout: 60_000 });
 });
 
 test("cancels during PNG encoding without fake progress, then retries and releases resources", async ({
