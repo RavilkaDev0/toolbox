@@ -193,12 +193,12 @@ export default function PasswordGeneratorWorkspace() {
         <PreviewPane>
           {password ? (
             <div className="flex flex-col gap-4">
-              <output
+              <section
                 aria-label={isVisible ? "Generated password" : "Generated password hidden"}
                 className="block min-h-16 break-all rounded-md border bg-background p-4 font-mono text-lg"
               >
                 {isVisible ? password : "•".repeat(password.length)}
-              </output>
+              </section>
               <Button
                 type="button"
                 variant="outline"
