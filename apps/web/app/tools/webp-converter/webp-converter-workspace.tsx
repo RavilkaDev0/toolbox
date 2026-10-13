@@ -338,7 +338,6 @@ export default function WebpConverterWorkspace() {
                 <Button
                   type="button"
                   variant="outline"
-                  size="sm"
                   className="mt-3 w-full"
                   onClick={() => removeImage(index)}
                   disabled={busy}
@@ -373,7 +372,7 @@ export default function WebpConverterWorkspace() {
         </div>
       </div>
       <div className="flex min-w-0 flex-col gap-5">
-        <OptionsPanel title="WebP settings">
+        <OptionsPanel>
           <FieldGroup>
             <Field>
               <FieldLabel htmlFor="webp-quality">Lossy WebP quality · {quality}%</FieldLabel>
@@ -396,7 +395,7 @@ export default function WebpConverterWorkspace() {
             </Field>
           </FieldGroup>
         </OptionsPanel>
-        <PreviewPane title="Converted preview">
+        <PreviewPane>
           {result ? (
             <img
               src={result.previewUrl}
@@ -409,7 +408,7 @@ export default function WebpConverterWorkspace() {
             </p>
           )}
         </PreviewPane>
-        <ResultRegion title="Download WebP result" visible={Boolean(result)}>
+        <ResultRegion>
           {result ? (
             <div className="flex min-w-0 flex-col gap-3">
               <p className="break-all text-sm text-muted-foreground">
@@ -434,7 +433,7 @@ export default function WebpConverterWorkspace() {
             </div>
           ) : null}
         </ResultRegion>
-        <OptionsPanel title="About WebP output">
+        <OptionsPanel>
           <p className="text-sm text-muted-foreground">
             WebP encoding is local. The browser verifies the output signature, dimensions and
             decode. Conversion does not guarantee a smaller file and does not add a lossless

@@ -47,7 +47,7 @@ async function assertTransparentPixel(page: Page, x: number, y: number, expected
       const context = canvas.getContext("2d");
       if (!context) throw new Error("Canvas is unavailable");
       context.drawImage(node, 0, 0);
-      return context.getImageData(point.x, point.y, 1, 1).data[3];
+      return context.getImageData(point.x, point.y, 1, 1).data[3] ?? 0;
     },
     { x, y },
   );
