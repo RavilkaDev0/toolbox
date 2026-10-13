@@ -1,4 +1,4 @@
-import { QrDesignerError, qrDesignerPresets } from "@toolbox/core";
+import { buildWifiQrPayload, QrDesignerError, qrDesignerPresets } from "@toolbox/core";
 import { describe, expect, it } from "vitest";
 import { buildQrSvg, encodeQrMatrix } from "./qr-designer.js";
 
@@ -15,6 +15,21 @@ describe("QR designer browser engine primitives", () => {
     expect(() =>
       encodeQrMatrix("text", "x".repeat(2048), { ...classic, errorCorrection: "H" }),
     ).toThrowError(QrDesignerError);
+  });
+
+  it("encodes the shared Wi-Fi payload using the same QR matrix pipeline", () => {
+    const payload = buildWifiQrPayload({
+      ssid: "Toolbox Guest",
+      security: "wpa3",
+      password: "valid passphrase",
+      hidden: true,
+    });
+    const settings = { ...qrDesignerPresets.classic, errorCorrection: "L" as const };
+    const matrix = encodeQrMatrix("text", payload, settings);
+    const svg = buildQrSvg(matrix, settings);
+    expect(matrix.version).toBeGreaterThan(0);
+    expect(svg).toContain("<svg");
+    expect(svg).not.toContain("valid passphrase");
   });
 
   it("renders actual vector modules, a quiet zone and gradient colors without embedding the payload", () => {

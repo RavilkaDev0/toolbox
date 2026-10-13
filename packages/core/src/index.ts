@@ -27,3 +27,4 @@ export * from "./qr-designer.js";
 export * from "./rotate-pdf.js";
 export * from "./split-pdf.js";
 export * from "./webp-converter.js";
+export * from "./wifi-qr.js";

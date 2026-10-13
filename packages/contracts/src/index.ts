@@ -36,3 +36,5 @@ export {
   webpConverterFilesSchema,
   webpConverterSettingsSchema,
 } from "./webp-converter.js";
+export type { WifiQrOptionsInput } from "./wifi-qr.js";
+export { wifiQrOptionsSchema } from "./wifi-qr.js";

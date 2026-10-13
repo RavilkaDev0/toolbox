@@ -209,7 +209,8 @@ export const toolCatalog: readonly ToolDefinition[] = [
     slug: "wifi-qr",
     category: "qr",
     title: "Wi-Fi QR code",
-    description: "Prepare a QR code with Wi-Fi network details.",
+    description:
+      "Create a Wi-Fi QR for WPA/WPA2, WPA3 SAE, WEP or open networks. Check the locally generated code before sharing its credentials.",
     engine: "qr",
     execution: "browser",
     acceptedMimeTypes: [],
