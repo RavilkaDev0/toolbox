@@ -1,4 +1,4 @@
-import { getPublishedTools, getToolBySlug } from "@toolbox/core";
+import { getPublishedTools, getToolBySlug, toolCatalog } from "@toolbox/core";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -8,9 +8,10 @@ import ImagesWorkspace from "../images-to-pdf/images-workspace";
 import { MergePage } from "../merge-pdf/merge-page";
 import { PdfToPngPage } from "../pdf-to-png/pdf-to-png-page";
 import { PngJpgConverterPage } from "../png-jpg-converter/png-jpg-converter-page";
-import { WebpConverterPage } from "../webp-converter/webp-converter-page";
+import { QrDesignerPage } from "../qr-designer/qr-designer-page";
 import { RotatePage } from "../rotate-pdf/rotate-page";
 import { SplitPage } from "../split-pdf/split-page";
+import { WebpConverterPage } from "../webp-converter/webp-converter-page";
 
 type ToolPageProps = {
   params: Promise<{ slug: string }>;
@@ -19,12 +20,27 @@ type ToolPageProps = {
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return getPublishedTools().map((tool) => ({ slug: tool.slug }));
+  const published = getPublishedTools().map((tool) => ({ slug: tool.slug }));
+  if (
+    process.env.NODE_ENV !== "production" &&
+    process.env.TOOLBOX_UI_FIXTURES === "1" &&
+    !published.some((tool) => tool.slug === "qr-designer")
+  )
+    return [...published, { slug: "qr-designer" }];
+  return published;
+}
+
+function getPageTool(slug: string) {
+  const publishedTool = getToolBySlug(slug);
+  if (publishedTool) return publishedTool;
+  if (process.env.NODE_ENV !== "production" && process.env.TOOLBOX_UI_FIXTURES === "1")
+    return toolCatalog.find((tool) => tool.slug === slug);
+  return undefined;
 }
 
 export async function generateMetadata({ params }: ToolPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const tool = getToolBySlug(slug);
+  const tool = getPageTool(slug);
 
   if (!tool) {
     return { title: "Tool not found" };
@@ -39,8 +55,9 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
 
 export default async function ToolPage({ params }: ToolPageProps) {
   const { slug } = await params;
-  const tool = getToolBySlug(slug);
+  const tool = getPageTool(slug);
 
+  if (tool?.slug === "qr-designer") return <QrDesignerPage tool={tool} />;
   if (tool?.slug === "merge-pdf") return <MergePage tool={tool} />;
   if (tool?.slug === "split-pdf") return <SplitPage tool={tool} />;
   if (tool?.slug === "rotate-pdf") return <RotatePage tool={tool} />;

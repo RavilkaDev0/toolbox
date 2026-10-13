@@ -22,10 +22,17 @@ export {
   pngJpgConverterSettingsSchema,
 } from "./png-jpg-converter.js";
 export {
+  qrDesignerLogoSchema,
+  qrDesignerPayloadSchema,
+  qrDesignerPresetSchema,
+  qrDesignerSettingsDefaults,
+  qrDesignerSettingsSchema,
+} from "./qr-designer.js";
+export { pdfRotateFileSchema, pdfRotateSettingsSchema } from "./rotate-pdf.js";
+export { pdfSplitFileSchema, pdfSplitSettingsSchema } from "./split-pdf.js";
+export { staticPdfFileSchema } from "./static-pdf.js";
+export {
   webpConverterFileSchema,
   webpConverterFilesSchema,
   webpConverterSettingsSchema,
 } from "./webp-converter.js";
-export { pdfRotateFileSchema, pdfRotateSettingsSchema } from "./rotate-pdf.js";
-export { pdfSplitFileSchema, pdfSplitSettingsSchema } from "./split-pdf.js";
-export { staticPdfFileSchema } from "./static-pdf.js";

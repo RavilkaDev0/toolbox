@@ -2,9 +2,10 @@ import { imageCompressorLimits } from "./image-compressor.js";
 import { imagePdfLimits } from "./images-to-pdf.js";
 import { pdfMergeLimits } from "./merge-pdf.js";
 import { pngJpgConverterLimits } from "./png-jpg-converter.js";
-import { webpConverterLimits } from "./webp-converter.js";
+import { qrDesignerLimits } from "./qr-designer.js";
 import { pdfRotateLimits } from "./rotate-pdf.js";
 import { pdfSplitLimits } from "./split-pdf.js";
+import { webpConverterLimits } from "./webp-converter.js";
 
 export const categories = [
   {
@@ -193,10 +194,13 @@ export const toolCatalog: readonly ToolDefinition[] = [
     slug: "qr-designer",
     category: "qr",
     title: "QR designer",
-    description: "Create a QR code from text or a URL.",
+    description:
+      "Design and verify QR codes from text or URLs locally. Style modules, colors and logos, then download PNG or vector SVG.",
     engine: "qr",
     execution: "browser",
-    acceptedMimeTypes: [],
+    acceptedMimeTypes: ["image/png", "image/jpeg"],
+    maxInputBytes: qrDesignerLimits.logoFileBytes,
+    maxInputFiles: 1,
     status: "draft",
     relatedSlugs: ["wifi-qr", "contact-qr"],
   },

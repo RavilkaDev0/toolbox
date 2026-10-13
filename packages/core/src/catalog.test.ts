@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getPublishedTools, toolCatalog, validateToolCatalog } from "./catalog.js";
+import { getPublishedTools, getToolBySlug, toolCatalog, validateToolCatalog } from "./catalog.js";
 
 describe("tool catalog", () => {
   it("publishes the verified local PDF tools and completed image tools", () => {
@@ -17,6 +17,12 @@ describe("tool catalog", () => {
       "webp-converter",
     ]);
     expect(toolCatalog.filter((tool) => tool.status === "draft")).toHaveLength(6);
+    expect(getToolBySlug("qr-designer")).toBeUndefined();
+    expect(toolCatalog.find((tool) => tool.slug === "qr-designer")).toMatchObject({
+      acceptedMimeTypes: ["image/png", "image/jpeg"],
+      maxInputFiles: 1,
+      status: "draft",
+    });
   });
 
   it("rejects duplicate ids and slugs", () => {
