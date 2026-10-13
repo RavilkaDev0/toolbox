@@ -42,3 +42,5 @@ export {
 } from "./webp-converter.js";
 export type { WifiQrOptionsInput } from "./wifi-qr.js";
 export { wifiQrOptionsSchema } from "./wifi-qr.js";
+export type { WordCounterTextInput } from "./word-counter.js";
+export { wordCounterTextSchema } from "./word-counter.js";

@@ -30,3 +30,4 @@ export * from "./rotate-pdf.js";
 export * from "./split-pdf.js";
 export * from "./webp-converter.js";
 export * from "./wifi-qr.js";
+export * from "./word-counter.js";

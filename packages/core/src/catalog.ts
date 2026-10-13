@@ -248,7 +248,8 @@ export const toolCatalog: readonly ToolDefinition[] = [
     slug: "word-counter",
     category: "utility",
     title: "Word counter",
-    description: "Count words and characters in text.",
+    description:
+      "Count words, sentences, lines and user-visible characters locally with Unicode-aware rules.",
     engine: "utility",
     execution: "browser",
     acceptedMimeTypes: [],

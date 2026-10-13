@@ -54,7 +54,7 @@ const featureSuites = [
     name: "qr-designer",
     files: ["**/qr-designer.spec.ts", "**/wifi-qr.spec.ts", "**/contact-qr.spec.ts"],
   },
-  { name: "utility-tools", files: ["**/password-generator.spec.ts"] },
+  { name: "utility-tools", files: ["**/password-generator.spec.ts", "**/word-counter.spec.ts"] },
   ...performanceSuites.filter((suite) => suite.name !== "split-pdf"),
 ] as const;
 

@@ -15,6 +15,7 @@ import { RotatePage } from "../rotate-pdf/rotate-page";
 import { SplitPage } from "../split-pdf/split-page";
 import { WebpConverterPage } from "../webp-converter/webp-converter-page";
 import { WifiQrPage } from "../wifi-qr/wifi-qr-page";
+import { WordCounterPage } from "../word-counter/word-counter-page";
 
 type ToolPageProps = {
   params: Promise<{ slug: string }>;
@@ -25,7 +26,13 @@ export const dynamicParams = false;
 export function generateStaticParams() {
   const published = getPublishedTools().map((tool) => ({ slug: tool.slug }));
   if (process.env.NODE_ENV !== "production" && process.env.TOOLBOX_UI_FIXTURES === "1") {
-    const localPreviews = ["qr-designer", "wifi-qr", "contact-qr", "password-generator"];
+    const localPreviews = [
+      "qr-designer",
+      "wifi-qr",
+      "contact-qr",
+      "password-generator",
+      "word-counter",
+    ];
     return [
       ...published,
       ...localPreviews
@@ -42,7 +49,7 @@ function getPageTool(slug: string) {
   if (
     process.env.NODE_ENV !== "production" &&
     process.env.TOOLBOX_UI_FIXTURES === "1" &&
-    ["qr-designer", "wifi-qr", "contact-qr", "password-generator"].includes(slug)
+    ["qr-designer", "wifi-qr", "contact-qr", "password-generator", "word-counter"].includes(slug)
   )
     return toolCatalog.find((tool) => tool.slug === slug);
   return undefined;
@@ -71,6 +78,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   if (tool?.slug === "contact-qr") return <ContactQrPage tool={tool} />;
   if (tool?.slug === "wifi-qr") return <WifiQrPage tool={tool} />;
   if (tool?.slug === "password-generator") return <PasswordGeneratorPage tool={tool} />;
+  if (tool?.slug === "word-counter") return <WordCounterPage tool={tool} />;
   if (tool?.slug === "merge-pdf") return <MergePage tool={tool} />;
   if (tool?.slug === "split-pdf") return <SplitPage tool={tool} />;
   if (tool?.slug === "rotate-pdf") return <RotatePage tool={tool} />;
