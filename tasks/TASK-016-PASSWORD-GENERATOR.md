@@ -2,7 +2,7 @@
 
 ## State
 
-Implement on the shared `feat/tbx-005-tool-suite` branch as one local Conventional Commit. Keep the catalog entry `draft` until final suite verification; allow the development preview only with `TOOLBOX_UI_FIXTURES=1` outside production. Behavioral tests are written now and run only after TBX-018 under the workflow override.
+Implement on the shared `feat/tbx-005-tool-suite` branch as local Conventional Commits. Keep the catalog entry `draft` until final suite verification; allow the development preview only with `TOOLBOX_UI_FIXTURES=1` outside production. Behavioral tests are written now and run only after TBX-018 under the workflow override.
 
 ## Acceptance criteria
 
