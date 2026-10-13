@@ -1,6 +1,6 @@
 # TBX-010 — Image Resizer
 
-Status on the feature branch: implemented and published in the branch catalog. Local quality gates and the full Chromium/WebKit suite pass; exact-head GitHub `validate` is pending for the implementation commit.
+Status on the feature branch: implemented and published in the branch catalog. Local quality gates and the full Chromium/WebKit suite pass. Implementation commit `33bc61968623fa6ca2a22db8b2bcb8f160520d95` passed exact-head GitHub Actions [`validate` run 38428863488](https://github.com/RavilkaDev0/toolbox/actions/runs/38428863488).
 
 ## Implementation
 
@@ -37,7 +37,7 @@ The local Chromium performance fixture measured end-to-download elapsed time and
 
 The test scales each image to 120 px wide, so output sizes are not a claim about same-size JPEG compression. These measurements came from a local desktop Chromium/Next dev run and are not physical-device or production-build performance figures.
 
-Desktop/mobile screenshots, sample downloads and machine-readable timings are in [TBX-010 evidence](../evidence/tbx-010/). `pnpm install --frozen-lockfile`, `pnpm lint`, `pnpm typecheck`, `pnpm test` (87 unit/integration and 97 Playwright tests), and `pnpm build` all passed locally. The route and canonical metadata were also checked through Playwright MCP against the local app. Exact-head GitHub Actions `validate` and the implementation commit SHA will be recorded after push.
+Desktop/mobile screenshots, sample downloads and machine-readable timings are in [TBX-010 evidence](../evidence/tbx-010/). `pnpm install --frozen-lockfile`, `pnpm lint`, `pnpm typecheck`, `pnpm test` (87 unit/integration and 97 Playwright tests), and `pnpm build` all passed locally. The route and canonical metadata were also checked through Playwright MCP against the local app. GitHub Actions `validate` passed all required steps on the implementation commit listed above.
 
 ## Known risks
 
