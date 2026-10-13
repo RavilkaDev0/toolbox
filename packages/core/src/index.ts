@@ -15,6 +15,7 @@ export {
   validateToolCatalog,
 } from "./catalog.js";
 export { filterPublishedTools } from "./catalog-search.js";
+export * from "./contact-qr.js";
 export * from "./image-compressor.js";
 export * from "./image-input.js";
 export * from "./image-processing.js";

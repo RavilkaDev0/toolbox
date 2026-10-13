@@ -1,4 +1,9 @@
-import { buildWifiQrPayload, QrDesignerError, qrDesignerPresets } from "@toolbox/core";
+import {
+  buildContactVCard,
+  buildWifiQrPayload,
+  QrDesignerError,
+  qrDesignerPresets,
+} from "@toolbox/core";
 import { describe, expect, it } from "vitest";
 import { buildQrSvg, encodeQrMatrix } from "./qr-designer.js";
 
@@ -30,6 +35,25 @@ describe("QR designer browser engine primitives", () => {
     expect(matrix.version).toBeGreaterThan(0);
     expect(svg).toContain("<svg");
     expect(svg).not.toContain("valid passphrase");
+  });
+
+  it("encodes a validated vCard contact with the same QR matrix pipeline", () => {
+    const vcard = buildContactVCard({
+      fullName: "Ada Lovelace",
+      organization: "Toolbox",
+      jobTitle: "Engineer",
+      phone: "+44 20 7946 0958",
+      email: "ada@example.org",
+      website: "https://example.org/ada",
+      address: "London",
+    });
+    const settings = { ...qrDesignerPresets.classic, errorCorrection: "L" as const };
+    const matrix = encodeQrMatrix("text", vcard, settings);
+    const svg = buildQrSvg(matrix, settings);
+    expect(matrix.version).toBeGreaterThan(0);
+    expect(svg).toContain("<svg");
+    expect(svg).not.toContain("Ada Lovelace");
+    expect(svg).not.toContain("ada@example.org");
   });
 
   it("renders actual vector modules, a quiet zone and gradient colors without embedding the payload", () => {

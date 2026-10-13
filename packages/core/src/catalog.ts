@@ -222,7 +222,8 @@ export const toolCatalog: readonly ToolDefinition[] = [
     slug: "contact-qr",
     category: "qr",
     title: "Contact QR code",
-    description: "Prepare a QR code with contact details.",
+    description:
+      "Create a contact QR and vCard locally. Check the verified card before sharing personal details.",
     engine: "qr",
     execution: "browser",
     acceptedMimeTypes: [],

@@ -1,5 +1,7 @@
 export type { CatalogQuery } from "./catalog.js";
 export { catalogQuerySchema } from "./catalog.js";
+export type { ContactQrOptionsInput } from "./contact-qr.js";
+export { contactQrOptionsSchema } from "./contact-qr.js";
 export { fileMetadataSchema, fileSelectionLimitsSchema } from "./file-selection.js";
 export type {
   LiveHealthResponse,

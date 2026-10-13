@@ -50,7 +50,10 @@ const performanceSuites = [
 
 const featureSuites = [
   { name: "shell", files: ["**/design-system.spec.ts", "**/homepage.spec.ts"] },
-  { name: "qr-designer", files: ["**/qr-designer.spec.ts", "**/wifi-qr.spec.ts"] },
+  {
+    name: "qr-designer",
+    files: ["**/qr-designer.spec.ts", "**/wifi-qr.spec.ts", "**/contact-qr.spec.ts"],
+  },
   ...performanceSuites.filter((suite) => suite.name !== "split-pdf"),
 ] as const;
 
