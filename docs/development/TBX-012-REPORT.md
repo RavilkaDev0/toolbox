@@ -15,6 +15,7 @@ Limits are 1–10 files, 16 MiB each, 32 MiB input total, 8 megapixels and 8,192
 - Unit/integration tests cover pure limits, content/type/extension mismatch, damaged/animated/oversized inputs, actual JPEG/PNG fixtures, ZIP order/content, cancellation and output verification.
 - Playwright tests cover real single/batch downloads, WebP signatures and dimensions, PNG alpha, keyboard quality control, mobile cancellation/retry/reset, failure handling and request privacy in Chromium and WebKit projects. A separate isolated Chromium performance project records three input sizes once.
 - These new tests are written but have not been run, as required by the active implementation-first workflow. Screenshots, cross-browser encoder evidence, output byte counts, performance measurements, and standalone-route checks remain pending until the final test phase.
+- Two compile-only follow-ups were recorded separately as `f6c8a65` and `17c7f08`: they align the UI with the workspace component props and make the E2E fixture lookup strict-null-safe. `pnpm --filter @toolbox/web run typecheck` then passed; no T012 behavioral tests were run.
 - No physical mobile device testing or broad image-decoder fuzz testing has been performed.
 
 Canvas documentation: [HTMLCanvasElement.toBlob](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob) and [OffscreenCanvas.convertToBlob](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas/convertToBlob).
