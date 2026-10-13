@@ -107,12 +107,15 @@ test("JPEG and transparent PNG convert to verified WebP, batch order and downloa
   const archive = await downloadResult(page, info, "toolbox-webp-images.zip");
   const entries = unzipSync(archive);
   expect(Object.keys(entries)).toEqual(["portrait-converted.webp", "landscape-converted.webp"]);
-  expect(inspectImage(entries["portrait-converted.webp"]!)).toMatchObject({
+  const portraitImage = entries["portrait-converted.webp"];
+  const landscapeImage = entries["landscape-converted.webp"];
+  if (!portraitImage || !landscapeImage) throw new Error("WebP archive entries are missing");
+  expect(inspectImage(portraitImage)).toMatchObject({
     kind: "webp",
     width: 120,
     height: 240,
   });
-  expect(inspectImage(entries["landscape-converted.webp"]!)).toMatchObject({
+  expect(inspectImage(landscapeImage)).toMatchObject({
     kind: "webp",
     width: 240,
     height: 120,
