@@ -125,19 +125,27 @@ export function getPasswordGeneratorMetrics(
   };
 }
 
-function uniformIndex(maximumExclusive: number): number {
+function uniformIndices(count: number, maximumExclusive: number): number[] {
   const cryptoSource = globalThis.crypto;
   if (!cryptoSource || typeof cryptoSource.getRandomValues !== "function")
     throw new PasswordGeneratorError("CRYPTO_UNAVAILABLE");
 
+  // Accept a whole number of residue sets so every alphabet index has the same probability.
   const cutoff = randomWordRange - (randomWordRange % maximumExclusive);
-  const word = new Uint32Array(1);
-  for (let draw = 0; draw < passwordGeneratorLimits.maximumUniformDraws; draw++) {
-    cryptoSource.getRandomValues(word);
-    const value = word[0] ?? randomWordRange;
-    if (value < cutoff) return value % maximumExclusive;
+  const indices: number[] = [];
+  const maximumDraws = count * passwordGeneratorLimits.maximumUniformDraws;
+  let draws = 0;
+  while (indices.length < count && draws < maximumDraws) {
+    const words = new Uint32Array(Math.min(count - indices.length, maximumDraws - draws));
+    cryptoSource.getRandomValues(words);
+    for (const value of words) {
+      draws++;
+      if (value < cutoff) indices.push(value % maximumExclusive);
+      if (indices.length === count || draws === maximumDraws) break;
+    }
   }
-  throw new PasswordGeneratorError("RANDOM_SOURCE_FAILED");
+  if (indices.length !== count) throw new PasswordGeneratorError("RANDOM_SOURCE_FAILED");
+  return indices;
 }
 
 export function generatePassword(options: PasswordGeneratorOptions): string {
@@ -146,8 +154,8 @@ export function generatePassword(options: PasswordGeneratorOptions): string {
   const classSets = groups.map((group) => new Set(group.characters));
 
   for (let attempt = 0; attempt < passwordGeneratorLimits.maximumGenerationAttempts; attempt++) {
-    const candidate = Array.from({ length: options.length }, () =>
-      characters.charAt(uniformIndex(characters.length)),
+    const candidate = uniformIndices(options.length, characters.length).map((index) =>
+      characters.charAt(index),
     );
     if (
       classSets.every((characterSet) => candidate.some((character) => characterSet.has(character)))

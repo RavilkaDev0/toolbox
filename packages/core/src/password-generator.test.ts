@@ -37,7 +37,7 @@ describe("password generator core", () => {
       true,
     );
     expect([...password].every((character) => !"O0Il1".includes(character))).toBe(true);
-    expect(cryptoSpy).toHaveBeenCalled();
+    expect(cryptoSpy.mock.calls.length > 0).toBe(true);
     expect(mathRandomSpy).not.toHaveBeenCalled();
   });
 
