@@ -16,6 +16,8 @@ export { imageFileSchema } from "./image-input.js";
 export { imageResizeOptionsSchema } from "./image-resizer.js";
 export { imagePdfFileSchema, imagePdfOptionsSchema } from "./images-to-pdf.js";
 export { pdfMergeFileSchema } from "./merge-pdf.js";
+export type { PasswordGeneratorOptionsInput } from "./password-generator.js";
+export { passwordGeneratorOptionsSchema } from "./password-generator.js";
 export type { PdfToPngSettings } from "./pdf-to-png.js";
 export { pdfToPngFileSchema, pdfToPngSettingsSchema } from "./pdf-to-png.js";
 export {

@@ -22,6 +22,7 @@ export * from "./image-processing.js";
 export * from "./image-resizer.js";
 export * from "./images-to-pdf.js";
 export * from "./merge-pdf.js";
+export * from "./password-generator.js";
 export * from "./pdf-to-png.js";
 export * from "./png-jpg-converter.js";
 export * from "./qr-designer.js";

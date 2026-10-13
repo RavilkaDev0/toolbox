@@ -235,7 +235,8 @@ export const toolCatalog: readonly ToolDefinition[] = [
     slug: "password-generator",
     category: "utility",
     title: "Password generator",
-    description: "Choose options for a randomly generated password.",
+    description:
+      "Generate a password locally with browser cryptography and explicit character-set controls.",
     engine: "utility",
     execution: "browser",
     acceptedMimeTypes: [],

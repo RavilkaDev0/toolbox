@@ -7,6 +7,7 @@ import { ImageCompressorPage } from "../image-compressor/image-compressor-page";
 import { ImageResizerPage } from "../image-resizer/image-resizer-page";
 import ImagesWorkspace from "../images-to-pdf/images-workspace";
 import { MergePage } from "../merge-pdf/merge-page";
+import { PasswordGeneratorPage } from "../password-generator/password-generator-page";
 import { PdfToPngPage } from "../pdf-to-png/pdf-to-png-page";
 import { PngJpgConverterPage } from "../png-jpg-converter/png-jpg-converter-page";
 import { QrDesignerPage } from "../qr-designer/qr-designer-page";
@@ -24,7 +25,7 @@ export const dynamicParams = false;
 export function generateStaticParams() {
   const published = getPublishedTools().map((tool) => ({ slug: tool.slug }));
   if (process.env.NODE_ENV !== "production" && process.env.TOOLBOX_UI_FIXTURES === "1") {
-    const localPreviews = ["qr-designer", "wifi-qr", "contact-qr"];
+    const localPreviews = ["qr-designer", "wifi-qr", "contact-qr", "password-generator"];
     return [
       ...published,
       ...localPreviews
@@ -41,7 +42,7 @@ function getPageTool(slug: string) {
   if (
     process.env.NODE_ENV !== "production" &&
     process.env.TOOLBOX_UI_FIXTURES === "1" &&
-    ["qr-designer", "wifi-qr", "contact-qr"].includes(slug)
+    ["qr-designer", "wifi-qr", "contact-qr", "password-generator"].includes(slug)
   )
     return toolCatalog.find((tool) => tool.slug === slug);
   return undefined;
@@ -69,6 +70,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   if (tool?.slug === "qr-designer") return <QrDesignerPage tool={tool} />;
   if (tool?.slug === "contact-qr") return <ContactQrPage tool={tool} />;
   if (tool?.slug === "wifi-qr") return <WifiQrPage tool={tool} />;
+  if (tool?.slug === "password-generator") return <PasswordGeneratorPage tool={tool} />;
   if (tool?.slug === "merge-pdf") return <MergePage tool={tool} />;
   if (tool?.slug === "split-pdf") return <SplitPage tool={tool} />;
   if (tool?.slug === "rotate-pdf") return <RotatePage tool={tool} />;
