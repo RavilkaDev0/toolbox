@@ -1,14 +1,23 @@
-import { type ImageInfo, ImageInputError, inspectImage } from "./image-input.js";
+import {
+  assertImageFileMetadata,
+  type ImageInfo,
+  ImageInputError,
+  inspectImage,
+} from "./image-input.js";
+import {
+  assertImageProcessingDimensions,
+  type ImageFormat,
+  imageFormatExtension,
+  imageFormatMimeType,
+  imageProcessingLimits,
+} from "./image-processing.js";
 
 export const imageCompressorLimits = {
   files: 1,
-  fileBytes: 16 * 1024 * 1024,
-  side: 8192,
-  pixels: 8_000_000,
-  outputBytes: 24 * 1024 * 1024,
+  ...imageProcessingLimits,
 } as const;
 
-export type ImageCompressionFormat = "jpeg" | "png" | "webp";
+export type ImageCompressionFormat = ImageFormat;
 export type ImageCompressionOptions = { format: ImageCompressionFormat; quality: number };
 export const defaultImageCompressionQuality = 80;
 
@@ -46,27 +55,21 @@ export function assertCompressorSelection(
 }
 
 export function assertCompressorFile(file: { name: string; size: number; type: string }): void {
-  if (
-    !file.name.length ||
-    file.name.length > 255 ||
-    !Number.isSafeInteger(file.size) ||
-    file.size < 1
-  )
-    throw new ImageCompressorError("INVALID_IMAGE");
-  if (file.size > imageCompressorLimits.fileBytes) throw new ImageCompressorError("LIMIT_EXCEEDED");
-  if (file.type && !["image/jpeg", "image/png", "image/webp"].includes(file.type))
-    throw new ImageCompressorError("UNSUPPORTED_FORMAT");
+  try {
+    assertImageFileMetadata(file, imageCompressorLimits.fileBytes);
+  } catch (error) {
+    if (error instanceof ImageInputError) throw new ImageCompressorError(error.code);
+    throw error;
+  }
 }
 
 export function assertCompressorDimensions(width: number, height: number): void {
-  if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1)
-    throw new ImageCompressorError("INVALID_IMAGE");
-  if (
-    width > imageCompressorLimits.side ||
-    height > imageCompressorLimits.side ||
-    width * height > imageCompressorLimits.pixels
-  )
-    throw new ImageCompressorError("LIMIT_EXCEEDED");
+  try {
+    assertImageProcessingDimensions(width, height);
+  } catch (error) {
+    if (error instanceof ImageInputError) throw new ImageCompressorError(error.code);
+    throw error;
+  }
 }
 
 export function compressionFormatForImage(info: ImageInfo): ImageCompressionFormat {
@@ -74,11 +77,11 @@ export function compressionFormatForImage(info: ImageInfo): ImageCompressionForm
 }
 
 export function compressionMimeType(format: ImageCompressionFormat): string {
-  return format === "jpeg" ? "image/jpeg" : `image/${format}`;
+  return imageFormatMimeType(format);
 }
 
 export function compressionExtension(format: ImageCompressionFormat): string {
-  return format === "jpeg" ? "jpg" : format;
+  return imageFormatExtension(format);
 }
 
 export function inspectCompressorImage(bytes: Uint8Array): ImageInfo {

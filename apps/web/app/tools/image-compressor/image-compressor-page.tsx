@@ -59,6 +59,9 @@ export function ImageCompressorPage({ tool }: { tool: ToolDefinition }) {
         <Link className="text-link" href="/tools/images-to-pdf">
           Create a PDF from images
         </Link>
+        <Link className="text-link" href="/tools/image-resizer">
+          Resize an image
+        </Link>
       </section>
     </main>
   );

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ImageCompressorPage } from "../image-compressor/image-compressor-page";
+import { ImageResizerPage } from "../image-resizer/image-resizer-page";
 import ImagesWorkspace from "../images-to-pdf/images-workspace";
 import { MergePage } from "../merge-pdf/merge-page";
 import { PdfToPngPage } from "../pdf-to-png/pdf-to-png-page";
@@ -43,6 +44,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   if (tool?.slug === "rotate-pdf") return <RotatePage tool={tool} />;
   if (tool?.slug === "pdf-to-png") return <PdfToPngPage tool={tool} />;
   if (tool?.slug === "image-compressor") return <ImageCompressorPage tool={tool} />;
+  if (tool?.slug === "image-resizer") return <ImageResizerPage tool={tool} />;
   if (tool?.slug !== "images-to-pdf") {
     notFound();
   }
@@ -114,6 +116,9 @@ export default async function ToolPage({ params }: ToolPageProps) {
         </Link>
         <Link className="text-link" href="/tools/image-compressor">
           Compress an image
+        </Link>
+        <Link className="text-link" href="/tools/image-resizer">
+          Resize an image
         </Link>
       </section>
     </main>

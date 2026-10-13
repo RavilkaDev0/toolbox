@@ -1,4 +1,5 @@
 export const imageInputLimits = { side: 8192, pixels: 12_000_000 } as const;
+export const imageInputMimeTypes = ["image/jpeg", "image/png", "image/webp"] as const;
 
 export type ImageInfo = { kind: "jpeg" | "png" | "webp"; width: number; height: number };
 export type ImageInputErrorCode =
@@ -19,6 +20,21 @@ export class ImageInputError extends Error {
     super(messages[code]);
     this.name = "ImageInputError";
   }
+}
+export function assertImageFileMetadata(
+  file: { name: string; size: number; type: string },
+  maxBytes: number,
+): void {
+  if (
+    !file.name.length ||
+    file.name.length > 255 ||
+    !Number.isSafeInteger(file.size) ||
+    file.size < 1
+  )
+    throw new ImageInputError("INVALID_IMAGE");
+  if (file.size > maxBytes) throw new ImageInputError("LIMIT_EXCEEDED");
+  if (file.type && !imageInputMimeTypes.includes(file.type as (typeof imageInputMimeTypes)[number]))
+    throw new ImageInputError("UNSUPPORTED_FORMAT");
 }
 export function assertImageDimensions(width: number, height: number) {
   if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1)

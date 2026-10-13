@@ -2,13 +2,19 @@ import { imageCompressionOptionsSchema, imageCompressorFileSchema } from "@toolb
 import {
   assertCompressorDimensions,
   assertCompressorFile,
-  compressionMimeType,
   type ImageCompressionFormat,
   type ImageCompressionOptions,
   ImageCompressorError,
   imageCompressorLimits,
   inspectCompressorImage,
 } from "@toolbox/core";
+import {
+  decodeStaticImageBitmap,
+  encodeImageBitmap,
+  type ImageProcessingBounds,
+  inspectStaticImageFile,
+  verifyDecodedImageBlob,
+} from "./image-processing.js";
 
 export type ImageCompressorInfo = {
   format: ImageCompressionFormat;
@@ -65,20 +71,13 @@ export async function inspectCompressorFile(file: File, signal?: AbortSignal) {
         .success
     )
       throw new ImageCompressorError("INVALID_IMAGE");
-    const inputBytes = new Uint8Array(await file.arrayBuffer());
-    let inspected: ReturnType<typeof inspectCompressorImage>;
-    try {
-      inspected = inspectCompressorImage(inputBytes);
-    } finally {
-      inputBytes.fill(0);
-    }
-    checkCancelled(signal);
-    const info = { format: inspected.kind, width: inspected.width, height: inspected.height };
-    const mime = compressionMimeType(info.format);
-    if (file.type && file.type !== mime) throw new ImageCompressorError("UNSUPPORTED_FORMAT");
-    return info;
+    const inspected = await inspectStaticImageFile(file, signal);
+    assertCompressorDimensions(inspected.width, inspected.height);
+    return { format: inspected.kind, width: inspected.width, height: inspected.height };
   } catch (error) {
     if (error instanceof ImageCompressorError) throw error;
+    if (error instanceof Error && "code" in error && typeof error.code === "string")
+      throw new ImageCompressorError(error.code as ImageCompressorError["code"]);
     throw new ImageCompressorError("INVALID_IMAGE");
   }
 }
@@ -92,90 +91,50 @@ export async function rasterizeCompressorImage(
   signal?: AbortSignal,
 ): Promise<EncodedImage> {
   checkCancelled(signal);
-  let bitmap: ImageBitmap;
+  let bitmap: ImageBitmap | undefined;
   try {
-    bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
-  } catch {
-    throw new ImageCompressorError("INVALID_IMAGE");
-  }
-  let canvas: OffscreenCanvas | HTMLCanvasElement | undefined;
-  try {
-    checkCancelled(signal);
-    assertCompressorDimensions(bitmap.width, bitmap.height);
+    bitmap = await decodeStaticImageBitmap(
+      file,
+      { kind: info.format, width: info.width, height: info.height },
+      signal,
+      imageCompressorLimits,
+    );
     if (bitmap.width * bitmap.height !== info.width * info.height)
       throw new ImageCompressorError("INVALID_IMAGE");
     const scale = thumbnail ? Math.min(1, 320 / Math.max(bitmap.width, bitmap.height)) : 1;
     const width = Math.max(1, Math.round(bitmap.width * scale));
     const height = Math.max(1, Math.round(bitmap.height * scale));
-    canvas = typeof OffscreenCanvas === "function" ? new OffscreenCanvas(width, height) : undefined;
-    if (!canvas && typeof document !== "undefined") canvas = document.createElement("canvas");
-    if (!canvas) throw new ImageCompressorError("CONVERSION_FAILED");
-    canvas.width = width;
-    canvas.height = height;
-    let context = canvas.getContext("2d");
-    if (
-      !context &&
-      typeof document !== "undefined" &&
-      typeof OffscreenCanvas === "function" &&
-      canvas instanceof OffscreenCanvas
-    ) {
-      canvas.width = 0;
-      canvas.height = 0;
-      canvas = document.createElement("canvas");
-      canvas.width = width;
-      canvas.height = height;
-      context = canvas.getContext("2d");
-    }
-    if (!context || !("drawImage" in context)) throw new ImageCompressorError("CONVERSION_FAILED");
-    if (format === "jpeg") {
-      context.fillStyle = "#ffffff";
-      context.fillRect(0, 0, width, height);
-    }
-    context.drawImage(bitmap, 0, 0, width, height);
+    const sourceWidth = bitmap.width;
+    const sourceHeight = bitmap.height;
     const outputFormat = thumbnail ? "png" : format;
-    const type = compressionMimeType(outputFormat);
-    const blob =
-      "convertToBlob" in canvas
-        ? await canvas.convertToBlob({
-            type,
-            ...(outputFormat === "png" ? {} : { quality: quality / 100 }),
-          })
-        : await new Promise<Blob>((resolve, reject) => {
-            (canvas as HTMLCanvasElement).toBlob(
-              (value) =>
-                value ? resolve(value) : reject(new ImageCompressorError("CONVERSION_FAILED")),
-              type,
-              outputFormat === "png" ? undefined : quality / 100,
-            );
-          });
+    const encoded = await encodeImageBitmap(
+      bitmap,
+      { format: outputFormat, width, height, quality },
+      signal,
+      imageCompressorLimits as ImageProcessingBounds,
+    );
+    bitmap.close();
+    bitmap = undefined;
+    await verifyDecodedImageBlob(encoded.blob, encoded.width, encoded.height, signal, {
+      side: imageCompressorLimits.side,
+      pixels: imageCompressorLimits.pixels,
+      outputBytes: imageCompressorLimits.outputBytes,
+    });
     checkCancelled(signal);
-    if (blob.type !== type) throw new ImageCompressorError("CONVERSION_FAILED");
-    if (!thumbnail && blob.size > imageCompressorLimits.outputBytes)
+    if (!thumbnail && encoded.blob.size > imageCompressorLimits.outputBytes)
       throw new ImageCompressorError("LIMIT_EXCEEDED");
-    const outputBytes = new Uint8Array(await blob.arrayBuffer());
-    let outputInfo: ReturnType<typeof inspectCompressorImage>;
-    try {
-      outputInfo = inspectCompressorImage(outputBytes);
-    } finally {
-      outputBytes.fill(0);
-    }
-    checkCancelled(signal);
-    if (
-      outputInfo.kind !== outputFormat ||
-      outputInfo.width !== width ||
-      outputInfo.height !== height
-    )
-      throw new ImageCompressorError("CONVERSION_FAILED");
-    return { blob, width: bitmap.width, height: bitmap.height };
+    return {
+      blob: encoded.blob,
+      width: thumbnail ? sourceWidth : encoded.width,
+      height: thumbnail ? sourceHeight : encoded.height,
+    };
   } catch (error) {
     if (error instanceof ImageCompressorError) throw error;
+    if (error instanceof Error && "code" in error && typeof error.code === "string")
+      throw new ImageCompressorError(error.code as ImageCompressorError["code"]);
     throw new ImageCompressorError("CONVERSION_FAILED");
   } finally {
-    bitmap.close();
-    if (canvas) {
-      canvas.width = 0;
-      canvas.height = 0;
-    }
+    bitmap?.close();
   }
 }
 

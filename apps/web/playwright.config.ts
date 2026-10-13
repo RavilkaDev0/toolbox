@@ -31,6 +31,11 @@ const performanceSuites = [
     files: ["**/image-compressor.spec.ts"],
     title: "measures real image compression at three bounded input sizes",
   },
+  {
+    name: "image-resizer",
+    files: ["**/image-resizer.spec.ts"],
+    title: "measures real resize output for small, medium and large bounded inputs",
+  },
 ] as const;
 
 const featureSuites = [

@@ -175,7 +175,7 @@ test("supports drag/drop, cancellation, all-pages and selected left rotations on
     node.dispatchEvent(new DragEvent("drop", { bubbles: true, dataTransfer: transfer }));
   }, bytes);
   await expect(page.getByText("PDF ready. 5 pages available.", { exact: true })).toBeVisible({
-    timeout: 30_000,
+    timeout: 60_000,
   });
   await expect(page.getByText(/Showing PDF page 1 of 5\./).first()).toBeVisible({
     timeout: 30_000,

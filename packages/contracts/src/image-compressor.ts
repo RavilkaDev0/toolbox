@@ -1,13 +1,8 @@
-import { type ImageCompressionOptions, imageCompressorLimits } from "@toolbox/core";
+import type { ImageCompressionOptions } from "@toolbox/core";
 import { z } from "zod";
+import { imageFileSchema } from "./image-input.js";
 
-export const imageCompressorFileSchema = z
-  .object({
-    name: z.string().min(1).max(255),
-    size: z.number().int().min(1).max(imageCompressorLimits.fileBytes),
-    type: z.enum(["", "image/jpeg", "image/png", "image/webp"]),
-  })
-  .strict();
+export const imageCompressorFileSchema = imageFileSchema;
 
 export const imageCompressionOptionsSchema: z.ZodType<ImageCompressionOptions> = z
   .object({

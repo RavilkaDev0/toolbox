@@ -141,18 +141,19 @@ export const toolCatalog: readonly ToolDefinition[] = [
     maxInputBytes: imageCompressorLimits.fileBytes,
     maxInputFiles: 1,
     status: "published",
-    relatedSlugs: ["image-resizer", "webp-converter"],
+    relatedSlugs: ["image-resizer", "images-to-pdf"],
   },
   {
     id: "image-resizer",
     slug: "image-resizer",
     category: "image",
     title: "Image resizer",
-    description: "Resize an image while keeping its proportions.",
+    description:
+      "Resize JPEG, PNG and WebP images locally by pixel dimensions or percentage. Keep proportions or intentionally stretch, preview and download the verified output.",
     engine: "image",
     execution: "browser",
     acceptedMimeTypes: ["image/jpeg", "image/png", "image/webp"],
-    status: "draft",
+    status: "published",
     relatedSlugs: ["image-compressor", "images-to-pdf"],
   },
   {
