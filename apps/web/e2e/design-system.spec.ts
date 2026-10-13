@@ -19,16 +19,16 @@ test("registered public pages exclude drafts and private fixtures", async ({ pag
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.getByRole("main")).toBeVisible();
     const publishedLinksByRoute: Record<string, number> = {
-      "/": 7,
-      "/tools": 7,
+      "/": 8,
+      "/tools": 8,
       "/categories/pdf": 4,
       "/categories/pdf-render": 1,
-      "/categories/image": 2,
+      "/categories/image": 3,
     };
     await expect(page.locator('a[href^="/tools/"]')).toHaveCount(publishedLinksByRoute[route] ?? 0);
     await expect(
       page.locator(
-        'a[href^="/tools/"]:not([href="/tools/images-to-pdf"]):not([href="/tools/merge-pdf"]):not([href="/tools/split-pdf"]):not([href="/tools/rotate-pdf"]):not([href="/tools/pdf-to-png"]):not([href="/tools/image-compressor"]):not([href="/tools/image-resizer"])',
+        'a[href^="/tools/"]:not([href="/tools/images-to-pdf"]):not([href="/tools/merge-pdf"]):not([href="/tools/split-pdf"]):not([href="/tools/rotate-pdf"]):not([href="/tools/pdf-to-png"]):not([href="/tools/image-compressor"]):not([href="/tools/image-resizer"]):not([href="/tools/png-jpg-converter"])',
       ),
     ).toHaveCount(0);
     await expect(page.locator('a[href="/design-fixtures"]')).toHaveCount(0);
@@ -78,7 +78,7 @@ test("catalog form preserves bounded search, category and reset in the URL", asy
     await expect(page.locator('a[href="/tools/images-to-pdf"]')).toHaveCount(1);
     await expect(
       page.locator(
-        'a[href^="/tools/"]:not([href="/tools/images-to-pdf"]):not([href="/tools/merge-pdf"]):not([href="/tools/split-pdf"]):not([href="/tools/rotate-pdf"]):not([href="/tools/pdf-to-png"]):not([href="/tools/image-compressor"]):not([href="/tools/image-resizer"])',
+        'a[href^="/tools/"]:not([href="/tools/images-to-pdf"]):not([href="/tools/merge-pdf"]):not([href="/tools/split-pdf"]):not([href="/tools/rotate-pdf"]):not([href="/tools/pdf-to-png"]):not([href="/tools/image-compressor"]):not([href="/tools/image-resizer"]):not([href="/tools/png-jpg-converter"])',
       ),
     ).toHaveCount(0);
   }

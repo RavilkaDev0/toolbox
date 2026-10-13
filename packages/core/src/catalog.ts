@@ -1,6 +1,7 @@
 import { imageCompressorLimits } from "./image-compressor.js";
 import { imagePdfLimits } from "./images-to-pdf.js";
 import { pdfMergeLimits } from "./merge-pdf.js";
+import { pngJpgConverterLimits } from "./png-jpg-converter.js";
 import { pdfRotateLimits } from "./rotate-pdf.js";
 import { pdfSplitLimits } from "./split-pdf.js";
 
@@ -161,12 +162,15 @@ export const toolCatalog: readonly ToolDefinition[] = [
     slug: "png-jpg-converter",
     category: "image",
     title: "PNG and JPG converter",
-    description: "Convert PNG images to JPG or JPG images to PNG.",
+    description:
+      "Convert PNG to JPEG or JPEG to PNG locally. Choose a background for transparent pixels and download one image or a ZIP batch.",
     engine: "image",
     execution: "browser",
     acceptedMimeTypes: ["image/jpeg", "image/png"],
-    status: "draft",
-    relatedSlugs: ["webp-converter", "image-compressor"],
+    maxInputBytes: pngJpgConverterLimits.totalInputBytes,
+    maxInputFiles: pngJpgConverterLimits.files,
+    status: "published",
+    relatedSlugs: ["webp-converter", "image-compressor", "image-resizer"],
   },
   {
     id: "webp-converter",

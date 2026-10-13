@@ -9,6 +9,11 @@
       "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
       "default": "./dist/index.js"
+    },
+    "./png-jpg-converter": {
+      "types": "./dist/png-jpg-converter.d.ts",
+      "require": "./dist/png-jpg-converter.js",
+      "default": "./dist/png-jpg-converter.js"
     }
   },
   "files": [

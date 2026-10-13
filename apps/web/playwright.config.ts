@@ -36,6 +36,11 @@ const performanceSuites = [
     files: ["**/image-resizer.spec.ts"],
     title: "measures real resize output for small, medium and large bounded inputs",
   },
+  {
+    name: "png-jpg-converter",
+    files: ["**/png-jpg-converter.spec.ts"],
+    title: "measures three real JPEG to PNG conversions",
+  },
 ] as const;
 
 const featureSuites = [

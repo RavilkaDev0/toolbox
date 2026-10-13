@@ -13,8 +13,9 @@ describe("tool catalog", () => {
       "pdf-to-png",
       "image-compressor",
       "image-resizer",
+      "png-jpg-converter",
     ]);
-    expect(toolCatalog.filter((tool) => tool.status === "draft")).toHaveLength(8);
+    expect(toolCatalog.filter((tool) => tool.status === "draft")).toHaveLength(7);
   });
 
   it("rejects duplicate ids and slugs", () => {

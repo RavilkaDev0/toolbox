@@ -18,6 +18,7 @@ describe("published search", () => {
       "pdf-to-png",
       "image-compressor",
       "image-resizer",
+      "png-jpg-converter",
     ]);
     expect(filterPublishedTools(fixtures, { q: "", category: "all" })).toHaveLength(5);
   });
@@ -32,6 +33,6 @@ describe("published search", () => {
       filterPublishedTools(fixtures, { q: "", category: "pdf-render" }).map((t) => t.slug),
     ).toEqual(["pdf-to-png"]);
     expect(filterPublishedTools(fixtures, { q: "merge", category: "image" })).toEqual([]);
-    expect(toolCatalog.filter((tool) => tool.status === "draft")).toHaveLength(8);
+    expect(toolCatalog.filter((tool) => tool.status === "draft")).toHaveLength(7);
   });
 });

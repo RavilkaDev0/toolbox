@@ -7,6 +7,7 @@ import { ImageResizerPage } from "../image-resizer/image-resizer-page";
 import ImagesWorkspace from "../images-to-pdf/images-workspace";
 import { MergePage } from "../merge-pdf/merge-page";
 import { PdfToPngPage } from "../pdf-to-png/pdf-to-png-page";
+import { PngJpgConverterPage } from "../png-jpg-converter/png-jpg-converter-page";
 import { RotatePage } from "../rotate-pdf/rotate-page";
 import { SplitPage } from "../split-pdf/split-page";
 
@@ -45,6 +46,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   if (tool?.slug === "pdf-to-png") return <PdfToPngPage tool={tool} />;
   if (tool?.slug === "image-compressor") return <ImageCompressorPage tool={tool} />;
   if (tool?.slug === "image-resizer") return <ImageResizerPage tool={tool} />;
+  if (tool?.slug === "png-jpg-converter") return <PngJpgConverterPage tool={tool} />;
   if (tool?.slug !== "images-to-pdf") {
     notFound();
   }
