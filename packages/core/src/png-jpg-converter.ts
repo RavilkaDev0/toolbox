@@ -1,5 +1,10 @@
 import { assertImageFileMetadata, ImageInputError } from "./image-input.js";
-import { assertImageProcessingDimensions, imageProcessingLimits } from "./image-processing.js";
+import {
+  assertImageFileExtension,
+  assertImageProcessingDimensions,
+  createImageConvertedNames,
+  imageProcessingLimits,
+} from "./image-processing.js";
 
 export const pngJpgConverterLimits = {
   files: 10,
@@ -83,15 +88,12 @@ export function assertPngJpgConverterDimensions(width: number, height: number): 
 }
 
 export function assertPngJpgFileExtension(name: string, format: PngJpgImageFormat): void {
-  const pathSeparator = Math.max(name.lastIndexOf("/"), name.lastIndexOf("\\"));
-  const dot = name.lastIndexOf(".");
-  if (dot <= pathSeparator) return;
-  const extension = name.slice(dot + 1).toLowerCase();
-  if (
-    (format === "png" && extension !== "png") ||
-    (format === "jpeg" && extension !== "jpg" && extension !== "jpeg")
-  )
-    throw new PngJpgConverterError("UNSUPPORTED_FORMAT");
+  try {
+    assertImageFileExtension(name, format);
+  } catch (error) {
+    if (error instanceof ImageInputError) throw new PngJpgConverterError(error.code);
+    throw error;
+  }
 }
 
 export function pngJpgOutputFormat(format: PngJpgImageFormat): PngJpgImageFormat {
@@ -106,38 +108,15 @@ export function pngJpgFormatExtension(format: PngJpgImageFormat): string {
   return format === "jpeg" ? "jpg" : "png";
 }
 
-function safeImageStem(name: string, index: number): string {
-  const leaf = name.slice(Math.max(name.lastIndexOf("/"), name.lastIndexOf("\\")) + 1);
-  const dot = leaf.lastIndexOf(".");
-  const stem = (dot > 0 ? leaf.slice(0, dot) : leaf)
-    .split("")
-    .map((character) => {
-      const code = character.charCodeAt(0);
-      return '<>:"/\\|?*'.includes(character) || code < 32 || code === 127 ? "_" : character;
-    })
-    .join("")
-    .trim()
-    .replace(/[. ]+$/g, "")
-    .slice(0, 80);
-  return stem || `image-${String(index + 1).padStart(2, "0")}`;
-}
-
 export function createPngJpgOutputNames(
   files: readonly { name: string }[],
   formats: readonly PngJpgImageFormat[],
 ): string[] {
   if (files.length !== formats.length) throw new PngJpgConverterError("INVALID_SETTINGS");
-  const occupied = new Set<string>();
-  return files.map((file, index) => {
-    const extension = pngJpgFormatExtension(formats[index] ?? "png");
-    const stem = safeImageStem(file.name, index);
-    let suffix = 1;
-    let candidate = `${stem}-converted.${extension}`;
-    while (occupied.has(candidate.toLowerCase())) {
-      suffix++;
-      candidate = `${stem}-converted-${suffix}.${extension}`;
-    }
-    occupied.add(candidate.toLowerCase());
-    return candidate;
-  });
+  try {
+    return createImageConvertedNames(files, formats);
+  } catch (error) {
+    if (error instanceof ImageInputError) throw new PngJpgConverterError("INVALID_SETTINGS");
+    throw error;
+  }
 }

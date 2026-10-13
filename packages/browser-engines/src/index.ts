@@ -8,3 +8,4 @@ export * from "./png-jpg-converter.js";
 export * from "./rotate-pdf.js";
 export * from "./split-pdf.js";
 export * from "./static-pdf.js";
+export * from "./webp-converter.js";

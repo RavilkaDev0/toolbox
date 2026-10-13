@@ -2,6 +2,7 @@ import { imageCompressorLimits } from "./image-compressor.js";
 import { imagePdfLimits } from "./images-to-pdf.js";
 import { pdfMergeLimits } from "./merge-pdf.js";
 import { pngJpgConverterLimits } from "./png-jpg-converter.js";
+import { webpConverterLimits } from "./webp-converter.js";
 import { pdfRotateLimits } from "./rotate-pdf.js";
 import { pdfSplitLimits } from "./split-pdf.js";
 
@@ -177,12 +178,15 @@ export const toolCatalog: readonly ToolDefinition[] = [
     slug: "webp-converter",
     category: "image",
     title: "WebP converter",
-    description: "Convert supported images to WebP.",
+    description:
+      "Convert JPEG and PNG images to WebP locally. Compare each output size and download one image or a ZIP batch.",
     engine: "image",
     execution: "browser",
     acceptedMimeTypes: ["image/jpeg", "image/png"],
-    status: "draft",
-    relatedSlugs: ["png-jpg-converter", "image-compressor"],
+    maxInputBytes: webpConverterLimits.totalInputBytes,
+    maxInputFiles: webpConverterLimits.files,
+    status: "published",
+    relatedSlugs: ["png-jpg-converter", "image-compressor", "image-resizer"],
   },
   {
     id: "qr-designer",

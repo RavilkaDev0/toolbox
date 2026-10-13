@@ -41,6 +41,11 @@ const performanceSuites = [
     files: ["**/png-jpg-converter.spec.ts"],
     title: "measures three real JPEG to PNG conversions",
   },
+  {
+    name: "webp-converter",
+    files: ["**/webp-converter.spec.ts"],
+    title: "measures three real JPEG to WebP conversions",
+  },
 ] as const;
 
 const featureSuites = [

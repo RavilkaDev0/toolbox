@@ -19,6 +19,7 @@ import {
   inspectStaticImageFile,
   verifyDecodedImageBlob,
 } from "./image-processing.js";
+import { createImageZipWriter, type ImageZipWriter } from "./image-archive.js";
 
 export type PngJpgConverterPreparedImage = PngJpgConverterInfo & {
   inputBytes: number;
@@ -319,7 +320,7 @@ export async function convertPngJpgFiles(
   }
   if (!settings.success) throw new PngJpgConverterError("INVALID_SETTINGS");
 
-  const archiveParts: Uint8Array[] = [];
+  let zip: ImageZipWriter | undefined;
   try {
     assertPngJpgConverterSelection(files);
     const infos: PngJpgConverterInfo[] = [];
@@ -330,23 +331,7 @@ export async function convertPngJpgFiles(
     const formats = infos.map((info) => pngJpgOutputFormat(info.format));
     const names = createPngJpgOutputNames(files, formats);
     const multiFile = files.length > 1;
-    let archiveBytes = 0;
-    let archiveError = false;
-    const zipApi = multiFile ? await import("fflate") : undefined;
-    const zip = zipApi
-      ? new zipApi.Zip((error, chunk) => {
-          if (error || !chunk) {
-            archiveError = true;
-            return;
-          }
-          archiveBytes += chunk.byteLength;
-          if (archiveBytes > pngJpgConverterLimits.archiveBytes) {
-            archiveError = true;
-            return;
-          }
-          archiveParts.push(chunk);
-        })
-      : undefined;
+    if (multiFile) zip = await createImageZipWriter(pngJpgConverterLimits.archiveBytes);
     const items: PngJpgConvertedImage[] = [];
     let preview: Blob | undefined;
     let singleBlob: Blob | undefined;
@@ -371,15 +356,8 @@ export async function convertPngJpgFiles(
         if (preview.type !== "image/png" || preview.size > pngJpgConverterLimits.outputBytes)
           throw new PngJpgConverterError("CONVERSION_FAILED");
       }
-      if (zip) {
-        const bytes = new Uint8Array(await encoded.blob.arrayBuffer());
-        if (!zipApi) throw new PngJpgConverterError("CONVERSION_FAILED");
-        const entry = new zipApi.ZipPassThrough(name);
-        entry.mtime = new Date("2000-01-01T00:00:00.000Z");
-        zip.add(entry);
-        entry.push(bytes, true);
-        if (archiveError) throw new PngJpgConverterError("CONVERSION_FAILED");
-      } else singleBlob = encoded.blob;
+      if (zip) await zip.add(name, encoded.blob, signal);
+      else singleBlob = encoded.blob;
       items.push({
         format,
         width: encoded.width,
@@ -398,27 +376,11 @@ export async function convertPngJpgFiles(
     let fileName: string;
     let outputKind: "image" | "zip";
     if (zip) {
-      zip.end();
-      if (
-        archiveError ||
-        archiveParts.length === 0 ||
-        archiveBytes > pngJpgConverterLimits.archiveBytes
-      )
-        throw new PngJpgConverterError("CONVERSION_FAILED");
-      const blobParts: BlobPart[] = archiveParts.map((part) => {
-        if (part.buffer instanceof ArrayBuffer)
-          return new Uint8Array(part.buffer, part.byteOffset, part.byteLength);
-        const copy = new Uint8Array(part.byteLength);
-        copy.set(part);
-        return copy;
-      });
-      blob = new Blob(blobParts, { type: "application/zip" });
-      for (const part of archiveParts) part.fill(0);
+      blob = zip.finish(signal);
+      zip.dispose();
+      zip = undefined;
       fileName = "toolbox-converted-images.zip";
       outputKind = "zip";
-      if (blob.size !== archiveBytes) throw new PngJpgConverterError("CONVERSION_FAILED");
-      blobParts.length = 0;
-      archiveParts.length = 0;
     } else {
       const onlyName = names[0];
       if (!singleBlob || !onlyName) throw new PngJpgConverterError("CONVERSION_FAILED");
@@ -437,8 +399,7 @@ export async function convertPngJpgFiles(
       preview,
     };
   } catch (error) {
-    for (const part of archiveParts) part.fill(0);
-    archiveParts.length = 0;
+    zip?.dispose();
     throw mapError(error);
   }
 }

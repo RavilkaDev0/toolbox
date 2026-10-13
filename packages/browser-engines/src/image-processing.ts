@@ -95,7 +95,10 @@ export async function encodeImageBitmap(
   const type = imageFormatMimeType(options.format);
   let canvas: OffscreenCanvas | HTMLCanvasElement | undefined;
   try {
-    canvas = typeof OffscreenCanvas === "function" ? new OffscreenCanvas(1, 1) : undefined;
+    canvas =
+      typeof document === "undefined" && typeof OffscreenCanvas === "function"
+        ? new OffscreenCanvas(1, 1)
+        : undefined;
     if (!canvas && typeof document !== "undefined") canvas = document.createElement("canvas");
     if (!canvas) throw new ImageInputError("CONVERSION_FAILED");
     canvas.width = options.width;
