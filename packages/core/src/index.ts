@@ -25,3 +25,4 @@ export * from "./pdf-to-png.js";
 export * from "./png-jpg-converter.js";
 export * from "./rotate-pdf.js";
 export * from "./split-pdf.js";
+export * from "./webp-converter.js";
