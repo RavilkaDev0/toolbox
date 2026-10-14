@@ -149,7 +149,7 @@ export function buildQrSvg(
       } else {
         marks.push(
           settings.dotStyle === "dots"
-            ? `<circle cx="${left + 0.5}" cy="${top + 0.5}" r="0.46"/>`
+            ? `<circle cx="${left + 0.5}" cy="${top + 0.5}" r="0.49"/>`
             : `<rect x="${left + 0.06}" y="${top + 0.06}" width="0.88" height="0.88" rx="0.24"/>`,
         );
       }

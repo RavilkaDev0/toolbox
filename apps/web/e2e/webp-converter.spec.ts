@@ -17,6 +17,10 @@ async function chooseFiles(page: Page, files: string[]) {
   ).toBeVisible();
 }
 
+function resultReady(page: Page) {
+  return page.getByRole("status").filter({ hasText: "Your result is ready." });
+}
+
 async function chooseInvalidFile(
   page: Page,
   file: string | { name: string; mimeType: string; buffer: Buffer },
@@ -81,14 +85,14 @@ test("JPEG and transparent PNG convert to verified WebP, batch order and downloa
   await page.keyboard.press("ArrowRight");
   await expect(quality).toHaveValue("85");
   await page.getByRole("button", { name: "Convert to WebP", exact: true }).click();
-  await expect(page.getByText("Image converted and checked", { exact: true })).toBeVisible();
+  await expect(resultReady(page)).toBeVisible();
   await expect(page.getByRole("img", { name: /^Converted WebP preview/ })).toBeVisible();
   await assertTransparentPixel(page, 5, 5, 0);
   await assertTransparentPixel(page, 60, 120, 128);
   const pngOutput = await downloadResult(page, info, "transparent-converted.webp");
   expect(inspectImage(pngOutput)).toMatchObject({ kind: "webp", width: 120, height: 240 });
-  expect(pngOutput.subarray(0, 4).toString()).toBe("RIFF");
-  expect(pngOutput.subarray(8, 12).toString()).toBe("WEBP");
+  expect(Buffer.from(pngOutput.subarray(0, 4)).toString("ascii")).toBe("RIFF");
+  expect(Buffer.from(pngOutput.subarray(8, 12)).toString("ascii")).toBe("WEBP");
   if (info.project.name.startsWith("chromium")) {
     const evidence = resolve("../../docs/evidence/tbx-012");
     await mkdir(evidence, { recursive: true });
@@ -102,8 +106,8 @@ test("JPEG and transparent PNG convert to verified WebP, batch order and downloa
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await chooseFiles(page, [fixture("portrait.jpg"), fixture("landscape.jpg")]);
   await page.getByRole("button", { name: "Convert to WebP", exact: true }).click();
-  await expect(page.getByText("Image converted and checked", { exact: true })).toBeVisible();
-  await expect(page.getByText("ZIP archive", { exact: true })).toBeVisible();
+  await expect(resultReady(page)).toBeVisible();
+  await expect(page.getByText(/^ZIP archive ·/)).toBeVisible();
   const archive = await downloadResult(page, info, "toolbox-webp-images.zip");
   const entries = unzipSync(archive);
   expect(Object.keys(entries)).toEqual(["portrait-converted.webp", "landscape-converted.webp"]);
@@ -123,7 +127,7 @@ test("JPEG and transparent PNG convert to verified WebP, batch order and downloa
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await chooseFiles(page, [fixture("oriented.jpg")]);
   await page.getByRole("button", { name: "Convert to WebP", exact: true }).click();
-  await expect(page.getByText("Image converted and checked", { exact: true })).toBeVisible();
+  await expect(resultReady(page)).toBeVisible();
   const oriented = await downloadResult(page, info, "oriented-converted.webp");
   expect(inspectImage(oriented)).toMatchObject({ kind: "webp", width: 40, height: 80 });
   if (info.project.name.startsWith("chromium"))
@@ -139,19 +143,20 @@ test("rejects spoofed, animated, damaged and oversized input without disabling r
 }) => {
   await page.goto(toolUrl);
   await page.waitForLoadState("networkidle");
+  const toolRegion = page.getByRole("region", { name: "WebP converter workspace" });
   const input = fileInput(page);
   await chooseInvalidFile(page, fixture("damaged.png"));
-  await expect(page.getByRole("alert")).toContainText("empty or damaged");
+  await expect(toolRegion.getByRole("alert")).toContainText("empty or damaged");
   await chooseInvalidFile(page, fixture("oversized.png"));
-  await expect(page.getByRole("alert")).toContainText("8 megapixels");
+  await expect(toolRegion.getByRole("alert")).toContainText("8 megapixels");
   await chooseInvalidFile(page, fixture("animated.webp"));
-  await expect(page.getByRole("alert")).toContainText("Choose JPEG or PNG");
+  await expect(toolRegion.getByRole("alert")).toContainText("static JPEG or PNG");
   await chooseInvalidFile(page, {
     name: "spoof.jpg",
     mimeType: "image/jpeg",
     buffer: await readFile(fixture("transparent.png")),
   });
-  await expect(page.getByRole("alert")).toContainText("type must match");
+  await expect(toolRegion.getByRole("alert")).toContainText("type must match");
   await expect(input).toBeAttached();
 });
 
@@ -179,16 +184,14 @@ test("cancels a mobile batch, then supports reset and a fresh keyboard-started c
   ).toBeVisible();
   await expect(page.getByRole("link", { name: /^Download/ })).toHaveCount(0);
   await page.getByRole("button", { name: "Convert to WebP", exact: true }).click();
-  await expect(page.getByText("Image converted and checked", { exact: true })).toBeVisible({
-    timeout: 45_000,
-  });
+  await expect(resultReady(page)).toBeVisible({ timeout: 45_000 });
   await expect(page.getByRole("link", { name: "Download ZIP", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(page.getByText("Select images to get started", { exact: true })).toBeVisible();
 
   await chooseFiles(page, [fixture("landscape.jpg")]);
   await page.getByRole("button", { name: "Convert to WebP", exact: true }).click();
-  await expect(page.getByText("Image converted and checked", { exact: true })).toBeVisible();
+  await expect(resultReady(page)).toBeVisible();
   await downloadResult(page, info, "landscape-converted.webp");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
@@ -217,9 +220,11 @@ test("measures three real JPEG to WebP conversions", async ({ page }, info) => {
     const inputBytes = (await readFile(fixture(name))).byteLength;
     const started = Date.now();
     await page.getByRole("button", { name: "Convert to WebP", exact: true }).click();
-    await expect(page.getByText("Image converted and checked", { exact: true })).toBeVisible();
+    await expect(resultReady(page)).toBeVisible();
     const durationMs = Date.now() - started;
-    await expect(page.getByText(/→ .*\((smaller|larger|same size)\)/).last()).toBeVisible();
+    await expect(
+      page.getByText(/→.*\((?:\d+% (?:smaller|larger)|same size)\)/).last(),
+    ).toBeVisible();
     const output = await downloadResult(
       page,
       info,

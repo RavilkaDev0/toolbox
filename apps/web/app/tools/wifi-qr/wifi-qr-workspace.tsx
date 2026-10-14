@@ -4,6 +4,7 @@ import type { QrDesignerResult } from "@toolbox/browser-engines/qr-designer";
 import {
   buildWifiQrPayload,
   parseWifiQrPayload,
+  QrDesignerError,
   qrDesignerPresets,
   WifiQrError,
   type WifiQrOptions,
@@ -153,9 +154,11 @@ export default function WifiQrWorkspace() {
       setError(
         caught instanceof WifiQrError
           ? caught.message
-          : caught instanceof Error && caught.name === "AbortError"
-            ? "Generation cancelled. You can try again."
-            : "The QR could not be generated or verified. Try shorter network details or retry.",
+          : caught instanceof QrDesignerError
+            ? caught.message
+            : caught instanceof Error && caught.name === "AbortError"
+              ? "Generation cancelled. You can try again."
+              : "The QR could not be generated or verified. Try shorter network details or retry.",
       );
       setStatus("Wi-Fi QR generation did not complete.");
     } finally {

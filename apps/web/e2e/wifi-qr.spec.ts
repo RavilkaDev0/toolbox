@@ -31,7 +31,7 @@ test("generates verified Wi-Fi exports locally, supports reset and exposes no up
   });
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto(toolUrl);
-  await expect(page.getByRole("heading", { name: "Wi-Fi QR code" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Wi-Fi QR code", exact: true })).toBeVisible();
   await page.getByLabel("Network name · SSID").fill("Guest; Wi-Fi, 楽しい");
   await page.getByLabel("Network password").fill('very\\safe;password,"quotes"');
   expect(page.url()).not.toContain("Guest");
@@ -70,9 +70,7 @@ test("supports WPA3 SAE, WEP, open network, mobile sizing and keyboard password 
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(toolUrl);
-  await page.getByLabel("Network name · SSID").fill("Guest");
-  await page.getByLabel("Network password").fill("valid passphrase");
-  await page.getByLabel("Security").selectOption("wpa3");
+  const ssid = page.getByLabel("Network name · SSID");
   const password = page.getByLabel("Network password");
   const visibility = page.getByRole("button", { name: "Show password" });
   await visibility.focus();
@@ -80,6 +78,14 @@ test("supports WPA3 SAE, WEP, open network, mobile sizing and keyboard password 
   await expect(password).toHaveAttribute("type", "text");
   await page.keyboard.press("Enter");
   await expect(password).toHaveAttribute("type", "password");
+
+  await ssid.fill("Guest");
+  await expect(ssid).toHaveValue("Guest");
+  await password.fill("valid passphrase");
+  await expect(ssid).toHaveValue("Guest");
+  await page.getByLabel("Security").selectOption("wpa3");
+  await expect(ssid).toHaveValue("Guest");
+  await expect(ssid).toHaveValue("Guest");
   await page.getByRole("button", { name: "Generate Wi-Fi QR" }).click();
   await expect(page.getByRole("status")).toContainText("exact network settings", {
     timeout: 45_000,

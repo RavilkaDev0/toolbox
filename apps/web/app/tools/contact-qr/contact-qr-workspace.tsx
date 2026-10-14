@@ -8,6 +8,7 @@ import {
   contactQrLimits,
   normalizeContactQrOptions,
   parseContactVCard,
+  QrDesignerError,
   qrDesignerPresets,
 } from "@toolbox/core";
 import { Alert, AlertDescription, AlertTitle } from "@toolbox/ui/components/alert";
@@ -195,9 +196,11 @@ export default function ContactQrWorkspace() {
         } catch (caught) {
           if (runId !== generation.current || controller.signal.aborted) return;
           setError(
-            caught instanceof Error && caught.name === "AbortError"
-              ? "QR update cancelled. Change a field or choose Generate now to retry."
-              : "The contact QR could not be rendered and verified. Try shorter contact details or retry.",
+            caught instanceof QrDesignerError
+              ? caught.message
+              : caught instanceof Error && caught.name === "AbortError"
+                ? "QR update cancelled. Change a field or choose Generate now to retry."
+                : "The contact QR could not be rendered and verified. Try shorter contact details or retry.",
           );
           setStatus("Contact QR is waiting for a successful local scan check.");
         } finally {

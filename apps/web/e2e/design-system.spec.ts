@@ -53,8 +53,16 @@ test("category navigation and empty state", async ({ page }) => {
   await expect(page).toHaveURL(/\/tools$/);
 });
 
-test("draft tools and unknown categories return real 404s", async ({ page }) => {
-  for (const route of ["/tools/password-generator", "/categories/unknown"]) {
+test("development draft previews render while unknown tool and category routes return real 404s", async ({
+  page,
+}) => {
+  const draftPreview = await page.goto("/tools/password-generator");
+  expect(draftPreview?.status()).toBe(200);
+  await expect(
+    page.getByRole("heading", { name: "Password generator", exact: true }),
+  ).toBeVisible();
+
+  for (const route of ["/tools/not-a-tool", "/categories/unknown"]) {
     const response = await page.goto(route);
     expect(response?.status()).toBe(404);
     await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();

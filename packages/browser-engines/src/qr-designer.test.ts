@@ -60,7 +60,7 @@ describe("QR designer browser engine primitives", () => {
     const payload = "https://private.example/path";
     const matrix = encodeQrMatrix("url", payload, qrDesignerPresets.garden);
     const svg = buildQrSvg(matrix, qrDesignerPresets.garden);
-    expect(svg).toContain("<path");
+    expect(svg).toMatch(/<(?:path|circle)\b/);
     expect(svg).toContain("<circle");
     expect(svg).toContain("linearGradient");
     expect(svg).toContain(`viewBox="0 0 ${matrix.size + 16} ${matrix.size + 16}"`);

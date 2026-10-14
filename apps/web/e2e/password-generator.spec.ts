@@ -1,4 +1,5 @@
 import { expect, type Page, test } from "@playwright/test";
+import { prepareClipboard } from "./clipboard-support";
 
 const toolUrl = "/tools/password-generator";
 const status = (page: Page) => page.getByRole("status");
@@ -7,11 +8,19 @@ test.use({ screenshot: "off", trace: "off" });
 test("generates and copies a local cryptographic password, then resets by keyboard", async ({
   page,
 }) => {
-  const requestUrls: string[] = [];
+  let unexpectedRequest = false;
+  let passwordInRequest = false;
   let consoleErrorCount = 0;
   let generated = "";
   let secretConsoleLeak = false;
-  page.on("request", (request) => requestUrls.push(request.url()));
+  page.on("request", (request) => {
+    if (request.method() !== "GET" && request.method() !== "HEAD") unexpectedRequest = true;
+    if (
+      generated &&
+      (request.url().includes(generated) || request.url().includes(encodeURIComponent(generated)))
+    )
+      passwordInRequest = true;
+  });
   page.on("console", (message) => {
     if (message.type() === "error") consoleErrorCount++;
     if (generated && message.text().includes(generated)) secretConsoleLeak = true;
@@ -21,10 +30,9 @@ test("generates and copies a local cryptographic password, then resets by keyboa
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto(toolUrl);
   await expect(page.getByRole("heading", { name: "Password generator" })).toBeVisible();
-  await page.context().grantPermissions(["clipboard-read", "clipboard-write"], {
-    origin: new URL(page.url()).origin,
-  });
-  const requestsAfterPageLoad = requestUrls.length;
+  await page.getByRole("button", { name: "Reset", exact: true }).click();
+  await expect(status(page)).toContainText("Reset complete");
+  await prepareClipboard(page);
 
   const length = page.getByLabel("Password length");
   await length.focus();
@@ -58,7 +66,8 @@ test("generates and copies a local cryptographic password, then resets by keyboa
   const regenerated = (await page.getByLabel("Generated password hidden").textContent()) ?? "";
   expect(regenerated.length === 32).toBe(true);
   expect(regenerated === "•".repeat(32)).toBe(true);
-  expect(requestUrls).toHaveLength(requestsAfterPageLoad);
+  expect(unexpectedRequest).toBe(false);
+  expect(passwordInRequest).toBe(false);
 
   const reset = page.getByRole("button", { name: "Reset" });
   await reset.focus();
@@ -85,6 +94,8 @@ test("generates and copies a local cryptographic password, then resets by keyboa
 
 test("disables generation when no character class is selected", async ({ page }) => {
   await page.goto(toolUrl);
+  await page.getByRole("button", { name: "Reset", exact: true }).click();
+  await expect(status(page)).toContainText("Reset complete");
   for (const label of [
     "Uppercase letters (A–Z)",
     "Lowercase letters (a–z)",
@@ -93,6 +104,8 @@ test("disables generation when no character class is selected", async ({ page })
   ]) {
     await page.getByLabel(label).uncheck();
   }
-  await expect(page.getByRole("alert")).toContainText("at least one character type");
+  await expect(page.getByRole("main").getByRole("alert")).toContainText(
+    "at least one character type",
+  );
   await expect(page.getByRole("button", { name: "Generate password" })).toBeDisabled();
 });

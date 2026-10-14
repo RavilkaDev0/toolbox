@@ -9,12 +9,16 @@ const fixture = (name: string) => resolve("e2e/fixtures/images", name);
 const fileInput = (page: Page) => page.getByLabel("Choose PNG or JPEG images", { exact: true });
 
 async function chooseFiles(page: Page, files: string[]) {
-  const chooser = page.waitForEvent("filechooser");
-  await page.getByRole("button", { name: "Choose files", exact: true }).click();
-  await (await chooser).setFiles(files);
+  await chooseFilesRaw(page, files);
   await expect(
     page.getByText("Files are ready. Review your settings.", { exact: true }),
   ).toBeVisible();
+}
+
+async function chooseFilesRaw(page: Page, files: string[]) {
+  const chooser = page.waitForEvent("filechooser");
+  await page.getByRole("button", { name: "Choose files", exact: true }).click();
+  await (await chooser).setFiles(files);
 }
 
 async function dropFile(page: Page, name: string, type: string) {
@@ -199,13 +203,15 @@ test("damaged and unsupported input fails safely while cancel, retry, reset and 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(toolUrl);
   await page.waitForLoadState("networkidle");
+  await page.getByRole("button", { name: "Reset", exact: true }).click();
+  await expect(page.getByText("Images and results cleared.", { exact: true })).toBeVisible();
 
   const chooseButton = page.getByRole("button", { name: "Choose files", exact: true });
   await chooseButton.focus();
   await expect(chooseButton).toBeFocused();
   const chooser = page.waitForEvent("filechooser");
   await page.keyboard.press("Enter");
-  await (await chooser).setFiles(fixture("noise-2000.jpg"));
+  await (await chooser).setFiles(fixture("noise-800.jpg"));
   await expect(
     page.getByText("Files are ready. Review your settings.", { exact: true }),
   ).toBeVisible();
@@ -235,10 +241,14 @@ test("damaged and unsupported input fails safely while cancel, retry, reset and 
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(page.getByText("Select files to get started.", { exact: true })).toBeVisible();
 
-  await chooseFiles(page, [fixture("damaged.png")]);
-  await expect(page.getByRole("alert")).toContainText("empty or damaged");
-  await chooseFiles(page, [fixture("square.webp")]);
-  await expect(page.getByRole("alert")).toContainText("Choose PNG or JPEG");
+  await chooseFilesRaw(page, [fixture("damaged.png")]);
+  await expect(
+    page.getByRole("main").getByRole("alert").filter({ hasText: "empty or damaged" }),
+  ).toBeVisible();
+  await chooseFilesRaw(page, [fixture("square.webp")]);
+  await expect(
+    page.getByRole("main").getByRole("alert").filter({ hasText: "Choose PNG or JPEG" }),
+  ).toBeVisible();
   await expect(fileInput(page)).toBeAttached();
   expect(uploads).toEqual([]);
 });

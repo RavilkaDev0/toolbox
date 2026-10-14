@@ -12,7 +12,7 @@ import {
 } from "../../_components/workspace/tool-workspace";
 
 function formatCount(value: number): string {
-  return value.toLocaleString();
+  return value.toLocaleString("en-US");
 }
 
 export default function WordCounterWorkspace() {

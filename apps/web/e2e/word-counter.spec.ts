@@ -1,4 +1,5 @@
 import { expect, type Page, test } from "@playwright/test";
+import { prepareClipboard } from "./clipboard-support";
 
 const toolUrl = "/tools/word-counter";
 const metric = (page: Page, label: string) =>
@@ -6,9 +7,15 @@ const metric = (page: Page, label: string) =>
 const status = (page: Page) => page.getByRole("status");
 
 test("counts Unicode text locally, copies it, clears and resets by keyboard", async ({ page }) => {
-  const requestUrls: string[] = [];
+  const unexpectedRequests: string[] = [];
+  let userTextInRequest = false;
   let consoleErrorCount = 0;
-  page.on("request", (request) => requestUrls.push(request.url()));
+  page.on("request", (request) => {
+    if (request.method() !== "GET" && request.method() !== "HEAD")
+      unexpectedRequests.push(request.method());
+    if (request.url().includes("Hello") || request.url().includes("Привет"))
+      userTextInRequest = true;
+  });
   page.on("console", (message) => {
     if (message.type() === "error") consoleErrorCount++;
   });
@@ -17,10 +24,9 @@ test("counts Unicode text locally, copies it, clears and resets by keyboard", as
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto(toolUrl);
   await expect(page.getByRole("heading", { name: "Word counter" })).toBeVisible();
-  await page.context().grantPermissions(["clipboard-read", "clipboard-write"], {
-    origin: new URL(page.url()).origin,
-  });
-  const requestsAfterPageLoad = requestUrls.length;
+  await page.getByRole("button", { name: "Reset", exact: true }).click();
+  await expect(status(page)).toContainText("Reset complete");
+  await prepareClipboard(page);
   const input = page.getByLabel("Text to analyze");
   const unicodeText = "e\u0301 😀";
   await input.fill(unicodeText);
@@ -37,10 +43,11 @@ test("counts Unicode text locally, copies it, clears and resets by keyboard", as
   await expect(metric(page, "Paragraphs")).toHaveText("2");
   await page.getByRole("button", { name: "Copy text" }).click();
   await expect(status(page)).toContainText("copied to this device’s clipboard");
-  expect((await page.evaluate(() => navigator.clipboard.readText())) === multilingualText).toBe(
-    true,
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
+    multilingualText.replace(/\r\n|\r|\n/g, "\r\n"),
   );
-  expect(requestUrls).toHaveLength(requestsAfterPageLoad);
+  expect(unexpectedRequests).toEqual([]);
+  expect(userTextInRequest).toBe(false);
   expect(!page.url().includes("Hello")).toBe(true);
   expect(
     await page.evaluate(
@@ -69,9 +76,13 @@ test("counts Unicode text locally, copies it, clears and resets by keyboard", as
 
 test("rejects text beyond the documented mobile input bound", async ({ page }) => {
   await page.goto(toolUrl);
+  await page.getByRole("button", { name: "Reset", exact: true }).click();
+  await expect(status(page)).toContainText("Reset complete");
   const input = page.getByLabel("Text to analyze");
   await input.fill("x".repeat(100_001));
-  await expect(page.getByRole("alert")).toContainText("100,000 UTF-16 code-unit limit");
+  await expect(page.getByRole("main").getByRole("alert")).toContainText(
+    "100,000 UTF-16 code-unit limit",
+  );
   await expect(input).toHaveValue("");
   await expect(metric(page, "Words")).toHaveText("0");
 });

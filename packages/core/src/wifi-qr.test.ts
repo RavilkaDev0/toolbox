@@ -47,7 +47,7 @@ describe("Wi-Fi QR rules", () => {
   });
 
   it("enforces UTF-8 SSID bounds, valid Unicode, and credentials for each security type", () => {
-    expect(() => assertWifiQrOptions({ ...base, ssid: "😀".repeat(8) })).toThrowError(
+    expect(() => assertWifiQrOptions({ ...base, ssid: "😀".repeat(9) })).toThrowError(
       /32 UTF-8 bytes/,
     );
     expect(() => assertWifiQrOptions({ ...base, ssid: "" })).toThrowError(/SSID/);
@@ -65,7 +65,7 @@ describe("Wi-Fi QR rules", () => {
   });
 
   it("accepts supported WEP keys and rejects unsupported and malformed payloads", () => {
-    for (const password of ["abcde", "abcdefghijklm", "0123456789", "0123456789abcdef01234567"])
+    for (const password of ["abcde", "abcdefghijklm", "0123456789", "0123456789abcdef0123456789"])
       expect(() => assertWifiQrOptions({ ...base, security: "wep", password })).not.toThrow();
     expect(() => assertWifiQrOptions({ ...base, security: "wep", password: "bad" })).toThrowError(
       WifiQrError,

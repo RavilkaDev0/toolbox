@@ -32,7 +32,9 @@ test("creates a live Unicode contact QR and exports verified PNG, SVG and vCard 
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(toolUrl);
-  await expect(page.getByRole("heading", { name: "Contact QR code" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Contact QR code", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Reset", exact: true }).click();
+  await expect(status(page)).toContainText("Reset complete");
   await page.getByLabel("Full name").fill("Dr. Ada Lovelace · 世界");
   await page.getByLabel("Organization").fill("Toolbox; Research\nComputing");
   await page.getByLabel("Job title").fill("Principal, Engineer");
@@ -67,7 +69,9 @@ test("creates a live Unicode contact QR and exports verified PNG, SVG and vCard 
   });
 
   await page.getByLabel("Email").fill("not-an-email");
-  await expect(page.getByRole("alert")).toContainText("valid email address");
+  await expect(
+    page.getByRole("main").getByRole("alert").filter({ hasText: "valid email address" }),
+  ).toBeVisible();
   await expect(page.getByRole("link", { name: "Download vCard (.vcf)" })).toHaveCount(0);
   expect(requestUrls.some((url) => url.includes("ada@example.org"))).toBe(false);
   expect(uploads).toEqual([]);

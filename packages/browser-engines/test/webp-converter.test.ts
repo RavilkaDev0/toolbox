@@ -6,8 +6,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   convertWebpFiles,
   inspectWebpConverterFile,
-  type WebpConverterRasterize,
   prepareWebpConverterFiles,
+  type WebpConverterRasterize,
 } from "../src/webp-converter.js";
 
 const fixtureBytes = (name: string) =>

@@ -1,13 +1,12 @@
 /// <reference lib="webworker" />
 import {
+  convertWebpFiles,
   prepareWebpConverterFiles,
-  rasterizeWebpConverterImage,
   type WebpConverterRasterize,
-  type WebpConverterRasterizeReply,
   type WebpConverterRasterized,
+  type WebpConverterRasterizeReply,
   type WebpConverterRequest,
   type WebpConverterResponse,
-  convertWebpFiles,
 } from "@toolbox/browser-engines/webp-converter";
 import { WebpConverterError } from "@toolbox/core";
 

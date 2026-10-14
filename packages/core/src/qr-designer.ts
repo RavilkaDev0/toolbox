@@ -4,7 +4,7 @@ export const qrDesignerLimits = {
   logoSide: 512,
   logoPixels: 262_144,
   sizeMin: 256,
-  sizeMax: 1024,
+  sizeMax: 1536,
   quietZoneMin: 4,
   quietZoneMax: 12,
   logoPercentMin: 6,
@@ -199,7 +199,7 @@ export function assertQrPayload(payload: string): number {
     const value = payload.charCodeAt(index);
     if (value >= 0xd800 && value <= 0xdbff) {
       const next = payload.charCodeAt(index + 1);
-      if (next < 0xdc00 || next > 0xdfff) throw new QrDesignerError("INVALID_TEXT");
+      if (!(next >= 0xdc00 && next <= 0xdfff)) throw new QrDesignerError("INVALID_TEXT");
       index++;
     } else if (value >= 0xdc00 && value <= 0xdfff) throw new QrDesignerError("INVALID_TEXT");
   }

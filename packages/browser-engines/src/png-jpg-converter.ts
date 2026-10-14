@@ -12,6 +12,7 @@ import {
   pngJpgFormatMimeType,
   pngJpgOutputFormat,
 } from "@toolbox/core";
+import { createImageZipWriter, type ImageZipWriter } from "./image-archive.js";
 import {
   decodeStaticImageBitmap,
   encodeImageBitmap,
@@ -19,7 +20,6 @@ import {
   inspectStaticImageFile,
   verifyDecodedImageBlob,
 } from "./image-processing.js";
-import { createImageZipWriter, type ImageZipWriter } from "./image-archive.js";
 
 export type PngJpgConverterPreparedImage = PngJpgConverterInfo & {
   inputBytes: number;

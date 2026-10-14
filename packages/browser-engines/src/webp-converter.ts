@@ -6,12 +6,13 @@ import {
   createWebpConverterOutputNames,
   defaultWebpConverterSettings,
   inspectImage,
-  type WebpConverterErrorCode,
   WebpConverterError,
+  type WebpConverterErrorCode,
   type WebpConverterInfo,
   type WebpConverterSettings,
   webpConverterLimits,
 } from "@toolbox/core";
+import { createImageZipWriter, type ImageZipWriter } from "./image-archive.js";
 import {
   decodeStaticImageBitmap,
   encodeImageBitmap,
@@ -19,7 +20,6 @@ import {
   inspectStaticImageFile,
   verifyDecodedImageBlob,
 } from "./image-processing.js";
-import { createImageZipWriter, type ImageZipWriter } from "./image-archive.js";
 
 export type WebpConverterPreparedImage = WebpConverterInfo & {
   inputBytes: number;

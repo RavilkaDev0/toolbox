@@ -56,6 +56,8 @@ export default function QrDesignerWorkspace() {
   const logoGeneration = useRef(0);
   const urls = useRef(new Set<string>());
   const enginePromise = useRef<Promise<Engine> | null>(null);
+  const generateButtonRef = useRef<HTMLButtonElement>(null);
+  const restoreGenerateFocus = useRef(false);
 
   const loadEngine = useCallback(() => {
     enginePromise.current ??= import("@toolbox/browser-engines/qr-designer").catch(
@@ -113,6 +115,12 @@ export default function QrDesignerWorkspace() {
       urls.current.clear();
     };
   }, [loadEngine]);
+
+  useEffect(() => {
+    if (!paused || !restoreGenerateFocus.current) return;
+    restoreGenerateFocus.current = false;
+    generateButtonRef.current?.focus();
+  }, [paused]);
 
   useEffect(() => {
     if (!engine || paused) return;
@@ -218,6 +226,7 @@ export default function QrDesignerWorkspace() {
     generation.current++;
     activeRun.current?.abort();
     activeRun.current = null;
+    restoreGenerateFocus.current = true;
     setPaused(true);
     setStatus("Generation cancelled. Change a setting or choose Generate QR to try again.");
   }
@@ -286,7 +295,12 @@ export default function QrDesignerWorkspace() {
               Cancel
             </Button>
           ) : (
-            <Button type="button" onClick={generateNow} disabled={!engine || !payload}>
+            <Button
+              ref={generateButtonRef}
+              type="button"
+              onClick={generateNow}
+              disabled={!engine || !payload}
+            >
               Generate QR
             </Button>
           )}

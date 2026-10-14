@@ -95,7 +95,7 @@ test("rotates selected pages in the browser, preserves page content, and downloa
   expect(errors).toEqual([]);
 });
 
-test("supports drag/drop, cancellation, all-pages and selected left rotations on mobile", async ({
+test("supports mobile file drop, cancellation, all-pages and selected left rotations", async ({
   page,
 }, info) => {
   test.setTimeout(180_000);
@@ -164,6 +164,8 @@ test("supports drag/drop, cancellation, all-pages and selected left rotations on
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(toolUrl);
+  await page.getByRole("button", { name: "Reset", exact: true }).click();
+  await expect(page.getByText("PDF and output cleared.", { exact: true })).toBeVisible();
   const bytes = Array.from(await readFile(fixture));
   await page.getByRole("region", { name: "File selection", exact: true }).evaluate((node, data) => {
     const transfer = new DataTransfer();
@@ -172,7 +174,12 @@ test("supports drag/drop, cancellation, all-pages and selected left rotations on
         type: "application/pdf",
       }),
     );
-    node.dispatchEvent(new DragEvent("drop", { bubbles: true, dataTransfer: transfer }));
+    node.dispatchEvent(
+      new DragEvent("dragover", { bubbles: true, cancelable: true, dataTransfer: transfer }),
+    );
+    node.dispatchEvent(
+      new DragEvent("drop", { bubbles: true, cancelable: true, dataTransfer: transfer }),
+    );
   }, bytes);
   await expect(page.getByText("PDF ready. 5 pages available.", { exact: true })).toBeVisible({
     timeout: 60_000,

@@ -125,7 +125,7 @@ export function analyzeText(text: string, locale?: string): WordCounterAnalysis 
       if (segment.isWordLike) wordCount++;
     }
     for (const segment of sentences.segment(text)) {
-      if (!whitespaceCharacter.test(segment.segment)) sentenceCount++;
+      if (!/^\s*$/u.test(segment.segment)) sentenceCount++;
     }
     for (const segment of graphemes.segment(text)) {
       charactersWithWhitespace++;

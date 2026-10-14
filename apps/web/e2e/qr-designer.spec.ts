@@ -64,6 +64,7 @@ test("encodes short, Unicode and dense payloads into verified PNG and vector SVG
   });
   page.on("pageerror", (error) => errors.push(error.message));
   const shortStarted = Date.now();
+  const toolRegion = page.getByRole("region", { name: "QR designer workspace" });
   await page.goto(toolUrl);
   await expect(page.getByRole("heading", { name: "QR designer", exact: true })).toBeVisible();
   await waitForVerified(page);
@@ -89,6 +90,9 @@ test("encodes short, Unicode and dense payloads into verified PNG and vector SVG
   }
   await changeAndWaitForNewResult(page, () =>
     page.getByLabel("Module style", { exact: true }).selectOption("diamond"),
+  );
+  await changeAndWaitForNewResult(page, () =>
+    page.getByLabel("Module style", { exact: true }).selectOption("square"),
   );
 
   await changeAndWaitForNewResult(page, () =>
@@ -126,7 +130,7 @@ test("encodes short, Unicode and dense payloads into verified PNG and vector SVG
     elapsedMs: denseElapsedMs,
     pngBytes: densePng.byteLength,
   });
-  expect(inspectImage(densePng)).toMatchObject({ kind: "png", width: 1024, height: 1024 });
+  expect(inspectImage(densePng)).toMatchObject({ kind: "png", width: 1536, height: 1536 });
 
   await page.getByLabel("Foreground", { exact: true }).evaluate((element) => {
     if (!(element instanceof HTMLInputElement))
@@ -136,7 +140,7 @@ test("encodes short, Unicode and dense payloads into verified PNG and vector SVG
     element.dispatchEvent(new Event("input", { bubbles: true }));
     element.dispatchEvent(new Event("change", { bubbles: true }));
   });
-  await expect(page.getByRole("alert")).toContainText("4.5:1 contrast");
+  await expect(toolRegion.getByRole("alert")).toContainText("4.5:1 contrast");
   await expect(page.getByRole("link", { name: "Download PNG", exact: true })).toHaveCount(0);
 
   if (info.project.name.startsWith("chromium")) {
@@ -146,7 +150,7 @@ test("encodes short, Unicode and dense payloads into verified PNG and vector SVG
       "utf8",
     );
   }
-  expect(payload).toBeAttached();
+  expect(text).toBeAttached();
   expect(uploads).toEqual([]);
   expect(errors).toEqual([]);
 });
@@ -195,17 +199,18 @@ test("checks raster logos, rejects SVG input, supports keyboard cancellation and
     mimeType: "image/svg+xml",
     buffer: Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>'),
   });
-  await expect(page.getByRole("alert")).toContainText("valid PNG or JPEG");
+  const toolAlert = page.getByRole("region", { name: "QR designer workspace" }).getByRole("alert");
+  await expect(toolAlert).toContainText("valid PNG or JPEG");
   await chooseLogo(page, {
     name: "spoof.png",
     mimeType: "image/png",
     buffer: Buffer.from("not a PNG image"),
   });
-  await expect(page.getByRole("alert")).toContainText("valid PNG or JPEG");
+  await expect(toolAlert).toContainText("valid PNG or JPEG");
   await chooseLogo(page, resolve("e2e/fixtures/images/damaged.png"));
-  await expect(page.getByRole("alert")).toContainText("valid PNG or JPEG");
+  await expect(toolAlert).toContainText("valid PNG or JPEG");
   await chooseLogo(page, resolve("e2e/fixtures/images/oversized.png"));
-  await expect(page.getByRole("alert")).toContainText("512 px per side");
+  await expect(toolAlert).toContainText("512 px per side");
 
   await page.getByLabel("URL", { exact: true }).fill("https://example.com/retry");
   await waitForVerified(page);
