@@ -31,9 +31,9 @@ The local Chromium performance fixture measured end-to-download elapsed time and
 
 | Input fixture | Input bytes | Output bytes | Elapsed |
 | --- | ---: | ---: | ---: |
-| `landscape.jpg` (240 × 120) | 2,619 | 1,222 | 605 ms |
-| `noise-800.jpg` (800 × 600) | 289,744 | 6,133 | 504 ms |
-| `noise-2000.jpg` (2,000 × 1,500) | 1,807,723 | 6,131 | 512 ms |
+| `landscape.jpg` (240 × 120) | 2,619 | 1,222 | 835 ms |
+| `noise-800.jpg` (800 × 600) | 289,744 | 6,133 | 567 ms |
+| `noise-2000.jpg` (2,000 × 1,500) | 1,807,723 | 6,131 | 623 ms |
 
 The test scales each image to 120 px wide, so output sizes are not a claim about same-size JPEG compression. These measurements came from a local desktop Chromium/Next dev run and are not physical-device or production-build performance figures.
 

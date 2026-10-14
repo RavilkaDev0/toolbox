@@ -3,18 +3,18 @@
     "input": "landscape.jpg",
     "inputBytes": 2619,
     "outputBytes": 1222,
-    "elapsedMs": 605
+    "elapsedMs": 835
   },
   {
     "input": "noise-800.jpg",
     "inputBytes": 289744,
     "outputBytes": 6133,
-    "elapsedMs": 504
+    "elapsedMs": 567
   },
   {
     "input": "noise-2000.jpg",
     "inputBytes": 1807723,
     "outputBytes": 6131,
-    "elapsedMs": 512
+    "elapsedMs": 623
   }
 ]

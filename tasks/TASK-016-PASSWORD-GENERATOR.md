@@ -2,7 +2,7 @@
 
 ## State
 
-Implement on the shared `feat/tbx-005-tool-suite` branch as local Conventional Commits. Keep the catalog entry `draft` until final suite verification; allow the development preview only with `TOOLBOX_UI_FIXTURES=1` outside production. Behavioral tests are written now and run only after TBX-018 under the workflow override.
+Implemented on the shared `feat/tbx-005-tool-suite` branch in local Conventional Commits. The deferred final suite passed its unit/integration and Chromium/WebKit coverage; keep the catalog entry `draft` pending exact-head GitHub validation. Development preview is available only with `TOOLBOX_UI_FIXTURES=1` outside production.
 
 ## Acceptance criteria
 
@@ -14,7 +14,7 @@ Implement on the shared `feat/tbx-005-tool-suite` branch as local Conventional C
 - Reject impossible options and unavailable cryptographic randomness. Provide no passphrase mode without a reviewed cryptographic wordlist and algorithm.
 - Keep the password tool draft and metadata/canonical route available through the existing published-only catalog and local draft preview mechanism.
 
-## Test coverage to queue for the final suite phase
+## Test coverage verified in the final suite phase
 
 - Core: Web Crypto source, no `Math.random`, lengths, allowed pool, required classes, ambiguous characters, invalid settings/bounds and entropy calculation.
 - Contract: bounds, impossible options and strict keys.

@@ -2,7 +2,7 @@
 
 ## Implementation state
 
-Implementation is committed locally on `feat/tbx-005-tool-suite`; the catalog remains **draft** and production routing stays published-only. Full behavioral verification is intentionally deferred until TBX-018 is complete. No browser tests, unit tests, standalone checks, or production build have been run for this feature.
+Implementation is committed locally on `feat/tbx-005-tool-suite`; the catalog remains **draft** and production routing stays published-only. Its unit/integration and Chromium/WebKit browser scenarios passed in the deferred final suite. Exact-head shared-branch GitHub validation is pending.
 
 ## Design
 
@@ -16,7 +16,7 @@ Implementation is committed locally on `feat/tbx-005-tool-suite`; the catalog re
 
 The export uses vCard 3.0 with required `VERSION`, `FN`, and `N`. The display name is placed entirely in the family-name component of `N` to avoid guessing language-specific name order. Text values escape backslash, comma, semicolon and line breaks; lines use CRLF and fold on UTF-8 character boundaries at 75 octets, following [RFC 2426](https://www.rfc-editor.org/rfc/rfc2426.html?format=txt).
 
-Field limits are 160 bytes for name, 120 each for organization/title, 32 for phone, 254 for email, 512 for website, and 200 for address. The complete vCard is capped at the shared 2,048-byte QR payload bound and by actual encoder capacity. Phone accepts 3–15 digits in a bounded international display form; email accepts a common ASCII mailbox form; website requires HTTP(S) and rejects embedded credentials. Limits keep generated payloads and parser work bounded for mobile browsers; peak memory and generation time have not been measured yet.
+Field limits are 160 bytes for name, 120 each for organization/title, 32 for phone, 254 for email, 512 for website, and 200 for address. The complete vCard is capped at the shared 2,048-byte QR payload bound and by actual encoder capacity. Phone accepts 3–15 digits in a bounded international display form; email accepts a common ASCII mailbox form; website requires HTTP(S) and rejects embedded credentials. Limits keep generated payloads and parser work bounded for mobile browsers; peak memory and a dedicated generation-time benchmark have not been measured.
 
 ## Privacy and threat notes
 
@@ -26,9 +26,9 @@ The input schema and core builder reject malformed Unicode, unsupported controls
 
 ## Written tests and static checks
 
-Written coverage includes core validation/escape/fold/round-trip and malformed-input cases, strict contract validation, shared-engine QR matrix use, and a Playwright flow for actual PNG/SVG/vCard downloads, parsing, invalid input, reset by keyboard, mobile overflow, console errors and absent upload/URL leakage. These tests have **not** been run and no browser output is claimed as verified yet.
+Written coverage includes core validation/escape/fold/round-trip and malformed-input cases, strict contract validation, shared-engine QR matrix use, and a Playwright flow for actual PNG/SVG/vCard downloads, parsing, invalid input, reset by keyboard, mobile overflow, console errors and absent upload/URL leakage. The final combined suite passed all 159 unit/integration tests and 133 Playwright Chromium/WebKit scenarios; the real contact QR flow passed in both engines.
 
-The following focused checks passed after implementation: `pnpm run build:packages`, `pnpm --filter @toolbox/web run typecheck`, `pnpm exec biome check` on the changed TBX-015 sources, and `git diff --check`. Full lint, unit/integration tests, Chromium/WebKit, standalone build, screenshots and production build remain queued for the final suite phase.
+Final `pnpm lint`, `pnpm typecheck`, `pnpm test` and standalone production `pnpm build` passed. Dedicated timing/heap benchmarks and physical-device scanner compatibility were not measured. Keep the draft catalog state pending exact-head GitHub validation.
 
 No dependency was added. The shadcn audit checklist was reviewed and focused import/lint/type checks passed. Codebase Memory was attempted for architecture context but returned `Transport closed`; repository docs and source were inspected directly.
 

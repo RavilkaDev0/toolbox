@@ -2,7 +2,7 @@
 
 ## Implementation state
 
-Implementation is committed locally as `672e218` on `feat/tbx-005-tool-suite`. The catalog entry remains **draft**, and production routing remains published-only. Full behavioral verification is deferred to the suite test phase after TBX-018, as requested by the workflow override.
+Implementation is committed locally as `672e218` on `feat/tbx-005-tool-suite`. The catalog entry remains **draft**, and production routing remains published-only. The final combined local suite passed its Wi-Fi QR unit/integration and Chromium/WebKit scenarios; exact-head shared-branch GitHub validation is pending.
 
 ## Design
 
@@ -16,7 +16,7 @@ Implementation is committed locally as `672e218` on `feat/tbx-005-tool-suite`. T
 
 The generated payload follows the widely used ZXing Wi-Fi format. WPA/WPA2 and transition networks use `T:WPA`. WPA3-Personal uses Android's `T:SAE` extension; some current Android readers recognize it, but older and other-device scanners may not. Open networks use `T:nopass`; WEP accepts 5/13 printable ASCII characters or 10/26 hexadecimal digits. The option text and page instructions explain that device support varies.
 
-SSID is limited to 32 UTF-8 bytes. WPA passwords accept 8–63 UTF-8 bytes or a 64-digit hexadecimal PSK; SAE accepts 8–63 UTF-8 bytes. QR payloads are also bounded by the shared 2,048-byte rule and the actual encoder capacity at level L. The shared renderer emits a 512px PNG and bounded SVG. Performance and peak memory have not been measured yet.
+SSID is limited to 32 UTF-8 bytes. WPA passwords accept 8–63 UTF-8 bytes or a 64-digit hexadecimal PSK; SAE accepts 8–63 UTF-8 bytes. QR payloads are also bounded by the shared 2,048-byte rule and the actual encoder capacity at level L. The shared renderer emits a 512px PNG and bounded SVG. The final browser suite verified the exports and supported WPA3/WEP/open cases in Chromium and WebKit. No dedicated latency or peak-memory benchmark was run.
 
 ## Privacy and threat notes
 
@@ -28,9 +28,7 @@ The format is de-facto rather than universally implemented. WPA3 SAE support var
 
 Written coverage includes core tests for escaping and parse round trips, WPA/SAE/WEP/open formats, Unicode byte bounds, password rules and malformed payloads; strict contract tests; a shared-engine test that encodes Wi-Fi text through the existing matrix pipeline; and Playwright scenarios for actual verified PNG/SVG downloads, reset, WEP/WPA3/open modes, mobile overflow, keyboard password reveal, and absence of upload requests.
 
-**These behavioral tests have not been run.** Desktop/mobile screenshots and real browser scan checks remain for the final suite phase. No completion or production-readiness claim is made.
-
-The following limited static checks passed after the implementation: targeted Biome check, `pnpm run build:packages`, `pnpm --filter @toolbox/web run typecheck`, and `git diff --check`. Full lint, all unit/integration tests, Playwright Chromium/WebKit, standalone build and production build remain pending.
+The deferred final run passed all 159 unit/integration tests and 133 Playwright Chromium/WebKit scenarios across the full suite, including the Wi-Fi QR scenarios for output verification, credential modes, mobile sizing, keyboard controls, reset and no uploads. Final `pnpm lint`, `pnpm typecheck`, `pnpm test` and standalone production `pnpm build` passed. Performance/heap measurements and physical-device scanner testing were not performed; WPA3 support varies by scanner as described above.
 
 No dependency was added. Codebase Memory returned `Transport closed`; architecture review used the repository sources and `rg`. The shadcn component audit found no missing dependency and the available import/type checks passed.
 

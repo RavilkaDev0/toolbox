@@ -2,7 +2,7 @@
 
 ## Implementation state
 
-Implementation is committed locally as `c5690b988b5cada8eed7cb0e8ba9557b84800f38` on the shared `feat/tbx-005-tool-suite` branch; the catalog entry remains **draft** and production routing remains published-only. Behavioral verification and screenshots are deferred until TBX-018. No unit, Playwright or full build/test command has been run for this tool.
+Implementation is committed locally as `c5690b988b5cada8eed7cb0e8ba9557b84800f38` on the shared `feat/tbx-005-tool-suite` branch; the catalog entry remains **draft** and production routing remains published-only. Its behavioral tests passed in the deferred final suite; exact-head shared-branch GitHub validation is pending.
 
 ## Design and counting rules
 
@@ -15,7 +15,7 @@ Implementation is committed locally as `c5690b988b5cada8eed7cb0e8ba9557b84800f38
 
 ## Bounds and privacy
 
-The 100,000 UTF-16 code-unit cap allows up to roughly 200 KiB of UTF-16 text and bounds synchronous local segmentation for mobile devices. Iterators avoid retaining large arrays; peak memory and maximum-length latency have not been measured yet. No external dependency, worker, backend endpoint or upload was added.
+The 100,000 UTF-16 code-unit cap allows up to roughly 200 KiB of UTF-16 text and bounds synchronous local segmentation for mobile devices. Iterators avoid retaining large arrays. No cross-browser peak heap or maximum-length timing benchmark was recorded. No external dependency, worker, backend endpoint or upload was added.
 
 Input remains in React client state. It is not stored, logged, put in a URL, sent to analytics or uploaded. Copy is a user-triggered Clipboard API operation. A clipboard permission failure shows a generic message and keeps text local. Clear removes text; Reset clears it and returns focus to the editor. No progress indicator is shown for synchronous analysis.
 
@@ -23,7 +23,7 @@ Input remains in React client state. It is not stored, logged, put in a URL, sen
 
 Written core tests cover empty input; English, Russian and Japanese word/sentence segmentation; emoji and combining marks; CRLF/LF/CR lines; blank-line paragraphs; Unicode whitespace; fallback behavior; and the input limit. Contract tests cover Unicode and oversized values. Playwright scenarios cover real local counts/copy/clear/reset, keyboard interaction, oversized input rejection, desktop/mobile layout and no network/storage leakage.
 
-These behavioral tests are **not run yet**. Focused checks passed: `pnpm run build:packages`, `pnpm --filter @toolbox/web run typecheck`, targeted `pnpm exec biome check`, and `git diff --check`. Full lint, unit/integration tests, Playwright Chromium/WebKit, standalone and production builds, and timing/memory measurements are queued for after TBX-018.
+The final combined suite passed all 159 unit/integration tests and 133 Playwright Chromium/WebKit scenarios, including Unicode counting, copy/clear/reset, keyboard use, bounds, mobile layout and absence of network/storage leakage. Final `pnpm lint`, `pnpm typecheck`, `pnpm test` and standalone production `pnpm build` passed. A separate quantitative maximum-input timing and heap measurement remains unreported; no physical-device performance claim is made.
 
 No dependency was added. Codebase Memory confirmed the existing catalog/published-route and shared-workspace boundaries. The shadcn audit checklist and React Best Practices guidance were applied. Context7's MDN documentation confirms locale-sensitive word-like segments, grapheme segmentation and sentence segmentation; no private source was sent.
 

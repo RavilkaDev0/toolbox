@@ -12,7 +12,7 @@ Implementation is recorded on the shared `feat/tbx-005-tool-suite` branch. The c
 - Support hidden SSIDs, show/hide password, clear credentials on reset, and warn that anyone who scans the QR can read its credentials.
 - Parse generated payloads back to their exact fields before asking the shared QR Designer engine to encode, render, and independently scan-check the PNG/SVG outputs.
 - Keep sensitive input in client state only: no persistence, URL parameters, server props, analytics, logs, or upload requests.
-- Cover validation, encoding, reset/cancel, actual downloads, mobile layout, keyboard use, and no-upload behavior with written unit/integration/E2E tests. Tests are queued for the final suite run.
+- Cover validation, encoding, reset/cancel, actual downloads, mobile layout, keyboard use, and no-upload behavior with unit/integration/E2E tests. The deferred final local suite passed these cases in Chromium and WebKit.
 
 ## Design and compatibility
 

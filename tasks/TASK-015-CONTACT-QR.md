@@ -2,7 +2,7 @@
 
 ## State
 
-Implementation is committed locally to the shared `feat/tbx-005-tool-suite` branch. Keep the catalog draft until final suite verification. Only use the local draft preview outside production when `TOOLBOX_UI_FIXTURES=1`.
+Implementation is committed locally to the shared `feat/tbx-005-tool-suite` branch. The final local suite passed contact QR tests in Chromium and WebKit; keep the catalog draft pending exact-head GitHub validation. Only use the local draft preview outside production when `TOOLBOX_UI_FIXTURES=1`.
 
 ## Acceptance criteria
 
@@ -11,7 +11,7 @@ Implementation is committed locally to the shared `feat/tbx-005-tool-suite` bran
 - Correctly fold long UTF-8 content lines, cap total QR payload, and independently parse the generated vCard back before QR rendering.
 - Provide a live QR preview, verified PNG/SVG and `.vcf` downloads, reset, errors and narrow/mobile accessibility.
 - Keep contact information in client state only. Do not log it, send it to analytics/server, put it in the URL, or render user values into server-generated HTML.
-- Add core/contract/shared-QR integration tests and Playwright coverage of Unicode, special characters, newlines, long values, invalid fields, real exports, reset, mobile and no uploads. Queue test execution for the suite phase after TBX-018.
+- Add core/contract/shared-QR integration tests and Playwright coverage of Unicode, special characters, newlines, long values, invalid fields, real exports, reset, mobile and no uploads. These passed in the final suite after TBX-018.
 
 ## Format and limits
 

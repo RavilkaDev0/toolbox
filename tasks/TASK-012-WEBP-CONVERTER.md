@@ -19,7 +19,7 @@ Implement `/tools/webp-converter` for browser-local JPEG/PNG→WebP conversion w
 - [x] Pure resource limits, common image extension/name rules, strict schemas and catalog metadata.
 - [x] Browser worker engine, verified WebP encoder output, ZIP batch, local UI, SEO route, loading/error/cancel/reset and mobile layout.
 - [x] Unit/integration and Chromium/WebKit E2E tests using real JPEG, PNG and WebP fixtures, including transparency, batch order, corruption, limits, cancellation, downloads and no uploads.
-- [ ] Run and inspect both Chromium and WebKit converter scenarios after TBX-018; verify actual WebP encoding, downloaded signature/dimensions/alpha and production standalone behavior.
+- [x] Final suite after TBX-018 passed Chromium and WebKit converter scenarios with real WebP output signature/dimension/alpha checks. The combined suite passed 159 unit/integration and 133 Chromium/WebKit E2E tests; standalone production smoke passed.
 - [ ] Inspect desktop/mobile screenshots and record performance and output sizes in `docs/development/TBX-012-REPORT.md`.
 - [ ] Final all-tool gates and exact-head GitHub `validate`; only then treat the suite checkpoint as verified.
 

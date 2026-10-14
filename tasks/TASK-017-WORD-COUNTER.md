@@ -2,7 +2,7 @@
 
 ## State
 
-Implement on the shared `feat/tbx-005-tool-suite` branch as one local Conventional Commit. Keep the catalog entry `draft` until final suite verification; allow development preview only with `TOOLBOX_UI_FIXTURES=1` outside production. Write behavioral tests now and run only after TBX-018 under the workflow override.
+Implemented on the shared `feat/tbx-005-tool-suite` branch as a local Conventional Commit. The deferred final suite passed its unit/integration and Chromium/WebKit coverage; keep the catalog entry `draft` pending exact-head GitHub validation. Development preview is available only with `TOOLBOX_UI_FIXTURES=1` outside production.
 
 ## Acceptance criteria
 
@@ -24,7 +24,7 @@ Implement on the shared `feat/tbx-005-tool-suite` branch as one local Convention
 - Sentences: non-whitespace sentence segments; fallback groups sentence-ending punctuation and counts remaining trailing text as one segment.
 - Input is capped at 100,000 UTF-16 code units (at most about 200 KiB for UTF-16 text) to bound synchronous segmentation work on mobile devices. Reading-time estimates are omitted because they vary substantially by language and reader.
 
-## Test coverage to queue for final suite phase
+## Test coverage verified in final suite phase
 
 - Core and contract: empty/large input, definitions, locale-sensitive English/Russian/Japanese, emoji, combining marks, punctuation and line/paragraph boundaries, plus fallback when `Intl.Segmenter` is unavailable.
 - Playwright Chromium/WebKit: live counts, real copy, clear/reset, keyboard operation, oversized input rejection, mobile overflow and no upload/storage/network leakage.

@@ -1,6 +1,6 @@
 # TBX-012 — WebP Converter
 
-**State:** implementation and test coverage added; final browser verification is pending. This report intentionally does not claim production readiness. The active workflow override schedules broad tests after TBX-018.
+**State:** implementation passed the deferred local Chromium/WebKit suite; exact-head shared-branch GitHub validation is pending. The catalog entry remains draft.
 
 The `/tools/webp-converter` route accepts JPEG and PNG and encodes them locally using the shared browser Canvas/OffscreenCanvas image engine. It checks input signatures, MIME, extension, dimensions and decode; prepares bounded previews; processes output sequentially in a worker; verifies the resulting `image/webp`, RIFF/WEBP structure, dimensions and browser decode; and displays the actual first WebP result. One output downloads directly; a batch becomes an ordered ZIP. The UI compares actual input/output bytes and does not promise size reduction.
 
@@ -14,8 +14,20 @@ Limits are 1–10 files, 16 MiB each, 32 MiB input total, 8 megapixels and 8,192
 
 - Unit/integration tests cover pure limits, content/type/extension mismatch, damaged/animated/oversized inputs, actual JPEG/PNG fixtures, ZIP order/content, cancellation and output verification.
 - Playwright tests cover real single/batch downloads, WebP signatures and dimensions, PNG alpha, keyboard quality control, mobile cancellation/retry/reset, failure handling and request privacy in Chromium and WebKit projects. A separate isolated Chromium performance project records three input sizes once.
-- These new tests are written but have not been run, as required by the active implementation-first workflow. Screenshots, cross-browser encoder evidence, output byte counts, performance measurements, and standalone-route checks remain pending until the final test phase.
-- Two compile-only follow-ups were recorded separately as `f6c8a65` and `17c7f08`: they align the UI with the workspace component props and make the E2E fixture lookup strict-null-safe. `pnpm --filter @toolbox/web run typecheck` then passed; no T012 behavioral tests were run.
+- The final combined test run passed all 159 unit/integration tests and 133 Playwright Chromium/WebKit scenarios, including real WebP output verification, batch ordering, alpha, malformed/oversized inputs, mobile retry/cancel and absence of uploads. Standalone image/ZIP and performance evidence is in `docs/evidence/tbx-012/`.
+- `pnpm lint`, `pnpm typecheck`, `pnpm test` and standalone production `pnpm build` passed. The generated standalone server smoke test also confirmed that draft routes remain unavailable in production.
 - No physical mobile device testing or broad image-decoder fuzz testing has been performed.
+
+## Chromium performance sample
+
+The isolated Chromium E2E run processed synthetic local fixtures once each. These elapsed times cover the browser tool operation in the test environment, not a physical-device or cross-browser guarantee. WebP output can be larger than JPEG input, which is why the UI reports actual size changes rather than promising reduction.
+
+| Input | Input bytes | WebP output bytes | Elapsed |
+| --- | ---: | ---: | ---: |
+| `landscape.jpg` | 2,619 | 1,230 | 351 ms |
+| `noise-800.jpg` | 289,744 | 308,846 | 435 ms |
+| `noise-2000.jpg` | 1,807,723 | 1,945,876 | 1,466 ms |
+
+Raw measurements: `docs/evidence/tbx-012/webp-converter-performance.json`.
 
 Canvas documentation: [HTMLCanvasElement.toBlob](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob) and [OffscreenCanvas.convertToBlob](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas/convertToBlob).

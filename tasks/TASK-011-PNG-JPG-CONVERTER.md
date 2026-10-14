@@ -30,10 +30,10 @@ The limits bound retained input and output data and keep only one full image dec
 - [x] Verify output type, signature, dimensions and decode; reset image/canvas buffers, object URLs and worker state.
 - [x] Preserve local-only privacy copy, loading/error/cancel/retry/reset states and keyboard/mobile use.
 - [x] Add unit/integration and Chromium/WebKit E2E tests with real synthetic fixtures; capture desktop screenshot and real outputs.
-- [ ] Final regression after TBX-018: run workspace lint, typecheck, tests, build, Chromium/WebKit E2E, inspect desktop/mobile screenshots and production standalone.
+- [x] Final local regression after TBX-018: workspace lint, typecheck, tests (159 unit/integration and 133 total Chromium/WebKit E2E), standalone build, production smoke and desktop/mobile review passed.
 - [ ] Push all accumulated task commits once final regression passes, verify GitHub `validate` on exact HEAD, update shared Draft PR #5.
 
-Implementation is complete but not marked production-ready. The final verification phase is intentionally deferred until TBX-018 by the active workflow override.
+Implementation passed the deferred local verification phase. Catalog status remains draft pending exact-head GitHub validation on the shared branch.
 
 ## Test evidence
 

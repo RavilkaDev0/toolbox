@@ -1,6 +1,6 @@
 # TBX-011 — PNG/JPG Converter
 
-**State:** implementation complete; final regression pending. This is not a production-readiness claim. The active workflow override defers broad checks until TBX-018.
+**State:** locally verified in the deferred final suite; the exact-head shared-branch GitHub validation is pending. The catalog entry remains draft.
 
 The `/tools/png-jpg-converter` route performs PNG→JPEG and JPEG→PNG conversion locally in the browser. The selected image's actual signature determines its format, and input MIME type and extension must agree. PNG transparency is flattened onto an editable background (white by default); JPEG quality is exposed only for PNG→JPEG. Multiple files are processed sequentially and downloaded as a ZIP, while a single output downloads directly. The UI checks the produced bytes, dimensions and decode before offering the result.
 
@@ -10,15 +10,15 @@ Limits are 1–10 files, 16 MiB per input, 32 MiB total input, 8 megapixels and 
 
 ## Evidence captured so far
 
-Synthetic, non-personal fixtures exercise portrait/landscape, transparency, noisy images, file limits, bad signatures and unsupported WebP. The initial broad run produced real JPEG and ZIP downloads, verified signatures/dimensions and preview transparency. Desktop evidence is in `docs/evidence/tbx-011/`; mobile screenshot capture remains for final browser verification.
+Synthetic, non-personal fixtures exercise portrait/landscape, transparency, noisy images, file limits, bad signatures and unsupported WebP. The final Chromium/WebKit suite verified real JPEG and ZIP downloads, signatures/dimensions, preview transparency, limits, cancellation/retry and mobile layout. Desktop and mobile evidence is in `docs/evidence/tbx-011/`.
 
 One Chromium performance run measured sequential JPEG→PNG output:
 
 | Input | Input size | PNG output | Elapsed |
 | --- | ---: | ---: | ---: |
-| `landscape.jpg` | 2,619 B | 7,326 B | 594 ms |
-| `noise-800.jpg` | 289,744 B | 1,637,606 B | 491 ms |
-| `noise-2000.jpg` | 1,807,723 B | 10,229,573 B | 1,508 ms |
+| `landscape.jpg` | 2,619 B | 7,326 B | 788 ms |
+| `noise-800.jpg` | 289,744 B | 1,637,606 B | 560 ms |
+| `noise-2000.jpg` | 1,807,723 B | 10,229,573 B | 1,782 ms |
 
 These are single Chromium measurements on synthetic fixtures, not cross-device performance guarantees. JPEG→PNG may increase file size; the UI does not promise compression.
 
@@ -26,7 +26,7 @@ These are single Chromium measurements on synthetic fixtures, not cross-device p
 
 - Focused unit tests: 12/12 passed across core, contracts and browser engine.
 - `pnpm lint`: passed; `pnpm typecheck`: passed.
-- The pre-override broad run completed all 99 Vitest tests successfully and passed 102 of 104 Playwright scenarios. The two failures were the same assertion in Chromium and WebKit: the mobile cancellation scenario expected the JPEG quality slider to respond to keyboard input for a JPEG source, where the control is correctly disabled. The assertion was moved to the PNG→JPEG scenario, where quality applies. That correction has not yet been rerun; the whole suite remains unverified until the final phase.
-- `pnpm build`, mobile screenshot inspection, production standalone checks, and final Chromium/WebKit runs are deferred until TBX-018.
+- The initial Chromium/WebKit run exposed a misplaced keyboard-quality assertion for JPEG input. The assertion was moved to PNG→JPEG; the final all-tool run then passed all 159 unit/integration tests and 133 Playwright scenarios.
+- Final local `pnpm lint`, `pnpm typecheck`, `pnpm test` and standalone production `pnpm build` passed. A separate standalone server smoke served `/` and `/tools` successfully; desktop/mobile screenshots were inspected.
 
 The final audit must verify PNG/JPEG outputs, batch ordering and ZIP contents, alpha flattening, cancellation/retry/reset, downloads, mobile layout, keyboard operation, and that user image bytes cause no upload request. No physical-device testing or broad image-decoder fuzzing has been performed.
