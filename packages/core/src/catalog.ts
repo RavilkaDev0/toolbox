@@ -261,7 +261,8 @@ export const toolCatalog: readonly ToolDefinition[] = [
     slug: "case-converter",
     category: "utility",
     title: "Case converter",
-    description: "Change text between common letter cases.",
+    description:
+      "Convert text to uppercase, lowercase, title case, sentence case or toggle case locally, with locale-aware Unicode rules and a live preview.",
     engine: "utility",
     execution: "browser",
     acceptedMimeTypes: [],

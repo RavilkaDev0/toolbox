@@ -2,6 +2,7 @@ import { getPublishedTools, getToolBySlug, toolCatalog } from "@toolbox/core";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CaseConverterPage } from "../case-converter/case-converter-page";
 import { ContactQrPage } from "../contact-qr/contact-qr-page";
 import { ImageCompressorPage } from "../image-compressor/image-compressor-page";
 import { ImageResizerPage } from "../image-resizer/image-resizer-page";
@@ -32,6 +33,7 @@ export function generateStaticParams() {
       "contact-qr",
       "password-generator",
       "word-counter",
+      "case-converter",
     ];
     return [
       ...published,
@@ -49,7 +51,14 @@ function getPageTool(slug: string) {
   if (
     process.env.NODE_ENV !== "production" &&
     process.env.TOOLBOX_UI_FIXTURES === "1" &&
-    ["qr-designer", "wifi-qr", "contact-qr", "password-generator", "word-counter"].includes(slug)
+    [
+      "qr-designer",
+      "wifi-qr",
+      "contact-qr",
+      "password-generator",
+      "word-counter",
+      "case-converter",
+    ].includes(slug)
   )
     return toolCatalog.find((tool) => tool.slug === slug);
   return undefined;
@@ -79,6 +88,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   if (tool?.slug === "wifi-qr") return <WifiQrPage tool={tool} />;
   if (tool?.slug === "password-generator") return <PasswordGeneratorPage tool={tool} />;
   if (tool?.slug === "word-counter") return <WordCounterPage tool={tool} />;
+  if (tool?.slug === "case-converter") return <CaseConverterPage tool={tool} />;
   if (tool?.slug === "merge-pdf") return <MergePage tool={tool} />;
   if (tool?.slug === "split-pdf") return <SplitPage tool={tool} />;
   if (tool?.slug === "rotate-pdf") return <RotatePage tool={tool} />;

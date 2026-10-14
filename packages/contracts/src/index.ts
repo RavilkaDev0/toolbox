@@ -1,3 +1,10 @@
+export type { CaseConverterSettingsInput } from "./case-converter.js";
+export {
+  caseConverterLocaleSchema,
+  caseConverterModeSchema,
+  caseConverterSettingsSchema,
+  caseConverterTextSchema,
+} from "./case-converter.js";
 export type { CatalogQuery } from "./catalog.js";
 export { catalogQuerySchema } from "./catalog.js";
 export type { ContactQrOptionsInput } from "./contact-qr.js";
