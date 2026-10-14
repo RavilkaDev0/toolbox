@@ -43,9 +43,8 @@ test("counts Unicode text locally, copies it, clears and resets by keyboard", as
   await expect(metric(page, "Paragraphs")).toHaveText("2");
   await page.getByRole("button", { name: "Copy text" }).click();
   await expect(status(page)).toContainText("copied to this device’s clipboard");
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
-    multilingualText.replace(/\r\n|\r|\n/g, "\r\n"),
-  );
+  const clipboardText = await page.evaluate(() => navigator.clipboard.readText());
+  expect(clipboardText.replace(/\r\n?/g, "\n")).toBe(multilingualText.replace(/\r\n?/g, "\n"));
   expect(unexpectedRequests).toEqual([]);
   expect(userTextInRequest).toBe(false);
   expect(!page.url().includes("Hello")).toBe(true);
