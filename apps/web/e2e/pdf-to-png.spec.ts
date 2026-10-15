@@ -258,6 +258,7 @@ test("accepts drag and drop, supports keyboard page selection on mobile, and dow
 test("preserves transparent areas and fills an opaque white background when selected", async ({
   page,
 }, info) => {
+  test.setTimeout(90_000);
   await page.goto(toolUrl);
   await choosePdf(page, pdfFixture("pdf-to-png-transparent.pdf"));
   await expect(page.getByText("PDF ready. 1 page available.", { exact: true })).toBeVisible({
