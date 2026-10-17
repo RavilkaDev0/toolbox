@@ -4,7 +4,7 @@ These are planning estimates, not guarantees. Solo evenings/weekends, with AI as
 
 ## Current tool delivery plan
 
-TBX-004 Images to PDF is integrated. The owner has reassigned the remaining tool IDs to TBX-005–018 and selected one long-lived branch/Draft PR. The authoritative mapping and sequential completion rules are in [Tool suite workflow](development/TOOL-SUITE-WORKFLOW.md); [Image Compressor acceptance criteria](../tasks/TASK-009-IMAGE-COMPRESSOR.md) define the current task. The earlier milestone numbering below is retained as historical planning, not the active task mapping.
+TBX-004–018 are implemented and published in the shared `feat/tbx-005-tool-suite` branch. Draft PR #5 targets `dev` and awaits review; no merge, release or deployment has occurred. The [tool suite workflow](development/TOOL-SUITE-WORKFLOW.md) and [final report](development/TOOLBOX-15-TOOLS-FINAL-REPORT.md) hold the current delivery details. The milestones below are historical planning, not the active task mapping.
 
 ## Week 1 — foundation and vertical slice
 The current TBX-004 specification combines workspace/file handling with the real Images to PDF reference tool. It supersedes the original 004/005 split below; the original TBX-005 acceptance scope is covered by TBX-004. Subsequent ticket numbers are unchanged.

@@ -40,32 +40,39 @@ infra/               Docker, nginx snippets, deployment docs
 - `generateStaticParams` / metadata generation only for published tools; no mass thin content.
 - Self-host Next.js using standalone output; verify monorepo output tracing of workspace dependencies.
 
-## Proposed typed registration contract (conceptual)
+## Current tool suite (2026-10-17)
+
+The catalog currently has 15 published tools (TBX-004–018) on the shared `feat/tbx-005-tool-suite` branch and Draft PR #5 to `dev`. This branch is awaiting review; the publication status describes catalog behavior in the branch, not a production deployment. `apps/web` owns routes, metadata, accessible workspaces, worker orchestration and local results. `packages/core` owns pure tool rules and bounded settings, `packages/contracts` owns strict input schemas, `packages/browser-engines` owns browser-only parsing and processing, and `packages/ui` owns reusable presentation. Heavy per-tool UI and engine code is loaded on demand. No browser-processable user file is sent to the API.
+
+PDF merge/split/rotate use static PDFs and preserve page content rather than rasterizing; encrypted PDFs and unsupported active features are refused. PDF rendering and image codecs have explicit input, page/pixel, output and time bounds. Cancellation, stale-result guards and resource cleanup are implemented in the owning tool adapters. The per-tool reports and [final suite report](development/TOOLBOX-15-TOOLS-FINAL-REPORT.md) contain implementation details and measured limits.
+
+## Typed catalog contract
 ```ts
-type EngineKind = 'pdf' | 'pdf-render' | 'image' | 'qr' | 'utility';
-type Execution = 'browser' | 'server';
+type EngineKind = "pdf" | "pdf-render" | "image" | "qr" | "utility";
+type ToolExecution = "browser" | "server";
+type ToolStatus = "draft" | "published";
 type ToolDefinition = {
-  id: string;
-  slug: string;
-  category: string;
-  title: string;
-  description: string;
-  engine: EngineKind;
-  execution: Execution;
-  acceptedMimeTypes: readonly string[];
-  maxInputBytes?: number;
-  maxInputFiles?: number;
-  published: boolean;
-  relatedSlugs: readonly string[];
+  readonly id: string;
+  readonly slug: string;
+  readonly category: ToolCategoryId;
+  readonly title: string;
+  readonly description: string;
+  readonly engine: EngineKind;
+  readonly execution: ToolExecution;
+  readonly acceptedMimeTypes: readonly string[];
+  readonly maxInputBytes?: number;
+  readonly maxInputFiles?: number;
+  readonly status: ToolStatus;
+  readonly relatedSlugs: readonly string[];
 };
 ```
-Metadata is typed and statically checked for unique ID/slug, categories, links and missing pages. Implementation is separately lazy-registered so catalog generation never bundles heavy engines.
+The implementation lives in `packages/core/src/catalog.ts`; static checks enforce unique IDs/slugs, known categories and related links. Tool UI and engines are lazy-loaded from the route so catalog generation never bundles heavy processing code.
 
 ## Domain design
 
 ### Implemented UI foundation (TBX-003)
 
-`packages/ui` owns tokens and dependency-light shadcn primitives. `apps/web/app/_components` composes route/catalog-aware presentation; workspace controls live in its `workspace` directory and receive callbacks/content from the tool-owned controller. No generic processing orchestrator is introduced. Bounded catalog query schemas live in `packages/contracts`; publication-aware search is pure `packages/core` logic. `/design-fixtures` is explicitly opt-in in development/test and always 404 in production. At TBX-003 all 15 definitions were draft. See [ADR-0005](decisions/ADR-0005-design-system.md) and [design system](06-DESIGN-SYSTEM.md).
+`packages/ui` owns tokens and dependency-light shadcn primitives. `apps/web/app/_components` composes route/catalog-aware presentation; workspace controls live in its `workspace` directory and receive callbacks/content from the tool-owned controller. No generic processing orchestrator is introduced. Bounded catalog query schemas live in `packages/contracts`; publication-aware search is pure `packages/core` logic. `/design-fixtures` is explicitly opt-in in development/test and always 404 in production. At the TBX-003 checkpoint all 15 definitions were draft; the catalog status has since advanced as the tools passed their individual release gates. See [ADR-0005](decisions/ADR-0005-design-system.md) and [design system](06-DESIGN-SYSTEM.md).
 
 ### Images to PDF (TBX-004)
 
@@ -93,7 +100,7 @@ Persistent tool execution history, user roles, multi-tenancy, Kafka, Kubernetes,
 
 ### Split PDF (TBX-006)
 
-`split-pdf` shares the concrete static-PDF validation and page identity checker with Merge PDF. `core` owns a bounded 1-based page-range parser and input/output limits; `contracts` owns strict file/settings schemas; `browser-engines` extracts without rasterization, reparses and verifies outputs, then writes one verified PDF per ZIP entry with page-only names. The web workspace has its own hard-cancel worker, input preview, output preview for extraction, and one-download ZIP flow. Only static PDFs are accepted; processing stays in the tab. This adds no universal job framework or server route. See [ADR-0008](decisions/ADR-0008-shared-static-pdf-policy.md), [acceptance criteria](../tasks/TASK-006-SPLIT-PDF.md), and [report](development/TBX-006-REPORT.md). The other twelve assigned suite tools remain draft; see the [long-lived workflow](development/TOOL-SUITE-WORKFLOW.md).
+`split-pdf` shares the concrete static-PDF validation and page identity checker with Merge PDF. `core` owns a bounded 1-based page-range parser and input/output limits; `contracts` owns strict file/settings schemas; `browser-engines` extracts without rasterization, reparses and verifies outputs, then writes one verified PDF per ZIP entry with page-only names. The web workspace has its own hard-cancel worker, input preview, output preview for extraction, and one-download ZIP flow. Only static PDFs are accepted; processing stays in the tab. This adds no universal job framework or server route. See [ADR-0008](decisions/ADR-0008-shared-static-pdf-policy.md), [acceptance criteria](../tasks/TASK-006-SPLIT-PDF.md), and [report](development/TBX-006-REPORT.md).
 
 ### Rotate PDF (TBX-007)
 

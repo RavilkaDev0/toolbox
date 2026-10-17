@@ -1,12 +1,12 @@
 # Long-lived tool suite — TBX-005–018
 
-Owner-authorized workflow adopted on 2026-10-11 and extended on 2026-10-12. `main` remains production and `dev` integration. Images to PDF (TBX-004) is already integrated; do not repeat it.
+Owner-authorized workflow adopted on 2026-10-11 and updated by the 2026-10-17 immediate workflow override and final-audit assignment. `main` remains production and `dev` integration. Images to PDF (TBX-004) is already implemented; the shared suite branch contains TBX-004–018.
 
-The owner explicitly authorizes autonomous sequential implementation of TBX-008 through TBX-018 without asking between tools. This overrides only the stop-and-wait-after-each-tool instruction below for those eleven tools. First complete the required WebKit CI stability investigation/fix and obtain a green full `validate`; then follow TBX-008 → TBX-018 in order, unless a documented technical dependency requires a local deviation. This authorization does not permit merge, release, deploy, changing `dev`/`main`, or starting production-server work. Leave the shared PR Draft after the tools and final audit.
+The owner explicitly authorized autonomous sequential implementation of TBX-008 through TBX-018, with tests written during development but broad verification deferred until TBX-018. This superseded per-tool full test/build/CI and push requirements for that implementation sequence; narrow focused checks were allowed when needed. After TBX-018, the owner separately assigned the final cross-suite audit and quality gates. Both assignments permit updates to the existing Draft PR, but not merge, release, deployment or changes to `dev`/`main`.
 
 All remaining tools use one branch, `feat/tbx-005-tool-suite`, and one Draft PR to dev titled `feat: implement Toolbox tool suite (TBX-005–018)`. Reuse it across tasks. No per-tool PRs, interim merges, force-push, rebase rewriting, automatic ruleset changes, release or deployment. If dev advances, inspect and merge it into the feature branch without rewriting published commits.
 
-For each tool: implement it fully, add unit/integration/Chromium/WebKit checks and real-result evidence, run lint/typecheck/test/build, self-review, make a separate Conventional Commit with its ticket ID, push, verify validate, then update the shared PR checklist and link `docs/development/TBX-XXX-REPORT.md`. Preserve decisions, accepted limits, technical debt and all existing tests. Never check off a task until CI passes on its implementation commit. For TBX-008–018, continue to the next ticket autonomously after the preceding ticket passes its gates; the owner's 2026-10-12 authorization replaces the former stop-and-wait behavior for this range only.
+For each tool, write focused unit/integration/Chromium/WebKit coverage, retain real-result evidence, self-review, record the commit and known risks in `TOOL-SUITE-PROGRESS.md`, then continue without an automatic full-suite run. Once TBX-018 is implemented, run the consolidated local gates, fix failures with targeted retests, run production standalone verification, and perform one final regression. Push the validated work and wait for exact-head GitHub `validate` before marking completion. Preserve decisions, accepted limits, technical debt and all existing tests.
 
 | Ticket | Tool |
 | --- | --- |
@@ -25,6 +25,6 @@ For each tool: implement it fully, add unit/integration/Chromium/WebKit checks a
 | TBX-017 | Word Counter |
 | TBX-018 | Case Converter |
 
-Each tool remains draft until its binary/behavior, validation, bounds, errors/cancellation, resource cleanup, responsive accessibility, output/preview, tests, production build, SEO and documentation pass. Publish only the current tool, with minimum justified dependencies and browser-first processing. Existing module boundaries and Neutral Utility design continue to apply.
+During implementation, each tool remained draft until its binary/behavior, validation, bounds, errors/cancellation, resource cleanup, responsive accessibility, output/preview, tests, production build, SEO and documentation passed. The branch now publishes all 15 tools, with minimum justified dependencies and browser-first processing. Existing module boundaries and Neutral Utility design continue to apply.
 
-After all 14 tools, a separate owner assignment authorizes the final PR/security/dependency/UX/SEO/performance audit, all 15 tool regression checks and complete CI. Only then propose Ready for Review. Final merge remains a separate human decision.
+The 2026-10-17 owner assignment authorizes the final PR/security/dependency/UX/SEO/performance audit and all 15 tool route/behavior checks. Keep the PR Draft until the user decides otherwise. Final merge remains a separate human decision.

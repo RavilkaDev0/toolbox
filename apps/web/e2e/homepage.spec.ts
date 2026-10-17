@@ -22,10 +22,17 @@ test("homepage has accessible landmarks and a keyboard-accessible skip link", as
   );
   await expect(page.getByRole("heading", { name: "Images to PDF", exact: true })).toBeVisible();
   await expect(page.locator('a[href="/tools/images-to-pdf"]')).toHaveCount(1);
+  await expect(
+    page.getByText("15 focused tools are ready to use, with processing kept in your browser."),
+  ).toBeVisible();
 
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();
   await expect(page).toHaveURL(/\/#main-content$/);
 
-  await page.screenshot({ path: testInfo.outputPath("homepage.png"), fullPage: true });
+  await page.screenshot({
+    path: testInfo.outputPath("homepage.png"),
+    fullPage: true,
+    style: "nextjs-portal { visibility: hidden; }",
+  });
 });

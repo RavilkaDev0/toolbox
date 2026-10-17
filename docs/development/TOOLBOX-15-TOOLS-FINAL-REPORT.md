@@ -2,6 +2,8 @@
 
 **Checkpoint:** 2026-10-17, branch `feat/tbx-005-tool-suite`, Draft PR [#5](https://github.com/RavilkaDev0/toolbox/pull/5) targeting `dev`.
 
+The final cross-suite audit also checked the 15 published tool routes and titles in local Playwright MCP, reviewed desktop/mobile workflow screenshots, and corrected stale foundation-era publication and privacy copy in the README, architecture/design/roadmap/quality/workflow docs, homepage and root SEO description. Fresh homepage screenshots after the copy update: [desktop, 1440px](../evidence/tbx-final-audit/home-1440.png) and [mobile, 390px](../evidence/tbx-final-audit/home-390.png). The homepage Chromium shell scenario passed after the copy update. In line with the owner's testing cadence override, the full local suite was not repeated for these documentation and copy-only refinements; the exact-head Actions result for the pushed audit commit is linked in PR #5.
+
 All 15 tools from TBX-004 through TBX-018 are implemented and published in the shared branch catalog. The six late catalog entries were switched after the deferred feature suite and exact-head GitHub validate on `3e5226a` passed. The publication follow-up updates catalog/search/route expectations and confirms all 15 production routes in Chromium and WebKit; its current exact-head CI result is recorded in Draft PR #5. No merge, release or deployment occurred.
 
 ## Architecture and privacy

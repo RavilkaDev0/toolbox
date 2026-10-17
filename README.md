@@ -1,6 +1,6 @@
 # Toolbox
 
-Local-first monorepo foundation for independent document, image, QR and text tools. This repository currently contains **no published or functional tools**; catalog entries remain drafts until their implementations pass the product and fixture gates.
+Local-first toolbox of 15 browser-based PDF, image, QR and text tools. The tools are implemented and published in the shared feature branch and are available for review in [Draft PR #5](https://github.com/RavilkaDev0/toolbox/pull/5), targeting `dev`.
 
 ## Requirements
 
@@ -31,7 +31,7 @@ pnpm test
 pnpm build
 ```
 
-The homepage smoke test runs in Playwright Chromium and WebKit (Desktop Safari profile). Install both browsers before running tests locally:
+`pnpm test` runs unit/integration checks and Playwright Chromium/WebKit scenarios for public routes and browser-local tool workflows. Install both browsers before running tests locally:
 
 ```sh
 pnpm --filter @toolbox/web exec playwright install chromium webkit
@@ -50,16 +50,16 @@ GitHub Actions runs the frozen-lockfile install and all four quality gates, incl
 - `packages/contracts`: Zod runtime schemas and inferred HTTP response types.
 - `packages/core`: typed tool/category metadata and catalog integrity rules; no I/O or framework imports.
 - `packages/ui`: small shadcn-style shared UI surface and design tokens.
-- `packages/browser-engines`: reserved package boundary; no processing engine is implemented yet.
+- `packages/browser-engines`: lazy-loaded browser processing for PDF, image, QR and text tools; user files are not uploaded for processing.
 - `packages/config`: shared strict TypeScript configurations.
 
-Catalog metadata mirrors the 15 tools agreed in `docs/01-PRODUCT-SCOPE.md`. Every entry is `draft`, so it is omitted from the homepage, catalog, category results and statically generated tool routes. The dynamic tool route only resolves published entries. No PDF/image processing, file upload, database, Redis, authentication, payments or production deployment is included.
+The catalog currently contains 15 published tools: Images to PDF, Merge PDF, Split PDF, Rotate PDF, PDF to PNG, Image Compressor, Image Resizer, PNG/JPG Converter, WebP Converter, QR Designer, Wi-Fi QR, Contact QR, Password Generator, Word Counter and Case Converter. Tool pages load their processing code on demand; browser-processable files stay in the user's browser. `apps/api` has internal health endpoints only. No file upload endpoint, database, Redis, authentication, payments or production deployment is included in this tool-suite change.
 
 Shared TypeScript packages compile to `dist/` and expose those real build outputs through package `exports`. Root scripts explicitly build workspace packages before app type-checks, tests, dev servers and production builds. This keeps the dependency graph visible without adding a task orchestrator.
 
 ## Dependency decisions
 
-Direct dependencies are limited to the selected frameworks, schema validation, UI helpers, and one tool each for lint/format, unit tests and browser smoke tests. Versions are pinned in `pnpm-workspace.yaml` and `pnpm-lock.yaml`.
+Direct dependencies are scoped to the selected frameworks, schema validation, design, browser processing and testing needs. Versions are pinned in `pnpm-workspace.yaml` and `pnpm-lock.yaml`; tool-specific licenses, sizes, alternatives and maintenance risks are summarized in the [final suite report](docs/development/TOOLBOX-15-TOOLS-FINAL-REPORT.md).
 
 | Dependency | Reason and license | Size / maintenance risk | Alternative considered |
 | --- | --- | --- | --- |
@@ -72,12 +72,12 @@ Direct dependencies are limited to the selected frameworks, schema validation, U
 | TypeScript, Node/React type packages | Strict static checking; TypeScript Apache-2.0, type packages MIT | Build-time only; low runtime impact | Plain JavaScript does not meet the strict typing requirement |
 | Biome | Single lint and formatter tool; MIT | Small toolchain footprint; active releases | ESLint plus Prettier would add a second tool/configuration |
 | Vitest | Typed unit and API integration tests; MIT | Build-time only; moderate toolchain tree | Node's built-in runner would need additional TypeScript/decorator setup |
-| Playwright Test | Accessible homepage browser smoke and screenshot evidence; Apache-2.0 | Browser downloads are large; Chromium and WebKit are installed in CI | Static markup checks cannot verify keyboard focus or rendered landmarks |
+| Playwright Test | Chromium/WebKit browser tests for public routes and actual tool workflows; Apache-2.0 | Browser downloads are large; Chromium and WebKit are installed in CI | Static markup checks cannot verify keyboard focus, file output or rendered behavior |
 | Nest CLI | Standard Nest build and watch commands; MIT | Build-time dependency tree; tracks Nest major compatibility | Hand-maintained compiler/watch commands increase configuration |
 
 ## References
 
-- [Product scope and draft tool catalog](docs/01-PRODUCT-SCOPE.md)
+- [Product scope and tool catalog](docs/01-PRODUCT-SCOPE.md)
 - [Architecture](docs/02-ARCHITECTURE.md)
 - [API contracts](docs/03-API-CONTRACTS.md)
 - [Data model](docs/04-DATA-MODEL.md)

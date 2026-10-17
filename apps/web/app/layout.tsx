@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s | Toolbox",
   },
   description:
-    "A local-first collection of document, image, QR and text tools. Tools will be listed when they are ready.",
+    "Browser-based PDF, image, QR and text tools. Files and text stay in your browser while tools process them locally.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
