@@ -14,6 +14,10 @@ try {
     if (message.type() === "error") errors.push(`console error: ${message.text()}`);
   });
   page.on("requestfailed", (request) => {
+    const abortedRscPrefetch =
+      request.failure()?.errorText === "net::ERR_ABORTED" &&
+      new URL(request.url()).searchParams.has("_rsc");
+    if (abortedRscPrefetch) return;
     errors.push(`request failed: ${request.url()} (${request.failure()?.errorText ?? "unknown"})`);
   });
   page.on("request", (request) => {
