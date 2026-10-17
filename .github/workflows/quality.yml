@@ -51,7 +51,7 @@ jobs:
       - run: pnpm build
       - name: Build standalone production image
         run: docker build --build-arg SITE_URL="$SITE_URL" --tag "toolbox-web:${GITHUB_SHA}" .
-      - name: Verify standalone production image
+      - name: Verify standalone production image and browser
         shell: bash
         run: |
           set -euo pipefail
@@ -79,7 +79,4 @@ jobs:
             --env SITE_URL="$SITE_URL" \
             --env TOOLBOX_SMOKE_URL=http://127.0.0.1:3000 \
             "$container_name" node /tmp/smoke-standalone.mjs
-      - name: Verify standalone pages in Chromium
-        env:
-          TOOLBOX_SMOKE_URL: http://127.0.0.1:3101
-        run: node apps/web/scripts/smoke-standalone-browser.mjs
+          TOOLBOX_SMOKE_URL=http://127.0.0.1:3101 node apps/web/scripts/smoke-standalone-browser.mjs
