@@ -44,7 +44,9 @@ export default function HomePage() {
             <h2 className="text-3xl font-semibold tracking-tight" id="categories-title">
               A place for every task
             </h2>
-            <p className="mt-3 text-muted-foreground">Browse tools by the task you need to complete.</p>
+            <p className="mt-3 text-muted-foreground">
+              Browse tools by the task you need to complete.
+            </p>
           </div>
           <Link className="text-link text-sm" href="/tools">
             View tool catalog
