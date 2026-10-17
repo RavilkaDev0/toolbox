@@ -1,11 +1,15 @@
 import { toolCatalog } from "@toolbox/core";
 import { notFound } from "next/navigation";
+import { createPageMetadata } from "../../_lib/site-url";
 import { PdfToPngPage } from "../../tools/pdf-to-png/pdf-to-png-page";
 
 export const metadata = {
-  title: "Private PDF to PNG fixture",
+  ...createPageMetadata(
+    "Private PDF to PNG fixture",
+    "Development-only PDF to PNG preview.",
+    "/tools/pdf-to-png",
+  ),
   robots: { index: false, follow: false },
-  alternates: { canonical: "/tools/pdf-to-png" },
 };
 
 export default function PdfToPngFixturePage() {

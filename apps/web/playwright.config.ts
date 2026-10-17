@@ -49,7 +49,10 @@ const performanceSuites = [
 ] as const;
 
 const featureSuites = [
-  { name: "shell", files: ["**/design-system.spec.ts", "**/homepage.spec.ts"] },
+  {
+    name: "shell",
+    files: ["**/design-system.spec.ts", "**/homepage.spec.ts", "**/release-readiness.spec.ts"],
+  },
   {
     name: "qr-designer",
     files: ["**/qr-designer.spec.ts", "**/wifi-qr.spec.ts", "**/contact-qr.spec.ts"],

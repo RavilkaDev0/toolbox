@@ -1,6 +1,7 @@
 import { getPublishedTools, getToolBySlug, toolCatalog } from "@toolbox/core";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { createPageMetadata } from "../../_lib/site-url";
 import { ToolPages } from "./tool-pages";
 
 type ToolPageProps = {
@@ -57,11 +58,7 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
     return { title: "Tool not found" };
   }
 
-  return {
-    title: tool.title,
-    description: tool.description,
-    alternates: { canonical: `/tools/${tool.slug}` },
-  };
+  return createPageMetadata(tool.title, tool.description, `/tools/${tool.slug}`);
 }
 
 export default async function ToolPage({ params }: ToolPageProps) {

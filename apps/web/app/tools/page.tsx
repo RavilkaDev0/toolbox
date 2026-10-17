@@ -3,12 +3,13 @@ import { getPublishedTools } from "@toolbox/core";
 import { Alert, AlertDescription, AlertTitle } from "@toolbox/ui/components/alert";
 import { CatalogResults } from "../_components/catalog-results";
 import { ToolSearch } from "../_components/tool-search";
+import { createPageMetadata } from "../_lib/site-url";
 
-export const metadata = {
-  title: "Tools",
-  description: "Search and explore Toolbox tools that are tested and ready to use.",
-  alternates: { canonical: "/tools" },
-};
+export const metadata = createPageMetadata(
+  "Tools",
+  "Search and explore Toolbox tools that are tested and ready to use.",
+  "/tools",
+);
 
 export default async function ToolsPage({
   searchParams,

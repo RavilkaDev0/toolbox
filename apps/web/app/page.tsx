@@ -1,9 +1,7 @@
 import { getPublishedTools } from "@toolbox/core";
 import { ArrowRight, CheckCircle2, HardDrive, ShieldCheck, SlidersHorizontal } from "lucide-react";
 import Link from "next/link";
-import { CatalogEmpty } from "./_components/catalog-empty";
 import { CategoryGrid } from "./_components/category-grid";
-import { ToolCard } from "./_components/tool-card";
 import { ToolSearch } from "./_components/tool-search";
 
 export default function HomePage() {
@@ -29,7 +27,7 @@ export default function HomePage() {
         </div>
         <p className="text-sm text-muted-foreground">
           {tools.length
-            ? `${tools.length} focused tools are ready to use, with processing kept in your browser.`
+            ? `Search and browse all ${tools.length} published tools. Processing stays in your browser.`
             : "No tools have been published yet. Each tool will appear after its behavior and limits have been tested."}
         </p>
         <Link className="text-link" href="/tools">
@@ -54,22 +52,6 @@ export default function HomePage() {
           </Link>
         </div>
         <CategoryGrid />
-      </section>
-      <section aria-labelledby="published-title" className="section">
-        <h2 className="mb-6 text-2xl font-semibold tracking-tight" id="published-title">
-          Published tools
-        </h2>
-        {tools.length ? (
-          <ul className="tool-grid">
-            {tools.map((tool) => (
-              <li key={tool.id}>
-                <ToolCard tool={tool} />
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <CatalogEmpty />
-        )}
       </section>
       <section
         aria-labelledby="privacy-title"

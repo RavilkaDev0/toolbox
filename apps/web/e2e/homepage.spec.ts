@@ -20,11 +20,13 @@ test("homepage has accessible landmarks and a keyboard-accessible skip link", as
     "href",
     "/tools",
   );
-  await expect(page.getByRole("heading", { name: "Images to PDF", exact: true })).toBeVisible();
-  await expect(page.locator('a[href="/tools/images-to-pdf"]')).toHaveCount(1);
   await expect(
-    page.getByText("15 focused tools are ready to use, with processing kept in your browser."),
+    page.getByText("Search and browse all 15 published tools. Processing stays in your browser."),
   ).toBeVisible();
+  await expect(page.getByRole("link", { name: "View tool catalog" })).toHaveAttribute(
+    "href",
+    "/tools",
+  );
 
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();
