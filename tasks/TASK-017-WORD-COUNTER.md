@@ -2,7 +2,7 @@
 
 ## State
 
-Implemented on the shared `feat/tbx-005-tool-suite` branch as a local Conventional Commit. The deferred final suite passed its unit/integration and Chromium/WebKit coverage; keep the catalog entry `draft` pending exact-head GitHub validation. Development preview is available only with `TOOLBOX_UI_FIXTURES=1` outside production.
+Implemented on the shared `feat/tbx-005-tool-suite` branch as a Conventional Commit. The deferred final suite and exact-head gate passed; the catalog entry is published. The current publication-follow-up CI result is recorded in Draft PR #5.
 
 ## Acceptance criteria
 
@@ -13,7 +13,7 @@ Implemented on the shared `feat/tbx-005-tool-suite` branch as a local Convention
 - Support Copy, Clear, Reset, keyboard accessibility and mobile layout.
 - Bound input at 100,000 UTF-16 code units and reject oversized changes without truncating or analyzing them.
 - Keep text in client memory only; do not store it, upload it, or send it to analytics/logs.
-- Keep the catalog draft with local-only preview in development and published-only production routing.
+- Keep the catalog entry draft until final exact-head validation, then publish the route.
 
 ## Definitions and limits
 

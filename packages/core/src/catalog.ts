@@ -201,7 +201,7 @@ export const toolCatalog: readonly ToolDefinition[] = [
     acceptedMimeTypes: ["image/png", "image/jpeg"],
     maxInputBytes: qrDesignerLimits.logoFileBytes,
     maxInputFiles: 1,
-    status: "draft",
+    status: "published",
     relatedSlugs: ["wifi-qr", "contact-qr"],
   },
   {
@@ -214,7 +214,7 @@ export const toolCatalog: readonly ToolDefinition[] = [
     engine: "qr",
     execution: "browser",
     acceptedMimeTypes: [],
-    status: "draft",
+    status: "published",
     relatedSlugs: ["qr-designer", "contact-qr"],
   },
   {
@@ -227,7 +227,7 @@ export const toolCatalog: readonly ToolDefinition[] = [
     engine: "qr",
     execution: "browser",
     acceptedMimeTypes: [],
-    status: "draft",
+    status: "published",
     relatedSlugs: ["qr-designer", "wifi-qr"],
   },
   {
@@ -240,7 +240,7 @@ export const toolCatalog: readonly ToolDefinition[] = [
     engine: "utility",
     execution: "browser",
     acceptedMimeTypes: [],
-    status: "draft",
+    status: "published",
     relatedSlugs: ["word-counter", "case-converter"],
   },
   {
@@ -253,7 +253,7 @@ export const toolCatalog: readonly ToolDefinition[] = [
     engine: "utility",
     execution: "browser",
     acceptedMimeTypes: [],
-    status: "draft",
+    status: "published",
     relatedSlugs: ["case-converter", "password-generator"],
   },
   {
@@ -266,7 +266,7 @@ export const toolCatalog: readonly ToolDefinition[] = [
     engine: "utility",
     execution: "browser",
     acceptedMimeTypes: [],
-    status: "draft",
+    status: "published",
     relatedSlugs: ["word-counter", "password-generator"],
   },
 ];

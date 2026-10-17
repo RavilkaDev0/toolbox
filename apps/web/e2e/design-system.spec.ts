@@ -3,8 +3,28 @@ import { resolve } from "node:path";
 import { expect, test } from "@playwright/test";
 
 const samplePath = resolve("e2e/fixtures/workspace-note.txt");
+const publishedTools = [
+  { slug: "images-to-pdf", title: "Images to PDF" },
+  { slug: "merge-pdf", title: "Merge PDF" },
+  { slug: "split-pdf", title: "Split PDF" },
+  { slug: "rotate-pdf", title: "Rotate PDF" },
+  { slug: "pdf-to-png", title: "PDF to PNG" },
+  { slug: "image-compressor", title: "Image compressor" },
+  { slug: "image-resizer", title: "Image resizer" },
+  { slug: "png-jpg-converter", title: "PNG and JPG converter" },
+  { slug: "webp-converter", title: "WebP converter" },
+  { slug: "qr-designer", title: "QR designer" },
+  { slug: "wifi-qr", title: "Wi-Fi QR code" },
+  { slug: "contact-qr", title: "Contact QR code" },
+  { slug: "password-generator", title: "Password generator" },
+  { slug: "word-counter", title: "Word counter" },
+  { slug: "case-converter", title: "Case converter" },
+] as const;
+const publishedToolSlugs = publishedTools.map(({ slug }) => slug);
 
-test("registered public pages exclude drafts and private fixtures", async ({ page }) => {
+test("registered public pages expose published tools and hide private fixtures", async ({
+  page,
+}) => {
   for (const route of [
     "/",
     "/tools",
@@ -18,19 +38,27 @@ test("registered public pages exclude drafts and private fixtures", async ({ pag
     expect(response?.ok()).toBe(true);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.getByRole("main")).toBeVisible();
-    const publishedLinksByRoute: Record<string, number> = {
-      "/": 9,
-      "/tools": 9,
-      "/categories/pdf": 4,
-      "/categories/pdf-render": 1,
-      "/categories/image": 4,
+    const publishedSlugsByRoute: Record<string, string[]> = {
+      "/": publishedToolSlugs,
+      "/tools": publishedToolSlugs,
+      "/categories/pdf": ["images-to-pdf", "merge-pdf", "split-pdf", "rotate-pdf"],
+      "/categories/pdf-render": ["pdf-to-png"],
+      "/categories/image": [
+        "image-compressor",
+        "image-resizer",
+        "png-jpg-converter",
+        "webp-converter",
+      ],
+      "/categories/qr": ["qr-designer", "wifi-qr", "contact-qr"],
+      "/categories/utility": ["password-generator", "word-counter", "case-converter"],
     };
-    await expect(page.locator('a[href^="/tools/"]')).toHaveCount(publishedLinksByRoute[route] ?? 0);
-    await expect(
-      page.locator(
-        'a[href^="/tools/"]:not([href="/tools/images-to-pdf"]):not([href="/tools/merge-pdf"]):not([href="/tools/split-pdf"]):not([href="/tools/rotate-pdf"]):not([href="/tools/pdf-to-png"]):not([href="/tools/image-compressor"]):not([href="/tools/image-resizer"]):not([href="/tools/png-jpg-converter"]):not([href="/tools/webp-converter"])',
-      ),
-    ).toHaveCount(0);
+    const routeSlugs = publishedSlugsByRoute[route] ?? [];
+    const actualToolLinks = await page
+      .locator('a[href^="/tools/"]')
+      .evaluateAll((anchors) =>
+        anchors.map((anchor) => new URL((anchor as HTMLAnchorElement).href).pathname),
+      );
+    expect(actualToolLinks).toEqual(routeSlugs.map((slug) => `/tools/${slug}`));
     await expect(page.locator('a[href="/design-fixtures"]')).toHaveCount(0);
   }
 });
@@ -53,14 +81,29 @@ test("category navigation and empty state", async ({ page }) => {
   await expect(page).toHaveURL(/\/tools$/);
 });
 
-test("development draft previews render while unknown tool and category routes return real 404s", async ({
+test("published tool routes render while unknown tool and category routes return real 404s", async ({
   page,
 }) => {
-  const draftPreview = await page.goto("/tools/password-generator");
-  expect(draftPreview?.status()).toBe(200);
-  await expect(
-    page.getByRole("heading", { name: "Password generator", exact: true }),
-  ).toBeVisible();
+  const errors: string[] = [];
+  const nonReadRequests: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  page.on("console", (message) => {
+    if (message.type() === "error" || /hydrat/i.test(message.text())) errors.push(message.text());
+  });
+  page.on("request", (request) => {
+    if (request.method() !== "GET" && request.method() !== "HEAD")
+      nonReadRequests.push(request.method());
+  });
+  for (const { slug, title } of publishedTools) {
+    const response = await page.goto(`/tools/${slug}`);
+    expect(response?.status()).toBe(200);
+    await expect(page.getByRole("heading", { name: title, exact: true })).toBeVisible();
+    const canonical = await page.locator('link[rel="canonical"]').getAttribute("href");
+    expect(canonical).not.toBeNull();
+    expect(new URL(canonical ?? "", page.url()).pathname).toBe(`/tools/${slug}`);
+  }
+  expect(errors).toEqual([]);
+  expect(nonReadRequests).toEqual([]);
 
   for (const route of ["/tools/not-a-tool", "/categories/unknown"]) {
     const response = await page.goto(route);
@@ -83,12 +126,12 @@ test("catalog form preserves bounded search, category and reset in the URL", asy
   for (const query of ["q=a&q=b", "category=unknown", `q=${"x".repeat(101)}`]) {
     await page.goto(`/tools?${query}`);
     await expect(page.getByRole("main").getByRole("alert")).toContainText("Check your search");
-    await expect(page.locator('a[href="/tools/images-to-pdf"]')).toHaveCount(1);
-    await expect(
-      page.locator(
-        'a[href^="/tools/"]:not([href="/tools/images-to-pdf"]):not([href="/tools/merge-pdf"]):not([href="/tools/split-pdf"]):not([href="/tools/rotate-pdf"]):not([href="/tools/pdf-to-png"]):not([href="/tools/image-compressor"]):not([href="/tools/image-resizer"]):not([href="/tools/png-jpg-converter"]):not([href="/tools/webp-converter"])',
-      ),
-    ).toHaveCount(0);
+    const actualToolLinks = await page
+      .locator('a[href^="/tools/"]')
+      .evaluateAll((anchors) =>
+        anchors.map((anchor) => new URL((anchor as HTMLAnchorElement).href).pathname),
+      );
+    expect(actualToolLinks).toEqual(publishedToolSlugs.map((slug) => `/tools/${slug}`));
   }
 });
 
@@ -228,7 +271,7 @@ test.describe("progressive enhancement", () => {
     await page.getByLabel("Category", { exact: true }).selectOption("utility");
     await page.getByRole("button", { name: "Search", exact: true }).click();
     await expect(page).toHaveURL(/q=text&category=utility$/);
-    await expect(page.getByRole("heading", { name: "No tools match your search" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Case converter", exact: true })).toBeVisible();
     await page.getByRole("link", { name: "Clear filters" }).first().click();
     await expect(page).toHaveURL(/\/tools$/);
     await expect(page.getByRole("heading", { name: "Images to PDF", exact: true })).toBeVisible();

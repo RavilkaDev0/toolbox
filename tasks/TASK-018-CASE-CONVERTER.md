@@ -2,7 +2,7 @@
 
 ## State and release gate
 
-Implemented in feature commit `fa9d74006349e4e88cb5bfbe791f9be65d927e55` on the shared `feat/tbx-005-tool-suite` branch; keep the catalog entry `draft`. A local preview is available with `TOOLBOX_UI_FIXTURES=1`; the production route remains published-only. The required test-last checkpoint is complete: lint, typecheck, build and the full unit/integration + Chromium/WebKit suite passed. See [TBX-018 report](../docs/development/TBX-018-REPORT.md) for benchmark, screenshots and limitations. Update the existing Draft PR with this checkpoint; do not merge, release or deploy.
+Implemented in feature commit `fa9d74006349e4e88cb5bfbe791f9be65d927e55` on the shared `feat/tbx-005-tool-suite` branch. The test-last checkpoint passed and the catalog entry is published after the exact-head gate. The current publication-follow-up CI result is recorded in Draft PR #5. See [TBX-018 report](../docs/development/TBX-018-REPORT.md) for benchmark, screenshots and limitations. Do not merge, release or deploy.
 
 ## Acceptance criteria
 
@@ -13,7 +13,7 @@ Implemented in feature commit `fa9d74006349e4e88cb5bfbe791f9be65d927e55` on the 
 - Use keyboard-accessible controls, semantic labels/status/errors and a mobile layout.
 - Bound input and generated output; reject oversized changes without truncating the previous input.
 - Keep text in client memory only. Do not upload, store, place in URLs, log, or send text to analytics. Disable browser spelling/correction UI on the editor.
-- Keep catalog status draft and production published-only routing intact; enable only the established development fixture preview.
+- Keep the catalog entry draft until the release gate passes, then publish the production route.
 - Add page metadata through the existing catalog route, accurate instructions/limitations and related links.
 
 ## Defined conversion behavior
@@ -31,7 +31,7 @@ Implemented in feature commit `fa9d74006349e4e88cb5bfbe791f9be65d927e55` on the 
 - Playwright Chromium/WebKit: actual live output and copy; Turkish selection; settings; reset; keyboard use; oversized input; mobile overflow; no upload/network/storage leakage; no console or page errors.
 - `pnpm lint`, `pnpm typecheck`, `pnpm test` (159 unit/integration tests and 133 Chromium/WebKit Playwright scenarios) and `pnpm build` passed. Playwright MCP preview/navigation and console check passed; desktop and mobile screenshots are captured and visually reviewed in `docs/evidence/tbx-018/`.
 - Core transform measurements at 1k, 10k and 100k UTF-16 units are in the report. They are Node microbenchmarks; do not present them as browser latency or heap measurements.
-- Run the production standalone smoke test and exact-head GitHub `validate` before considering publication. The tool remains draft until the release gate is satisfied.
+- Run the production standalone smoke test and exact-head GitHub `validate` before publication. This gate is now satisfied; the tool is published in the shared branch catalog.
 
 ## Resource and compatibility notes
 

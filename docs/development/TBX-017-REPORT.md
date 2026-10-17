@@ -2,7 +2,7 @@
 
 ## Implementation state
 
-Implementation is committed locally as `c5690b988b5cada8eed7cb0e8ba9557b84800f38` on the shared `feat/tbx-005-tool-suite` branch; the catalog entry remains **draft** and production routing remains published-only. Its behavioral tests passed in the deferred final suite; exact-head shared-branch GitHub validation is pending.
+Implementation is committed as `c5690b988b5cada8eed7cb0e8ba9557b84800f38` on the shared `feat/tbx-005-tool-suite` branch; the catalog entry is published after the deferred local suite and exact-head GitHub validation passed. The publication follow-up CI result is recorded in Draft PR #5.
 
 ## Design and counting rules
 

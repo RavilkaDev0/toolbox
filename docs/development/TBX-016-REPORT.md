@@ -2,7 +2,7 @@
 
 ## Implementation state
 
-Implementation is committed locally on `feat/tbx-005-tool-suite` as feature commit `9e9ca27` and batched-random-draw optimization `ba35dc6`. The catalog remains **draft** and production routing remains published-only. Final password-generator unit/integration and Chromium/WebKit scenarios passed in the deferred suite; exact-head shared-branch GitHub validation is pending.
+Implementation is committed on `feat/tbx-005-tool-suite` as feature commit `9e9ca27` and batched-random-draw optimization `ba35dc6`. The catalog entry is published after the deferred local suite and exact-head GitHub validation passed. The publication follow-up CI result is recorded in Draft PR #5.
 
 ## Design and algorithm
 

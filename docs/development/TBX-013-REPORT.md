@@ -2,7 +2,7 @@
 
 ## Implementation status
 
-The browser-local QR Designer is implemented on `feat/tbx-005-tool-suite`. It is deliberately still **draft** in the catalog. In local development and the isolated Playwright server only, `TOOLBOX_UI_FIXTURES=1` exposes the draft route so the feature can be tested before publication. No production catalog, static route or other tool status has been changed.
+The browser-local QR Designer is published in the `feat/tbx-005-tool-suite` catalog after the deferred suite and exact-head GitHub validation passed. It has its own lazy-loaded route and remains fully local; no server processing was introduced.
 
 The UI supports text and HTTP(S) URLs, three presets, size and quiet-zone controls, all four error-correction levels, contrast-checked colors and gradients, four module styles, three finder styles, and a constrained raster logo with nine positions. Live preview is debounced. A visible result and downloads appear only after an independent local `jsqr` pass decodes the rendered SVG and the PNG output back to the exact entered value. SVG output contains actual vector paths/shapes; it does not wrap a screenshot. When a logo is present, only the normalized PNG logo is raster content.
 
@@ -30,11 +30,11 @@ Both packages are imported only through the QR tool's dynamic browser-engine imp
 - Targeted `pnpm exec biome check` on touched source/config files — passed; `git diff --check` — passed.
 - The final combined suite passed 159 unit/integration tests and 133 Playwright Chromium/WebKit scenarios, including dense payloads, PNG/SVG decode verification, invalid logos, keyboard cancellation/reset, mobile layouts, and no upload requests. `pnpm lint`, `pnpm typecheck`, and standalone production `pnpm build` passed.
 - Desktop/mobile screenshots and actual scan-verified output sizes (11.7 KiB PNG, 3.9 KiB SVG) are in `docs/evidence/tbx-013/`.
-- Exact-head GitHub validation remains pending. The six TBX-013–018 tools remain draft until the final shared-branch `validate` passes.
+- The six TBX-013–018 tools were published after exact-head GitHub `validate` run `38998409677` passed on the pre-publication implementation checkpoint. The publication follow-up CI result is recorded in Draft PR #5.
 - Quantitative generation latency and cross-browser heap peak were not measured. Treat synchronous dense-code work and variation among physical cameras as remaining limitations, not as passing performance claims.
 
 ## Remaining risks
 
 - Browser coverage verifies actual Unicode/dense payload scans, logo validation, QR settings, cancellation/reset cleanup and mobile layouts in Chromium and WebKit.
 - Quantitative browser latency and physical low-memory device heap measurements remain unverified; canvas/decoder bounds are documented above.
-- The tool remains draft pending the exact-head shared-branch GitHub `validate`; no claim is made that every physical camera scans every stylized output.
+- The tool is published after its bounded local scan checks and shared suite gate. No claim is made that every physical camera scans every stylized output.

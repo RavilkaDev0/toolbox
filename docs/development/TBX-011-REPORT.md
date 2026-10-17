@@ -1,6 +1,6 @@
 # TBX-011 — PNG/JPG Converter
 
-**State:** locally verified in the deferred final suite; the exact-head shared-branch GitHub validation is pending. The catalog entry remains draft.
+**State:** published in the shared branch catalog after the deferred local suite and exact-head GitHub validation passed. The publication follow-up and its current exact-head CI result are recorded in Draft PR #5.
 
 The `/tools/png-jpg-converter` route performs PNG→JPEG and JPEG→PNG conversion locally in the browser. The selected image's actual signature determines its format, and input MIME type and extension must agree. PNG transparency is flattened onto an editable background (white by default); JPEG quality is exposed only for PNG→JPEG. Multiple files are processed sequentially and downloaded as a ZIP, while a single output downloads directly. The UI checks the produced bytes, dimensions and decode before offering the result.
 

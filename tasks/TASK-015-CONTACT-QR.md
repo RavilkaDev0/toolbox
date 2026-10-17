@@ -2,7 +2,7 @@
 
 ## State
 
-Implementation is committed locally to the shared `feat/tbx-005-tool-suite` branch. The final local suite passed contact QR tests in Chromium and WebKit; keep the catalog draft pending exact-head GitHub validation. Only use the local draft preview outside production when `TOOLBOX_UI_FIXTURES=1`.
+Implementation is committed to the shared `feat/tbx-005-tool-suite` branch. The final local suite passed contact QR tests in Chromium and WebKit; the catalog entry is published after the exact-head gate passed. The current publication-follow-up CI result is recorded in Draft PR #5.
 
 ## Acceptance criteria
 

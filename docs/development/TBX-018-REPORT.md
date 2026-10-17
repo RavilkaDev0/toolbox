@@ -2,7 +2,7 @@
 
 ## Result
 
-The browser-only Case Converter is implemented in feature commit `fa9d74006349e4e88cb5bfbe791f9be65d927e55` and verified in local development preview. Its catalog record remains **draft**; production routing continues to expose published tools only. No dependency or server processing was added.
+The browser-only Case Converter is implemented in feature commit `fa9d74006349e4e88cb5bfbe791f9be65d927e55` and verified in local development and the production standalone build. Its catalog record is published after the deferred local suite and exact-head GitHub validation passed. No dependency or server processing was added.
 
 The actual conversion runs synchronously in the browser from bounded text held in React state. Supported modes are uppercase, lowercase, mechanical title case, mechanical sentence case and toggle case. Locale rules include browser default, English, Turkish, German, Russian and Japanese. The interface provides live output, explicit copy, clear, reset, accessible labels/status, mobile layout, local-only privacy copy and catalog-derived metadata/related links.
 
@@ -26,7 +26,7 @@ Final local checks passed:
 - `pnpm build` — Next.js standalone production build passed.
 - Playwright MCP opened the local preview at `/tools/case-converter`; the accessibility snapshot showed the expected page title, labeled mode/locale/editor/output controls, semantic status, related links and no console warnings/errors.
 - Desktop (1440×1000) and mobile (390×844) screenshots were captured and visually reviewed: [desktop](../evidence/tbx-018/case-converter-desktop.png), [mobile](../evidence/tbx-018/case-converter-mobile.png).
-- The generated standalone production server returned HTTP 200 for all nine published tool routes and HTTP 404 for the six draft routes, including Case Converter, as intended. Desktop/mobile route checks found no horizontal overflow, console errors or non-local/non-GET requests. A separate standalone Merge PDF interaction downloaded a real three-page PDF from mixed A4/Letter fixtures and independently verified its page count and dimensions; see the [suite report](TOOLBOX-15-TOOLS-FINAL-REPORT.md).
+- The pre-publication standalone checkpoint returned HTTP 200 for nine tool routes and HTTP 404 for six draft routes. The final publication smoke returned HTTP 200 for all 15 routes, verified canonical paths and returned 404 for unknown routes in Chromium and WebKit. The six QR/utility tools also passed 22 real standalone feature E2E scenarios. A separate standalone Merge PDF interaction downloaded a real three-page PDF from mixed A4/Letter fixtures and independently verified its page count and dimensions; see the [suite report](TOOLBOX-15-TOOLS-FINAL-REPORT.md).
 
 The production build completed before the final test-only expectation correction; the final all-suite run then passed the exact checked-out source. The functional source did not change between that build and the final suite. The standalone smoke check ran against the generated standalone server output, including the static assets copied as required by Next.js standalone deployment instructions.
 
@@ -50,7 +50,7 @@ The synthetic 100,000-unit sample produced 102,128 output units in expanding mod
 - Title/sentence casing cannot infer editorial style or all sentence abbreviations.
 - Casing that expands a character can increase output length; output beyond 400,000 UTF-16 units is rejected.
 - The max-size performance figure is Node-only. Chromium and WebKit real-preview behavior and mobile layouts pass E2E, but no cross-browser heap peak was measured.
-- The route remains draft and is not production-published by this change.
+- The route is published after the final shared verification gate.
 
 ## Evidence
 

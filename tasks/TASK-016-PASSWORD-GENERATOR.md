@@ -2,7 +2,7 @@
 
 ## State
 
-Implemented on the shared `feat/tbx-005-tool-suite` branch in local Conventional Commits. The deferred final suite passed its unit/integration and Chromium/WebKit coverage; keep the catalog entry `draft` pending exact-head GitHub validation. Development preview is available only with `TOOLBOX_UI_FIXTURES=1` outside production.
+Implemented on the shared `feat/tbx-005-tool-suite` branch in Conventional Commits. The deferred final suite and exact-head gate passed; the catalog entry is published. The current publication-follow-up CI result is recorded in Draft PR #5.
 
 ## Acceptance criteria
 
@@ -12,7 +12,7 @@ Implemented on the shared `feat/tbx-005-tool-suite` branch in local Conventional
 - Support Generate, Regenerate, Show/Hide, Copy and Reset using keyboard-accessible controls with explicit `type="button"`.
 - Keep passwords in client memory only. Do not put them in routes, storage, cookies, analytics, requests or logs. Copy only after the explicit user action; tell users reset cannot clear the OS clipboard.
 - Reject impossible options and unavailable cryptographic randomness. Provide no passphrase mode without a reviewed cryptographic wordlist and algorithm.
-- Keep the password tool draft and metadata/canonical route available through the existing published-only catalog and local draft preview mechanism.
+- Keep the password tool draft until final exact-head validation, then publish its metadata and canonical route through the catalog.
 
 ## Test coverage verified in the final suite phase
 

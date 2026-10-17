@@ -2,7 +2,7 @@
 
 ## Implementation state
 
-Implementation is committed locally as `672e218` on `feat/tbx-005-tool-suite`. The catalog entry remains **draft**, and production routing remains published-only. The final combined local suite passed its Wi-Fi QR unit/integration and Chromium/WebKit scenarios; exact-head shared-branch GitHub validation is pending.
+Implementation is committed as `672e218` on `feat/tbx-005-tool-suite`. The catalog entry is published after the final combined local suite and exact-head GitHub validation passed. The publication follow-up CI result is recorded in Draft PR #5.
 
 ## Design
 
@@ -10,7 +10,7 @@ Implementation is committed locally as `672e218` on `feat/tbx-005-tool-suite`. T
 - `packages/contracts/src/wifi-qr.ts` exposes strict Zod validation.
 - `apps/web/app/tools/wifi-qr/` owns client-only SSID/password state, hidden-network and reveal controls, cancellation/reset, object URL cleanup, local preview and PNG/SVG downloads.
 - The workspace lazily imports the existing `@toolbox/browser-engines/qr-designer` only when Generate is used. That engine independently decodes both rendered formats before returning them. No QR dependency, service, upload endpoint or second encoder was added.
-- The Next route and metadata use the existing published-tool catalog. The draft is locally previewable only under `TOOLBOX_UI_FIXTURES=1` outside production.
+- The Next route and metadata use the existing published-tool catalog. The route is statically generated for production after publication.
 
 ## Compatibility and limits
 

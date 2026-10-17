@@ -2,7 +2,7 @@
 
 ## State
 
-Implementation is recorded on the shared `feat/tbx-005-tool-suite` branch. The catalog entry stays **draft** until the suite's final verification. Local preview is available only when `TOOLBOX_UI_FIXTURES=1` outside production.
+Implementation is recorded on the shared `feat/tbx-005-tool-suite` branch. The catalog entry is published after the suite's final verification and exact-head gate passed. The current publication-follow-up CI result is recorded in Draft PR #5.
 
 ## Acceptance criteria
 

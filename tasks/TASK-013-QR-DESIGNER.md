@@ -2,7 +2,7 @@
 
 ## State
 
-Implementation is on the shared `feat/tbx-005-tool-suite` branch. The catalog entry remains **draft** until the final TBX-018 verification phase. Local preview access is enabled only in the isolated development/test environment (`TOOLBOX_UI_FIXTURES=1`); production routing and catalog visibility still require publication.
+Implementation is on the shared `feat/tbx-005-tool-suite` branch. The catalog entry is published after the final TBX-018 verification and exact-head GitHub gate. The current publication-follow-up CI result is recorded in Draft PR #5.
 
 ## Acceptance criteria
 
@@ -13,7 +13,7 @@ Implementation is on the shared `feat/tbx-005-tool-suite` branch. The catalog en
 - Download a true vector SVG QR and a PNG. The optional logo is the only raster object embedded in the SVG.
 - Support retry, cancellation, reset, keyboard navigation, touch and narrow mobile layouts. Do not display invented progress.
 - Keep payloads, logo contents and generated output in the browser. Do not send them to server routes or analytics.
-- Keep QR Designer hidden from production until final acceptance tests pass. Wi-Fi QR and Contact QR remain draft.
+- Keep each QR tool hidden from production until its final acceptance gate passes, then publish only the verified tools.
 
 ## Ownership and design
 
@@ -21,7 +21,7 @@ Implementation is on the shared `feat/tbx-005-tool-suite` branch. The catalog en
 - `packages/contracts`: strict Zod schemas for payload mode, settings, preset and logo metadata.
 - `packages/browser-engines`: QR encoding, safe vector SVG construction, local raster rendering, independent scan verification and logo normalization.
 - `apps/web`: locally lazy-loaded tool UI, preview, downloads and stale-result/resource lifecycle.
-- The existing catch-all route exposes this draft tool only to local development and tests with `TOOLBOX_UI_FIXTURES=1`. Production still uses the published-only catalog and static paths.
+- Before publication, the catch-all route exposed this tool only to local development and tests with `TOOLBOX_UI_FIXTURES=1`; the production route is now statically generated from the published catalog.
 
 The app uses Nayuki's QR Code generator for the standards implementation and `jsqr` to independently inspect the browser-rendered design. A small owned SVG renderer gives the tool constrained control of finder styles, module styles and logo positions without placing payload text in SVG markup. A verified PNG logo is embedded as an inlined raster data URI; SVG logos and external resources are rejected. PNG and SVG outputs are withheld unless both scan to the exact text.
 
@@ -39,4 +39,4 @@ Files and content are never uploaded or logged. Navigating to an encoded URL is 
 
 Written unit/contract coverage checks UTF-8 and malformed Unicode, URL schemes, bounds, color contrast, presets, strict schemas, actual matrix versions/capacity, vector output and injection resistance. Playwright coverage uses the existing synthetic PNG logo fixture and tests short URL, Unicode/emoji, a 2,000-byte dense payload, scan-gated PNG/SVG downloads, safe logo normalization, invalid SVG and oversized logo, retry/cancel/reset, keyboard actions, mobile width, console errors, output signatures and absence of non-GET requests. The same scenarios are configured for Chromium and WebKit; the dense case records only payload byte count, elapsed generation time and PNG size.
 
-The final suite after TBX-018 passed unit/integration and Chromium/WebKit scenarios, including dense-payload local scan verification and mobile interactions. Desktop/mobile evidence and resource bounds are recorded in the report. Browser latency and physical-device heap measurements were not captured, so those remain explicit performance risks. The catalog stays draft pending exact-head GitHub validation.
+The final suite after TBX-018 passed unit/integration and Chromium/WebKit scenarios, including dense-payload local scan verification and mobile interactions. Desktop/mobile evidence and resource bounds are recorded in the report. Browser latency and physical-device heap measurements were not captured, so those remain explicit performance risks. The catalog entry was published after the exact-head gate passed.

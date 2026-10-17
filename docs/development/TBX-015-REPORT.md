@@ -2,7 +2,7 @@
 
 ## Implementation state
 
-Implementation is committed locally on `feat/tbx-005-tool-suite`; the catalog remains **draft** and production routing stays published-only. Its unit/integration and Chromium/WebKit browser scenarios passed in the deferred final suite. Exact-head shared-branch GitHub validation is pending.
+Implementation is committed on `feat/tbx-005-tool-suite`; the catalog entry is published after the deferred local suite and exact-head GitHub validation passed. The publication follow-up CI result is recorded in Draft PR #5.
 
 ## Design
 
@@ -10,7 +10,7 @@ Implementation is committed locally on `feat/tbx-005-tool-suite`; the catalog re
 - `packages/contracts/src/contact-qr.ts` defines the strict Zod input schema and reuses core validation.
 - `apps/web/app/tools/contact-qr/` keeps contact values in client state, debounces live generation, checks the vCard round trip, lazily loads the existing QR browser engine, and downloads scan-checked PNG/SVG plus a matching `.vcf` file. Cancellation, stale-result guards, reset, and Blob URL cleanup follow the existing local QR workflow.
 - The existing QR matrix, PNG/SVG renderer and independent scan verification are reused. No new dependency, endpoint, upload, storage, or encoder was added.
-- The local draft route is available only with `TOOLBOX_UI_FIXTURES=1` outside production; public catalog state remains draft.
+- The route is statically generated for production and appears in the published catalog.
 
 ## Format and limits
 
@@ -28,7 +28,7 @@ The input schema and core builder reject malformed Unicode, unsupported controls
 
 Written coverage includes core validation/escape/fold/round-trip and malformed-input cases, strict contract validation, shared-engine QR matrix use, and a Playwright flow for actual PNG/SVG/vCard downloads, parsing, invalid input, reset by keyboard, mobile overflow, console errors and absent upload/URL leakage. The final combined suite passed all 159 unit/integration tests and 133 Playwright Chromium/WebKit scenarios; the real contact QR flow passed in both engines.
 
-Final `pnpm lint`, `pnpm typecheck`, `pnpm test` and standalone production `pnpm build` passed. Dedicated timing/heap benchmarks and physical-device scanner compatibility were not measured. Keep the draft catalog state pending exact-head GitHub validation.
+The deferred `pnpm lint`, `pnpm typecheck`, `pnpm test` and standalone production `pnpm build` passed. Dedicated timing/heap benchmarks and physical-device scanner compatibility were not measured. The catalog was published after the shared exact-head validation gate passed.
 
 No dependency was added. The shadcn audit checklist was reviewed and focused import/lint/type checks passed. Codebase Memory was attempted for architecture context but returned `Transport closed`; repository docs and source were inspected directly.
 

@@ -200,6 +200,48 @@ test("damaged and unsupported input fails safely while cancel, retry, reset and 
   page,
 }, info) => {
   const uploads: string[] = [];
+  await page.addInitScript(() => {
+    let heldRasterizedMessage = false;
+    const pendingMessages = new Map<Worker, number>();
+    const requestActions = new WeakMap<Worker, string>();
+    const originalPostMessage = Worker.prototype.postMessage;
+    const originalTerminate = Worker.prototype.terminate;
+
+    Worker.prototype.postMessage = function (
+      message: unknown,
+      options?: StructuredSerializeOptions | Transferable[],
+    ) {
+      const action =
+        typeof message === "object" && message !== null && "action" in message
+          ? message.action
+          : undefined;
+      if (action === "prepare" || action === "convert") requestActions.set(this, action);
+      if (
+        action === "rasterized" &&
+        requestActions.get(this) === "convert" &&
+        !heldRasterizedMessage
+      ) {
+        // Keep one real conversion in flight long enough to exercise Cancel deterministically.
+        heldRasterizedMessage = true;
+        const timer = window.setTimeout(() => {
+          pendingMessages.delete(this);
+          Reflect.apply(originalPostMessage, this, [message, options]);
+        }, 5_000);
+        pendingMessages.set(this, timer);
+        return;
+      }
+      Reflect.apply(originalPostMessage, this, [message, options]);
+    };
+
+    Worker.prototype.terminate = function () {
+      const timer = pendingMessages.get(this);
+      if (timer !== undefined) {
+        window.clearTimeout(timer);
+        pendingMessages.delete(this);
+      }
+      Reflect.apply(originalTerminate, this, []);
+    };
+  });
   page.on("request", (request) => {
     if (!new Set(["GET", "HEAD"]).has(request.method())) uploads.push(request.url());
   });
@@ -215,7 +257,7 @@ test("damaged and unsupported input fails safely while cancel, retry, reset and 
   await expect(chooseButton).toBeFocused();
   const chooser = page.waitForEvent("filechooser");
   await page.keyboard.press("Enter");
-  await (await chooser).setFiles(fixture("noise-800.jpg"));
+  await (await chooser).setFiles(fixture("noise-2000.jpg"));
   await expect(
     page.getByText("Files are ready. Review your settings.", { exact: true }),
   ).toBeVisible();

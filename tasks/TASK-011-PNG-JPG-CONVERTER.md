@@ -33,7 +33,7 @@ The limits bound retained input and output data and keep only one full image dec
 - [x] Final local regression after TBX-018: workspace lint, typecheck, tests (159 unit/integration and 133 total Chromium/WebKit E2E), standalone build, production smoke and desktop/mobile review passed.
 - [ ] Push all accumulated task commits once final regression passes, verify GitHub `validate` on exact HEAD, update shared Draft PR #5.
 
-Implementation passed the deferred local verification phase. Catalog status remains draft pending exact-head GitHub validation on the shared branch.
+Implementation and deferred local verification are complete. The catalog entry is published after the earlier exact-head gate passed; current publication-follow-up CI is tracked in Draft PR #5.
 
 ## Test evidence
 

@@ -1,6 +1,6 @@
 # TBX-012 — WebP Converter
 
-**State:** implementation passed the deferred local Chromium/WebKit suite; exact-head shared-branch GitHub validation is pending. The catalog entry remains draft.
+**State:** published in the shared branch catalog after the deferred local suite and exact-head GitHub validation passed. The publication follow-up and its current exact-head CI result are recorded in Draft PR #5.
 
 The `/tools/webp-converter` route accepts JPEG and PNG and encodes them locally using the shared browser Canvas/OffscreenCanvas image engine. It checks input signatures, MIME, extension, dimensions and decode; prepares bounded previews; processes output sequentially in a worker; verifies the resulting `image/webp`, RIFF/WEBP structure, dimensions and browser decode; and displays the actual first WebP result. One output downloads directly; a batch becomes an ordered ZIP. The UI compares actual input/output bytes and does not promise size reduction.
 
@@ -15,7 +15,7 @@ Limits are 1–10 files, 16 MiB each, 32 MiB input total, 8 megapixels and 8,192
 - Unit/integration tests cover pure limits, content/type/extension mismatch, damaged/animated/oversized inputs, actual JPEG/PNG fixtures, ZIP order/content, cancellation and output verification.
 - Playwright tests cover real single/batch downloads, WebP signatures and dimensions, PNG alpha, keyboard quality control, mobile cancellation/retry/reset, failure handling and request privacy in Chromium and WebKit projects. A separate isolated Chromium performance project records three input sizes once.
 - The final combined test run passed all 159 unit/integration tests and 133 Playwright Chromium/WebKit scenarios, including real WebP output verification, batch ordering, alpha, malformed/oversized inputs, mobile retry/cancel and absence of uploads. Standalone image/ZIP and performance evidence is in `docs/evidence/tbx-012/`.
-- `pnpm lint`, `pnpm typecheck`, `pnpm test` and standalone production `pnpm build` passed. The generated standalone server smoke test also confirmed that draft routes remain unavailable in production.
+- `pnpm lint`, `pnpm typecheck`, `pnpm test` and standalone production `pnpm build` passed. The pre-publication standalone smoke confirmed draft routes remained unavailable in production before the final catalog gate.
 - No physical mobile device testing or broad image-decoder fuzz testing has been performed.
 
 ## Chromium performance sample
