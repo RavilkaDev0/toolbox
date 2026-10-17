@@ -3,6 +3,12 @@ import localFont from "next/font/local";
 import "@toolbox/ui/styles.css";
 import { AppFooter } from "./_components/site-footer";
 import { AppHeader } from "./_components/site-header";
+import { getSiteUrl } from "./_lib/site-url";
+
+const siteUrl = getSiteUrl();
+
+const siteDescription =
+  "Browser-based PDF, image, QR and text tools. Files and text stay in your browser while tools process them locally.";
 
 const geist = localFont({
   src: "./_fonts/geist-latin.woff2",
@@ -19,12 +25,23 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
+  ...(siteUrl ? { metadataBase: siteUrl, alternates: { canonical: siteUrl } } : {}),
   title: {
     default: "Toolbox — useful tools, with privacy at the center",
     template: "%s | Toolbox",
   },
-  description:
-    "A local-first collection of document, image, QR and text tools. Tools will be listed when they are ready.",
+  description: siteDescription,
+  openGraph: {
+    type: "website",
+    siteName: "Toolbox",
+    title: "Toolbox — useful tools, with privacy at the center",
+    description: siteDescription,
+  },
+  twitter: {
+    card: "summary",
+    title: "Toolbox — useful tools, with privacy at the center",
+    description: siteDescription,
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

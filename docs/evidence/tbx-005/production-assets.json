@@ -1,0 +1,56 @@
+{
+  "server": "Next.js production standalone, loopback only",
+  "homeHeavyLibraries": [],
+  "heavyAssets": [
+    {
+      "name": "03ezgrvo6hwu7.js",
+      "bytes": 11173,
+      "gzipBytes": 4191,
+      "library": "pdf-lib"
+    },
+    {
+      "name": "0esxs2o-l6mzd.js",
+      "bytes": 1183192,
+      "gzipBytes": 363687,
+      "library": "pdfjs"
+    },
+    {
+      "name": "0gvet6ac30f0q.js",
+      "bytes": 26396,
+      "gzipBytes": 8408,
+      "library": "pdf-lib"
+    },
+    {
+      "name": "0xisb_ecskh6b.js",
+      "bytes": 455728,
+      "gzipBytes": 135395,
+      "library": "pdfjs"
+    },
+    {
+      "name": "1fpt8b2ts6ara.js",
+      "bytes": 430034,
+      "gzipBytes": 177334,
+      "library": "pdf-lib"
+    },
+    {
+      "name": "2sv2flo_czi5h.js",
+      "bytes": 26751,
+      "gzipBytes": 8518,
+      "library": "pdf-lib"
+    }
+  ],
+  "statuses": {
+    "/design-fixtures": 404,
+    "/design-fixtures/images-to-pdf": 404,
+    "/design-fixtures/merge-pdf": 404,
+    "/tools/split-pdf": 404,
+    "/tools/password-generator": 404,
+    "/tools/images-to-pdf": 200,
+    "/tools/merge-pdf": 200
+  },
+  "canonical": {
+    "images-to-pdf": "/tools/images-to-pdf",
+    "merge-pdf": "/tools/merge-pdf"
+  },
+  "publishedTools": 2
+}

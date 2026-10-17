@@ -1,0 +1,29 @@
+{
+  "browser": "chromium",
+  "measurements": [
+    {
+      "input": "image-800.pdf",
+      "inputBytes": 291341,
+      "outputBytes": 290958,
+      "processingMs": 1152,
+      "mainRealmHeapBytes": 23100000,
+      "pages": 1
+    },
+    {
+      "input": "image-2000.pdf",
+      "inputBytes": 1809327,
+      "outputBytes": 1808944,
+      "processingMs": 500,
+      "mainRealmHeapBytes": 23100000,
+      "pages": 1
+    },
+    {
+      "input": "image-4000.pdf",
+      "inputBytes": 7216658,
+      "outputBytes": 7216276,
+      "processingMs": 936,
+      "mainRealmHeapBytes": 23100000,
+      "pages": 1
+    }
+  ]
+}

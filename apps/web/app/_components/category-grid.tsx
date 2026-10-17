@@ -37,7 +37,11 @@ export function CategoryGrid({ exclude }: { exclude?: ToolCategoryId }) {
                     <CardDescription>{category.description}</CardDescription>
                   </CardHeader>
                   <CardFooter className="mt-auto justify-between text-muted-foreground">
-                    <span>{count ? `${count} published tools` : "No tools published yet"}</span>
+                    <span>
+                      {count === 0
+                        ? "No tools published yet"
+                        : `${count} published ${count === 1 ? "tool" : "tools"}`}
+                    </span>
                     <ArrowUpRight aria-hidden="true" className="size-4 text-primary" />
                   </CardFooter>
                 </Card>

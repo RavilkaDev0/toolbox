@@ -1,0 +1,20 @@
+[
+  {
+    "input": "landscape.jpg",
+    "inputBytes": 2619,
+    "outputBytes": 1470,
+    "elapsedMs": 550
+  },
+  {
+    "input": "noise-800.jpg",
+    "inputBytes": 289744,
+    "outputBytes": 184333,
+    "elapsedMs": 487
+  },
+  {
+    "input": "noise-2000.jpg",
+    "inputBytes": 1807723,
+    "outputBytes": 1148295,
+    "elapsedMs": 547
+  }
+]

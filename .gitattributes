@@ -1,0 +1,3 @@
+# PDF fixtures and downloads must retain byte offsets and original line endings.
+*.pdf binary
+apps/web/next-env.d.ts text eol=lf

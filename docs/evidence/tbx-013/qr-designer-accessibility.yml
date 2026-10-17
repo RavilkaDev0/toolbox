@@ -1,0 +1,54 @@
+- generic [active] [ref=f6e1]:
+  - link "Skip to main content" [ref=f6e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=f6e3]:
+    - generic [ref=f6e4]:
+      - link "Toolbox home" [ref=f6e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f6e11]: Toolbox.
+      - navigation "Main navigation" [ref=f6e12]:
+        - link "Categories" [ref=f6e13] [cursor=pointer]:
+          - /url: /#categories
+        - link "Our approach" [ref=f6e14] [cursor=pointer]:
+          - /url: /#privacy
+        - link "Tools" [ref=f6e15] [cursor=pointer]:
+          - /url: /tools
+  - generic [ref=f6e19]:
+    - banner [ref=f6e20]:
+      - paragraph [ref=f6e21]: QR tools · Browser-local
+      - heading "QR designer" [level=1] [ref=f6e22]
+      - paragraph [ref=f6e23]: Create an accessible QR code from plain text or an HTTP(S) URL. Adjust the look, add a small logo, and download a PNG or vector SVG after a local scan check.
+      - paragraph [ref=f6e24]: Your text and logo stay in this browser tab. The QR is decoded locally before download; different cameras and scanning apps can still vary.
+    - region "QR designer workspace" [ref=f6e25]:
+      - region "Tool workspace" [ref=f6e26]:
+        - heading "Tool workspace" [level=2] [ref=f6e27]
+        - generic [ref=f6e28]
+        - generic [ref=f6e42]
+    - region [ref=f6e88]:
+      - heading "How to make a QR code" [level=2] [ref=f6e89]
+      - list [ref=f6e90]:
+        - listitem [ref=f6e91]: Enter a complete HTTP or HTTPS URL, or switch to plain text.
+        - listitem [ref=f6e92]: Choose a preset, size, quiet zone, contrast-safe colors and error correction.
+        - listitem [ref=f6e93]: Optionally add a small PNG or JPEG logo. The tool normalizes it to a safe raster image.
+        - listitem [ref=f6e94]: Wait for the PNG and vector SVG to decode back to the exact content, then download either format.
+      - paragraph [ref=f6e95]: QR data is encoded with Reed–Solomon error correction. Logos and decorative module styles can reduce scan reliability; this tool blocks downloads when its independent browser scanner cannot read the exact content. It does not guarantee that every camera will scan every design. Payloads are limited to 2 KiB before the QR version and error-correction capacity are considered. Logo files must be PNG or JPEG, at most 1 MiB, 512 pixels per side and 0.25 megapixels. Animated or vector logos are not accepted.
+      - navigation "Related tools" [ref=f6e96]:
+        - link "Explore QR tools" [ref=f6e97] [cursor=pointer]:
+          - /url: /categories/qr
+        - link "Explore image tools" [ref=f6e98] [cursor=pointer]:
+          - /url: /categories/image
+        - link "Browse all published tools" [ref=f6e99] [cursor=pointer]:
+          - /url: /tools
+  - contentinfo [ref=f6e100]:
+    - generic [ref=f6e101]:
+      - generic [ref=f6e102]:
+        - paragraph [ref=f6e103]: Toolbox.
+        - paragraph [ref=f6e104]: Thoughtful tools. Less friction.
+        - paragraph [ref=f6e105]: Built with privacy at the center.
+      - navigation "Footer navigation" [ref=f6e106]:
+        - link "Tool catalog" [ref=f6e107] [cursor=pointer]:
+          - /url: /tools
+        - link "Privacy approach" [ref=f6e108] [cursor=pointer]:
+          - /url: /#privacy
+  - button "Open Next.js Dev Tools" [ref=f6e114] [cursor=pointer]
+  - alert [ref=f6e118]

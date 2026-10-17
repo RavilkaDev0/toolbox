@@ -1,9 +1,7 @@
 import { getPublishedTools } from "@toolbox/core";
 import { ArrowRight, CheckCircle2, HardDrive, ShieldCheck, SlidersHorizontal } from "lucide-react";
 import Link from "next/link";
-import { CatalogEmpty } from "./_components/catalog-empty";
 import { CategoryGrid } from "./_components/category-grid";
-import { ToolCard } from "./_components/tool-card";
 import { ToolSearch } from "./_components/tool-search";
 
 export default function HomePage() {
@@ -21,15 +19,15 @@ export default function HomePage() {
           Useful tools, with <span className="text-primary">privacy at the center</span>
         </h1>
         <p className="text-lg text-muted-foreground">
-          Everyday file tasks, made simpler. We are building focused tools for documents, images and
-          text, with browser processing wherever possible.
+          Everyday PDF, image, QR and text tasks, handled locally in your browser without an
+          account.
         </p>
         <div className="w-full text-left">
           <ToolSearch />
         </div>
         <p className="text-sm text-muted-foreground">
           {tools.length
-            ? "Images to PDF is ready to use. Create and preview your PDF locally, without registration."
+            ? `Search and browse all ${tools.length} published tools. Processing stays in your browser.`
             : "No tools have been published yet. Each tool will appear after its behavior and limits have been tested."}
         </p>
         <Link className="text-link" href="/tools">
@@ -44,7 +42,9 @@ export default function HomePage() {
             <h2 className="text-3xl font-semibold tracking-tight" id="categories-title">
               A place for every task
             </h2>
-            <p className="mt-3 text-muted-foreground">Explore the categories taking shape.</p>
+            <p className="mt-3 text-muted-foreground">
+              Browse tools by the task you need to complete.
+            </p>
           </div>
           <Link className="text-link text-sm" href="/tools">
             View tool catalog
@@ -52,22 +52,6 @@ export default function HomePage() {
           </Link>
         </div>
         <CategoryGrid />
-      </section>
-      <section aria-labelledby="published-title" className="section">
-        <h2 className="mb-6 text-2xl font-semibold tracking-tight" id="published-title">
-          Published tools
-        </h2>
-        {tools.length ? (
-          <ul className="tool-grid">
-            {tools.map((tool) => (
-              <li key={tool.id}>
-                <ToolCard tool={tool} />
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <CatalogEmpty />
-        )}
       </section>
       <section
         aria-labelledby="privacy-title"
@@ -83,16 +67,17 @@ export default function HomePage() {
             Your files deserve care.
           </h2>
           <p className="mt-4 text-muted-foreground">
-            Privacy is a design requirement. These principles guide the tools we are building.
+            Privacy is a design requirement. These principles guide how every tool handles your data
+            and choices.
           </p>
         </div>
         <ul className="mt-8 grid gap-8 md:grid-cols-3">
           <li>
             <HardDrive aria-hidden="true" className="mb-4 size-5 text-primary" />
-            <h3 className="font-semibold">Local whenever possible</h3>
+            <h3 className="font-semibold">Local processing</h3>
             <p className="mt-3 text-sm text-muted-foreground">
-              Browser-processable files will stay on your device. Any server processing must be
-              clearly explained before you begin.
+              Files and text stay in your browser while tools process them. Toolbox does not receive
+              your tool inputs.
             </p>
           </li>
           <li>

@@ -1,0 +1,22 @@
+{
+  "runtime": "Node.js v24.19.0",
+  "method": "Compiled core transform only; synthetic mixed-case Unicode (ß), emoji and punctuation input; one warm-up then seven timed runs per sample; median reported.",
+  "note": "These are not browser input-to-render latency or heap measurements.",
+  "results": [
+    { "mode": "uppercase", "inputCodeUnits": 1000, "medianMs": 0.006, "outputCodeUnits": 1021 },
+    { "mode": "uppercase", "inputCodeUnits": 10000, "medianMs": 0.057, "outputCodeUnits": 10213 },
+    { "mode": "uppercase", "inputCodeUnits": 100000, "medianMs": 0.685, "outputCodeUnits": 102128 },
+    { "mode": "lowercase", "inputCodeUnits": 1000, "medianMs": 0.005, "outputCodeUnits": 1000 },
+    { "mode": "lowercase", "inputCodeUnits": 10000, "medianMs": 0.016, "outputCodeUnits": 10000 },
+    { "mode": "lowercase", "inputCodeUnits": 100000, "medianMs": 0.163, "outputCodeUnits": 100000 },
+    { "mode": "title", "inputCodeUnits": 1000, "medianMs": 0.785, "outputCodeUnits": 1021 },
+    { "mode": "title", "inputCodeUnits": 10000, "medianMs": 8.86, "outputCodeUnits": 10213 },
+    { "mode": "title", "inputCodeUnits": 100000, "medianMs": 83.207, "outputCodeUnits": 102128 },
+    { "mode": "sentence", "inputCodeUnits": 1000, "medianMs": 0.188, "outputCodeUnits": 1000 },
+    { "mode": "sentence", "inputCodeUnits": 10000, "medianMs": 1.551, "outputCodeUnits": 10000 },
+    { "mode": "sentence", "inputCodeUnits": 100000, "medianMs": 18.518, "outputCodeUnits": 100000 },
+    { "mode": "toggle", "inputCodeUnits": 1000, "medianMs": 0.428, "outputCodeUnits": 1021 },
+    { "mode": "toggle", "inputCodeUnits": 10000, "medianMs": 3.513, "outputCodeUnits": 10213 },
+    { "mode": "toggle", "inputCodeUnits": 100000, "medianMs": 33.542, "outputCodeUnits": 102128 }
+  ]
+}

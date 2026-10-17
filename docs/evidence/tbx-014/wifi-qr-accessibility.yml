@@ -1,0 +1,62 @@
+- generic [active] [ref=f7e1]:
+  - link "Skip to main content" [ref=f7e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=f7e3]:
+    - generic [ref=f7e4]:
+      - link "Toolbox home" [ref=f7e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f7e11]: Toolbox.
+      - navigation "Main navigation" [ref=f7e12]:
+        - link "Categories" [ref=f7e13] [cursor=pointer]:
+          - /url: /#categories
+        - link "Our approach" [ref=f7e14] [cursor=pointer]:
+          - /url: /#privacy
+        - link "Tools" [ref=f7e15] [cursor=pointer]:
+          - /url: /tools
+  - main [ref=f7e19]:
+    - navigation "Breadcrumb" [ref=f7e20]:
+      - link "Tools" [ref=f7e21] [cursor=pointer]:
+        - /url: /tools
+      - generic [aria-hidden] [ref=f7e22]: /
+      - link "QR codes" [ref=f7e23] [cursor=pointer]:
+        - /url: /categories/qr
+      - generic [aria-hidden] [ref=f7e24]: /
+      - generic [ref=f7e25]: Wi-Fi QR code
+    - generic [ref=f7e26]:
+      - paragraph [ref=f7e27]: QR tools · Browser-local
+      - heading "Wi-Fi QR code" [level=1] [ref=f7e28]
+      - paragraph [ref=f7e29]: Create a Wi-Fi QR code for a secured, hidden or open network. The browser checks the generated PNG and vector SVG before offering either download.
+      - paragraph [ref=f7e30]: Network details stay in this tab and are not saved or uploaded. QR connection support varies by phone, camera, scanner app and Wi-Fi security mode.
+    - region "Wi-Fi QR workspace" [ref=f7e31]:
+      - region "Tool workspace" [ref=f7e32]:
+        - heading "Tool workspace" [level=2] [ref=f7e33]
+        - generic [ref=f7e34]
+        - generic [ref=f7e62]
+    - region [ref=f7e69]:
+      - heading "Share a Wi-Fi QR code" [level=2] [ref=f7e70]
+      - list [ref=f7e71]:
+        - listitem [ref=f7e72]: Enter the network name exactly as it appears in Wi-Fi settings.
+        - listitem [ref=f7e73]: Choose the network's actual security type and enter its password if required.
+        - listitem [ref=f7e74]: Mark the network hidden only when its SSID is not broadcast.
+        - listitem [ref=f7e75]: Generate, check and download the code. Test it with the intended device before sharing.
+      - paragraph [ref=f7e76]: Wi-Fi QR text follows a widely used device configuration format, not a universal promise of one-tap connection. WPA uses the QR type WPA for WPA/WPA2 and transition networks. WPA3-Personal uses the SAE extension, which some newer Android readers support and some other scanners may not. WEP is a legacy option. Anyone who scans the generated QR can read its network details, so share it only with people you trust.
+      - navigation "Related tools" [ref=f7e77]:
+        - link "Design a QR code from text or a URL" [ref=f7e78] [cursor=pointer]:
+          - /url: /tools/qr-designer
+        - link "Create a contact QR code" [ref=f7e79] [cursor=pointer]:
+          - /url: /tools/contact-qr
+        - link "Explore QR tools" [ref=f7e80] [cursor=pointer]:
+          - /url: /categories/qr
+  - contentinfo [ref=f7e81]:
+    - generic [ref=f7e82]:
+      - generic [ref=f7e83]:
+        - paragraph [ref=f7e84]: Toolbox.
+        - paragraph [ref=f7e85]: Thoughtful tools. Less friction.
+        - paragraph [ref=f7e86]: Built with privacy at the center.
+      - navigation "Footer navigation" [ref=f7e87]:
+        - link "Tool catalog" [ref=f7e88] [cursor=pointer]:
+          - /url: /tools
+        - link "Privacy approach" [ref=f7e89] [cursor=pointer]:
+          - /url: /#privacy
+  - button "Open Next.js Dev Tools" [ref=f7e95] [cursor=pointer]
+  - alert [ref=f7e99]

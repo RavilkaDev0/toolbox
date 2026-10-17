@@ -11,6 +11,8 @@ Office workers, freelancers, small teams, students and occasional document/visua
 
 ## Tool catalog v1 (15 target; 6–8 essential launch gate)
 
+The table records the initial product scope. As of 2026-10-17, all 15 entries are implemented and published on the shared feature branch for review in Draft PR #5; see the [final verification report](development/TOOLBOX-15-TOOLS-FINAL-REPORT.md). This is branch status, not a production release.
+
 | ID/Slug | Engine | Input → Output | Key settings | Processing |
 |---|---|---|---|---|
 | images-to-pdf | pdf | JPEG/PNG/WebP → PDF | A4/Letter/Auto, margin, order, fit | Browser |

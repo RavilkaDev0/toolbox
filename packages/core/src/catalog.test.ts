@@ -1,12 +1,34 @@
 import { describe, expect, it } from "vitest";
-import { getPublishedTools, toolCatalog, validateToolCatalog } from "./catalog.js";
+import { getPublishedTools, getToolBySlug, toolCatalog, validateToolCatalog } from "./catalog.js";
 
 describe("tool catalog", () => {
-  it("publishes only the verified Images to PDF tool", () => {
+  it("publishes all verified local tools", () => {
     expect(() => validateToolCatalog(toolCatalog)).not.toThrow();
     expect(toolCatalog).toHaveLength(15);
-    expect(getPublishedTools().map((tool) => tool.slug)).toEqual(["images-to-pdf"]);
-    expect(toolCatalog.filter((tool) => tool.status === "draft")).toHaveLength(14);
+    expect(getPublishedTools().map((tool) => tool.slug)).toEqual([
+      "images-to-pdf",
+      "merge-pdf",
+      "split-pdf",
+      "rotate-pdf",
+      "pdf-to-png",
+      "image-compressor",
+      "image-resizer",
+      "png-jpg-converter",
+      "webp-converter",
+      "qr-designer",
+      "wifi-qr",
+      "contact-qr",
+      "password-generator",
+      "word-counter",
+      "case-converter",
+    ]);
+    expect(toolCatalog.filter((tool) => tool.status === "draft")).toHaveLength(0);
+    expect(getToolBySlug("qr-designer")).toMatchObject({ status: "published" });
+    expect(toolCatalog.find((tool) => tool.slug === "qr-designer")).toMatchObject({
+      acceptedMimeTypes: ["image/png", "image/jpeg"],
+      maxInputFiles: 1,
+      status: "published",
+    });
   });
 
   it("rejects duplicate ids and slugs", () => {

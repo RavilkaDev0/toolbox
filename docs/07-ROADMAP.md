@@ -2,6 +2,10 @@
 
 These are planning estimates, not guarantees. Solo evenings/weekends, with AI assistance. The release gate prioritizes correctness over the number of tools.
 
+## Current tool delivery plan
+
+TBX-004–018 are implemented and published in the shared `feat/tbx-005-tool-suite` branch. Draft PR #5 targets `dev` and awaits review; no merge, release or deployment has occurred. The [tool suite workflow](development/TOOL-SUITE-WORKFLOW.md) and [final report](development/TOOLBOX-15-TOOLS-FINAL-REPORT.md) hold the current delivery details. The milestones below are historical planning, not the active task mapping.
+
 ## Week 1 — foundation and vertical slice
 The current TBX-004 specification combines workspace/file handling with the real Images to PDF reference tool. It supersedes the original 004/005 split below; the original TBX-005 acceptance scope is covered by TBX-004. Subsequent ticket numbers are unchanged.
 - **TBX-001** [P0] Repository scaffold (Next.js + NestJS Fastify + pnpm workspaces + packages; no DB, no worker). Acceptance: clean install/lint/typecheck/build and local dev.

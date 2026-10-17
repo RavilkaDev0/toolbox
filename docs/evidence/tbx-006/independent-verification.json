@@ -1,0 +1,179 @@
+{
+  "fixture": "split-pages.pdf",
+  "fixtureBytes": 6542,
+  "parser": "pypdf 6.10.0: text, content stream, page boxes, rotation and page counts match",
+  "zipParser": "Python standard library zipfile: exact page-only entry names and count",
+  "renderer": "pypdfium2 independent raster dimensions and SHA-256 match every source page",
+  "extract": {
+    "bytes": 4684,
+    "sha256": "a4a9646fcaf94765ac1a05b01db188ec41bb5e64bd4a0b30aae9739a6c0d38b4",
+    "pages": [
+      {
+        "sourcePage": 1,
+        "mediaBox": [0.0, 0.0, 595.2756, 841.8898],
+        "cropBox": [0.0, 0.0, 595.2756, 841.8898],
+        "rotation": 0,
+        "textMatches": true,
+        "contentStreamMatches": true,
+        "pdfiumBitmapSha256": "40a18f0a6f0248067755c5c7f558f250531fb15755c03a17e6f15241c73b92dc",
+        "renderMatchesSource": true
+      },
+      {
+        "sourcePage": 2,
+        "mediaBox": [0.0, 0.0, 841.8898, 595.2756],
+        "cropBox": [0.0, 0.0, 841.8898, 595.2756],
+        "rotation": 90,
+        "textMatches": true,
+        "contentStreamMatches": true,
+        "pdfiumBitmapSha256": "24c4d356bf6c9abc64bc907a0fc3d3c6f15cfddb9e5120c3c87a98c219cd6ad5",
+        "renderMatchesSource": true
+      },
+      {
+        "sourcePage": 4,
+        "mediaBox": [0.0, 0.0, 595.2756, 841.8898],
+        "cropBox": [12.0, 20.0, 580.0, 760.0],
+        "rotation": 270,
+        "textMatches": true,
+        "contentStreamMatches": true,
+        "pdfiumBitmapSha256": "0e08d4472661da11399e742d3233c11a83fc942cca911babcb32ad87c891d08e",
+        "renderMatchesSource": true
+      },
+      {
+        "sourcePage": 5,
+        "mediaBox": [0.0, 0.0, 612.0, 792.0],
+        "cropBox": [0.0, 0.0, 612.0, 792.0],
+        "rotation": 0,
+        "textMatches": true,
+        "contentStreamMatches": true,
+        "pdfiumBitmapSha256": "953eb034614e0708fe40050478e83efefa6cca908504cc9abc65c4337adbbefd",
+        "renderMatchesSource": true
+      }
+    ]
+  },
+  "archives": {
+    "standalone-selected-pages.zip": {
+      "bytes": 7836,
+      "sha256": "4b8ed676b425ae72dacf012d57dfa4c86eea108bf87aa37b5aad36b025f7d7c0",
+      "files": [
+        {
+          "name": "page-001.pdf",
+          "bytes": 3782,
+          "sha256": "9328939edb5655f58fcdc25f796ef2b2fd8ad6913c9c15ba1f84ed70e6630386",
+          "pages": [
+            {
+              "sourcePage": 1,
+              "mediaBox": [0.0, 0.0, 595.2756, 841.8898],
+              "cropBox": [0.0, 0.0, 595.2756, 841.8898],
+              "rotation": 0,
+              "textMatches": true,
+              "contentStreamMatches": true
+            }
+          ],
+          "renderMatchesSource": true
+        },
+        {
+          "name": "page-004.pdf",
+          "bytes": 3800,
+          "sha256": "3229e52215f2ca0cd0c0064a733b0ec40b8a259b6aa4208a133cee782ffd229a",
+          "pages": [
+            {
+              "sourcePage": 4,
+              "mediaBox": [0.0, 0.0, 595.2756, 841.8898],
+              "cropBox": [12.0, 20.0, 580.0, 760.0],
+              "rotation": 270,
+              "textMatches": true,
+              "contentStreamMatches": true
+            }
+          ],
+          "renderMatchesSource": true
+        }
+      ]
+    },
+    "standalone-all-pages-test.zip": {
+      "bytes": 19504,
+      "sha256": "f1e9111b121f602efb462865ecef1390dc7d9483555fe4942b142a944884522a",
+      "files": [
+        {
+          "name": "page-001.pdf",
+          "bytes": 3782,
+          "sha256": "2acdfe80542acf08e09b0afda6ed4c83c2e867254aab4c2dc89573368c31a25c",
+          "pages": [
+            {
+              "sourcePage": 1,
+              "mediaBox": [0.0, 0.0, 595.2756, 841.8898],
+              "cropBox": [0.0, 0.0, 595.2756, 841.8898],
+              "rotation": 0,
+              "textMatches": true,
+              "contentStreamMatches": true
+            }
+          ],
+          "renderMatchesSource": true
+        },
+        {
+          "name": "page-002.pdf",
+          "bytes": 3781,
+          "sha256": "651bc44a1be4dc6cb29ada06bca4905914f8fce2c15ae640cf47e9a1148f9d0e",
+          "pages": [
+            {
+              "sourcePage": 2,
+              "mediaBox": [0.0, 0.0, 841.8898, 595.2756],
+              "cropBox": [0.0, 0.0, 841.8898, 595.2756],
+              "rotation": 90,
+              "textMatches": true,
+              "contentStreamMatches": true
+            }
+          ],
+          "renderMatchesSource": true
+        },
+        {
+          "name": "page-003.pdf",
+          "bytes": 3770,
+          "sha256": "ca053e36d5553ab8980fb9aa40fb0315fe9346cd090a8c1dc34b9992e7af8a24",
+          "pages": [
+            {
+              "sourcePage": 3,
+              "mediaBox": [0.0, 0.0, 612.0, 792.0],
+              "cropBox": [0.0, 0.0, 612.0, 792.0],
+              "rotation": 0,
+              "textMatches": true,
+              "contentStreamMatches": true
+            }
+          ],
+          "renderMatchesSource": true
+        },
+        {
+          "name": "page-004.pdf",
+          "bytes": 3800,
+          "sha256": "1b46e0e48f53e439605ab5920b827dc348c5f4fff36be36dd0c1744cb81ca5e4",
+          "pages": [
+            {
+              "sourcePage": 4,
+              "mediaBox": [0.0, 0.0, 595.2756, 841.8898],
+              "cropBox": [12.0, 20.0, 580.0, 760.0],
+              "rotation": 270,
+              "textMatches": true,
+              "contentStreamMatches": true
+            }
+          ],
+          "renderMatchesSource": true
+        },
+        {
+          "name": "page-005.pdf",
+          "bytes": 3769,
+          "sha256": "113f3a19788fb3f5a76e32d8030302e8984fb34fca78871b822c1a8d51a3e778",
+          "pages": [
+            {
+              "sourcePage": 5,
+              "mediaBox": [0.0, 0.0, 612.0, 792.0],
+              "cropBox": [0.0, 0.0, 612.0, 792.0],
+              "rotation": 0,
+              "textMatches": true,
+              "contentStreamMatches": true
+            }
+          ],
+          "renderMatchesSource": true
+        }
+      ]
+    }
+  }
+}

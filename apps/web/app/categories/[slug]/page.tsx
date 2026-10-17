@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { CatalogEmpty } from "../../_components/catalog-empty";
 import { CategoryGrid, categoryIcons } from "../../_components/category-grid";
 import { ToolCard } from "../../_components/tool-card";
+import { createPageMetadata } from "../../_lib/site-url";
 
 type CategoryPageProps = { params: Promise<{ slug: string }> };
 export const dynamicParams = false;
@@ -16,11 +17,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   const { slug } = await params;
   const category = categories.find((item) => item.id === slug);
   return category
-    ? {
-        title: category.title,
-        description: category.description,
-        alternates: { canonical: `/categories/${category.id}` },
-      }
+    ? createPageMetadata(category.title, category.description, `/categories/${category.id}`)
     : { title: "Category not found" };
 }
 export default async function CategoryPage({ params }: CategoryPageProps) {

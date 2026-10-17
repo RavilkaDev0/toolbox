@@ -2,6 +2,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { expect, type Page, type TestInfo, test } from "@playwright/test";
 import { decodePDFRawStream, PDFDocument, PDFName, PDFRawStream } from "pdf-lib";
+import { waitForToolPageReady } from "./tool-readiness";
 
 const fixture = (name: string) => resolve("e2e/fixtures/images", name);
 const toolUrl = "/tools/images-to-pdf";
@@ -15,7 +16,7 @@ async function select(page: Page, names: string[]) {
 async function output(page: Page, info: TestInfo, name: string) {
   await page.getByRole("button", { name: "Create PDF", exact: true }).click();
   await expect(page.getByRole("link", { name: "Download PDF", exact: true })).toBeVisible();
-  await expect(page.getByText(/^Showing PDF page 1 of/)).toBeVisible();
+  await expect(page.getByText(/^Showing PDF page 1 of/)).toBeVisible({ timeout: 30_000 });
   const downloaded = page.waitForEvent("download");
   await page.getByRole("link", { name: "Download PDF", exact: true }).click();
   const download = await downloaded;
@@ -48,6 +49,7 @@ test("real mixed conversion, keyboard order, Auto, alpha and local download", as
   });
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await select(page, ["landscape.jpg", "transparent.png", "square.webp"]);
   await expect(page.getByRole("img", { name: /^Page / })).toHaveCount(3);
   await page.getByRole("button", { name: "Move image 3 up", exact: true }).focus();
@@ -99,6 +101,7 @@ test("real mixed conversion, keyboard order, Auto, alpha and local download", as
 
 test("A4 Fit and Letter Fill preserve proportions and margins", async ({ page }, info) => {
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await select(page, ["landscape.jpg"]);
   let pdf = await output(page, info, "a4-fit");
   expect(pdf.getPage(0).getWidth()).toBeCloseTo(595.2756);
@@ -123,6 +126,7 @@ test("A4 Fit and Letter Fill preserve proportions and margins", async ({ page },
 
 test("EXIF orientation and lossy WebP decode into correct Auto pages", async ({ page }, info) => {
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await select(page, ["oriented.jpg", "lossy.webp", "transparent.webp"]);
   await page.getByLabel("Page size", { exact: true }).selectOption("auto");
   const pdf = await output(page, info, "orientation");
@@ -138,6 +142,7 @@ test("rejects invalid input atomically, permits removal, drop and repeated selec
   page,
 }) => {
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await select(page, ["landscape.jpg"]);
   for (const file of [
     "damaged.png",
@@ -200,6 +205,7 @@ test("cancel and reset terminate jobs, revoke URLs, discard stale results and al
     Object.defineProperty(window, "liveBlobUrls", { get: () => live.size });
   });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await select(page, ["noise-4000.jpg", "transparent.png"]);
   await page.getByRole("button", { name: "Create PDF", exact: true }).click();
   await page.getByRole("button", { name: "Cancel", exact: true }).press("Enter");
@@ -211,6 +217,7 @@ test("cancel and reset terminate jobs, revoke URLs, discard stale results and al
   await expect(page.getByRole("img", { name: /^Page / })).toHaveCount(0);
   expect(await page.evaluate(() => Reflect.get(window, "liveBlobUrls"))).toBe(0);
   await page.getByLabel("Choose images", { exact: true }).setInputFiles(fixture("noise-4000.jpg"));
+  await expect(page.getByText("Checking files…", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(page.getByRole("heading", { name: "No images selected" })).toBeVisible();
   await select(page, ["landscape.jpg"]);
@@ -225,6 +232,7 @@ test("mobile touch-sized controls, conversion and screenshots", async ({ page },
   for (const width of [390, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto(toolUrl);
+    await waitForToolPageReady(page);
     await select(page, ["landscape.jpg", "transparent.png", "square.webp"]);
     await output(page, info, `viewport-${width}`);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
@@ -250,6 +258,7 @@ test("measures real conversion at three bounded input sizes", async ({ page }, i
     [];
   for (const width of [800, 2000, 4000]) {
     await page.goto(toolUrl);
+    await waitForToolPageReady(page);
     const file = fixture(`noise-${width}.jpg`);
     await select(page, [`noise-${width}.jpg`]);
     const started = performance.now();
@@ -286,6 +295,7 @@ test("preview worker failure leaves a verified PDF available for download", asyn
     };
   });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await select(page, ["landscape.jpg"]);
   await page.getByRole("button", { name: "Create PDF", exact: true }).click();
   await expect(

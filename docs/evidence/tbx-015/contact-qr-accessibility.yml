@@ -1,0 +1,62 @@
+- generic [active] [ref=f8e1]:
+  - link "Skip to main content" [ref=f8e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=f8e3]:
+    - generic [ref=f8e4]:
+      - link "Toolbox home" [ref=f8e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f8e11]: Toolbox.
+      - navigation "Main navigation" [ref=f8e12]:
+        - link "Categories" [ref=f8e13] [cursor=pointer]:
+          - /url: /#categories
+        - link "Our approach" [ref=f8e14] [cursor=pointer]:
+          - /url: /#privacy
+        - link "Tools" [ref=f8e15] [cursor=pointer]:
+          - /url: /tools
+  - main [ref=f8e19]:
+    - navigation "Breadcrumb" [ref=f8e20]:
+      - link "Tools" [ref=f8e21] [cursor=pointer]:
+        - /url: /tools
+      - generic [aria-hidden] [ref=f8e22]: /
+      - link "QR codes" [ref=f8e23] [cursor=pointer]:
+        - /url: /categories/qr
+      - generic [aria-hidden] [ref=f8e24]: /
+      - generic [ref=f8e25]: Contact QR code
+    - generic [ref=f8e26]:
+      - paragraph [ref=f8e27]: QR tools · Browser-local
+      - heading "Contact QR code" [level=1] [ref=f8e28]
+      - paragraph [ref=f8e29]: Make a contact QR with a scan-checked vCard preview. Add only the name and contact details you want other people to save.
+      - paragraph [ref=f8e30]: Contact values stay in this browser tab and are not uploaded or saved by this tool. Anyone who scans the code or opens the vCard can read the details included.
+    - region "Contact QR workspace" [ref=f8e31]:
+      - region "Tool workspace" [ref=f8e32]:
+        - heading "Tool workspace" [level=2] [ref=f8e33]
+        - generic [ref=f8e34]
+        - generic [ref=f8e72]
+    - region [ref=f8e79]:
+      - heading "Create a contact QR code" [level=2] [ref=f8e80]
+      - list [ref=f8e81]:
+        - listitem [ref=f8e82]: Enter a full name. Organization, title, phone, email, website and address are optional.
+        - listitem [ref=f8e83]: Review the live QR preview after each change; the browser verifies its decoded contact card.
+        - listitem [ref=f8e84]: Download the QR image or a vCard file that can be imported into a contacts app.
+        - listitem [ref=f8e85]: Test the code with the device or app where the contact will be added before sharing.
+      - paragraph [ref=f8e86]: The export uses vCard 3.0 with escaped text fields and folded long lines. QR capacity and scanner support vary; no preview can guarantee import behavior in every camera or contact app. The vCard and QR contain the same personal information, so share either only with people you trust.
+      - navigation "Related tools" [ref=f8e87]:
+        - link "Design a QR code from text or a URL" [ref=f8e88] [cursor=pointer]:
+          - /url: /tools/qr-designer
+        - link "Create a Wi-Fi QR code" [ref=f8e89] [cursor=pointer]:
+          - /url: /tools/wifi-qr
+        - link "Explore QR tools" [ref=f8e90] [cursor=pointer]:
+          - /url: /categories/qr
+  - contentinfo [ref=f8e91]:
+    - generic [ref=f8e92]:
+      - generic [ref=f8e93]:
+        - paragraph [ref=f8e94]: Toolbox.
+        - paragraph [ref=f8e95]: Thoughtful tools. Less friction.
+        - paragraph [ref=f8e96]: Built with privacy at the center.
+      - navigation "Footer navigation" [ref=f8e97]:
+        - link "Tool catalog" [ref=f8e98] [cursor=pointer]:
+          - /url: /tools
+        - link "Privacy approach" [ref=f8e99] [cursor=pointer]:
+          - /url: /#privacy
+  - button "Open Next.js Dev Tools" [ref=f8e105] [cursor=pointer]
+  - alert [ref=f8e109]

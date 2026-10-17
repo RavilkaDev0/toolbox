@@ -13,6 +13,7 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@toolbox/ui/co
 import { Field, FieldGroup, FieldLabel } from "@toolbox/ui/components/field";
 import { useEffect, useRef, useState } from "react";
 import { FileDropzone } from "../../_components/workspace/file-dropzone";
+import { PdfPreview } from "../../_components/workspace/pdf-preview";
 import {
   ProcessingStatus,
   type WorkspaceState,
@@ -22,7 +23,6 @@ import {
   ResultRegion,
   ToolWorkspace,
 } from "../../_components/workspace/tool-workspace";
-import { PdfPreview } from "./pdf-preview";
 
 type SelectedImage = { id: string; file: File; url: string; width: number; height: number };
 type Result = ImagePdfResult & { url: string };
@@ -78,6 +78,7 @@ export default function ImagesWorkspace() {
     controller.current = abort;
     setError("");
     setState(request.action === "prepare" ? "validating" : "processing");
+    setAnnouncement("");
     try {
       const active = new Worker(new URL("./pdf.worker.ts", import.meta.url), { type: "module" });
       worker.current = active;

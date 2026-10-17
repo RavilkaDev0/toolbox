@@ -9,6 +9,21 @@
       "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
       "default": "./dist/index.js"
+    },
+    "./png-jpg-converter": {
+      "types": "./dist/png-jpg-converter.d.ts",
+      "require": "./dist/png-jpg-converter.js",
+      "default": "./dist/png-jpg-converter.js"
+    },
+    "./webp-converter": {
+      "types": "./dist/webp-converter.d.ts",
+      "require": "./dist/webp-converter.js",
+      "default": "./dist/webp-converter.js"
+    },
+    "./qr-designer": {
+      "types": "./dist/qr-designer.d.ts",
+      "require": "./dist/qr-designer.js",
+      "default": "./dist/qr-designer.js"
     }
   },
   "files": [
@@ -25,6 +40,9 @@
   "dependencies": {
     "@toolbox/contracts": "workspace:*",
     "@toolbox/core": "workspace:*",
+    "fflate": "0.8.3",
+    "jsqr": "1.4.0",
+    "nayuki-qr-code-generator": "1.8.0",
     "pdf-lib": "1.17.1",
     "pdfjs-dist": "6.3.289"
   }

@@ -23,6 +23,15 @@ export function AppFooter() {
           <Link className="text-link" href="/#privacy">
             Privacy approach
           </Link>
+          <Link className="text-link" href="/privacy">
+            Privacy policy
+          </Link>
+          <Link className="text-link" href="/terms">
+            Terms
+          </Link>
+          <Link className="text-link" href="/contact">
+            Contact
+          </Link>
         </nav>
       </div>
     </footer>

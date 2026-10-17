@@ -1,0 +1,38 @@
+{
+  "pdfBytes": 7191,
+  "pdfSha256": "9e7a111adbe7bad8e0602b472d8938cf5905e0bd79f34f25c230a9ae7dfd2e68",
+  "pages": [
+    {
+      "page": 1,
+      "text": "SYNTHETIC letter.pdf PAGE 1",
+      "mediaBox": [0.0, 0.0, 612.0, 792.0],
+      "cropBox": [12.0, 20.0, 580.0, 760.0],
+      "rotation": 90,
+      "pdfiumSize": [740.0, 568.0],
+      "renderMatchesOriginal": true,
+      "bitmapSha256": "3f03fea9c52574a88cab3fe830e01e530810d2e921f6ab0038407f928f0f3f8a"
+    },
+    {
+      "page": 2,
+      "text": "SYNTHETIC a4.pdf PAGE 1",
+      "mediaBox": [0.0, 0.0, 595.2756, 841.8898],
+      "cropBox": [0.0, 0.0, 595.2756, 841.8898],
+      "rotation": 0,
+      "pdfiumSize": [595.2755737304688, 841.8897705078125],
+      "renderMatchesOriginal": true,
+      "bitmapSha256": "dcd828779c27e33238d7288a5ec25b929037a98fd8f84244171b37072e7cd6d5"
+    },
+    {
+      "page": 3,
+      "text": "SYNTHETIC a4.pdf PAGE 2",
+      "mediaBox": [0.0, 0.0, 841.8898, 595.2756],
+      "cropBox": [0.0, 0.0, 841.8898, 595.2756],
+      "rotation": 0,
+      "pdfiumSize": [841.8897705078125, 595.2755737304688],
+      "renderMatchesOriginal": true,
+      "bitmapSha256": "a019edf54a95386a451fe0f8f39c066e9c362274420f154e23a182e849ffa878"
+    }
+  ],
+  "renderer": "PDFium independent bitmap hashes match all original pages",
+  "parser": "pypdf independent text/geometry/content checks"
+}
