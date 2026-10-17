@@ -308,6 +308,9 @@ test("rejects malformed, encrypted, interactive and oversized inputs", async ({ 
   await expect(page.getByText("PDF ready. 1 page available.", { exact: true })).toBeVisible({
     timeout: 30_000,
   });
+  await expect(page.getByText("Showing the first page of 1.", { exact: true })).toBeVisible({
+    timeout: 30_000,
+  });
   await page.getByRole("button", { name: "Render PNG", exact: true }).click();
   await expect(
     page.getByText("This PDF exceeds a file, page, pixel, time, or output limit.", {
