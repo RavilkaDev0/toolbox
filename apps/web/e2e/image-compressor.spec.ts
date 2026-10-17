@@ -1,6 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { expect, type Page, type TestInfo, test } from "@playwright/test";
+import { waitForToolPageReady } from "./tool-readiness";
 
 const fixture = (name: string) => resolve("e2e/fixtures/images", name);
 const toolUrl = "/tools/image-compressor";
@@ -91,6 +92,7 @@ test("real JPEG, PNG and WebP inputs produce verified local downloads", async ({
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await expect(page).toHaveTitle(/Image compressor/);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     "href",
@@ -135,6 +137,7 @@ test("preserves alpha in PNG and WebP and uses white when exporting JPEG", async
   page,
 }, info) => {
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await selectImage(page, "transparent.png");
   await expect(page.getByLabel(/^Quality/)).toBeDisabled();
   await page.getByLabel("Output format", { exact: true }).selectOption("webp");
@@ -168,6 +171,7 @@ test("rejects spoofed, damaged, animated and oversized inputs while preserving t
   page,
 }) => {
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await selectImage(page, "landscape.jpg");
   await dropImages(page, ["landscape.jpg", "transparent.png"]);
   await expect(page.locator('[data-slot="alert"]')).toContainText("Choose one image");
@@ -221,6 +225,7 @@ test("keyboard controls, cancellation, retry, reset and mobile layout", async ({
   `);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await selectImage(page, "noise-800.jpg");
   const quality = page.getByLabel(/^Quality/);
   await quality.focus();
@@ -274,6 +279,7 @@ test("measures real image compression at three bounded input sizes", async ({ pa
   }[] = [];
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   for (const name of ["landscape.jpg", "noise-800.jpg", "noise-2000.jpg"]) {
     await selectImage(page, name);
     const quality = page.getByLabel(/^Quality/);

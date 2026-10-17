@@ -1,5 +1,6 @@
 import { expect, type Page, test } from "@playwright/test";
 import { prepareClipboard } from "./clipboard-support";
+import { waitForToolPageReady } from "./tool-readiness";
 
 const toolUrl = "/tools/password-generator";
 const status = (page: Page) => page.getByRole("status");
@@ -29,6 +30,7 @@ test("generates and copies a local cryptographic password, then resets by keyboa
 
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await expect(page.getByRole("heading", { name: "Password generator" })).toBeVisible();
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(status(page)).toContainText("Reset complete");
@@ -94,6 +96,7 @@ test("generates and copies a local cryptographic password, then resets by keyboa
 
 test("disables generation when no character class is selected", async ({ page }) => {
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(status(page)).toContainText("Reset complete");
   for (const label of [

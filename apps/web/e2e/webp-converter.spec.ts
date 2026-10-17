@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { expect, type Page, type TestInfo, test } from "@playwright/test";
 import { inspectImage } from "@toolbox/core";
 import { unzipSync } from "fflate";
+import { waitForToolPageReady } from "./tool-readiness";
 
 const toolUrl = "/tools/webp-converter";
 const fixture = (name: string) => resolve("e2e/fixtures/images", name);
@@ -72,6 +73,7 @@ test("JPEG and transparent PNG convert to verified WebP, batch order and downloa
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await page.waitForLoadState("networkidle");
   await expect(page).toHaveTitle(/WebP converter/);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
@@ -142,6 +144,7 @@ test("rejects spoofed, animated, damaged and oversized input without disabling r
   page,
 }) => {
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await page.waitForLoadState("networkidle");
   const toolRegion = page.getByRole("region", { name: "WebP converter workspace" });
   const input = fileInput(page);
@@ -169,6 +172,7 @@ test("cancels a mobile batch, then supports reset and a fresh keyboard-started c
   });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await page.waitForLoadState("networkidle");
   const files = Array.from({ length: 10 }, () => fixture("noise-800.jpg"));
   await chooseFiles(page, files);
@@ -208,6 +212,7 @@ test("cancels a mobile batch, then supports reset and a fresh keyboard-started c
 
 test("measures three real JPEG to WebP conversions", async ({ page }, info) => {
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await page.waitForLoadState("networkidle");
   const measurements: {
     file: string;

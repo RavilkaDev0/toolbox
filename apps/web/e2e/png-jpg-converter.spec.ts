@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { expect, type Page, type TestInfo, test } from "@playwright/test";
 import { inspectImage } from "@toolbox/core";
 import { unzipSync } from "fflate";
+import { waitForToolPageReady } from "./tool-readiness";
 
 const toolUrl = "/tools/png-jpg-converter";
 const fixture = (name: string) => resolve("e2e/fixtures/images", name);
@@ -98,6 +99,7 @@ test("PNG to JPEG applies the selected alpha background and downloads verified J
     if (message.type() === "error") consoleErrors.push(message.text());
   });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await page.waitForLoadState("networkidle");
   await chooseFiles(page, [fixture("transparent.png")]);
   await expect(page.getByText("PNG · 120 × 240 px · 0.5 KiB", { exact: true })).toBeVisible();
@@ -139,6 +141,7 @@ test("JPEG to PNG and a mixed batch produce independently parsed images in selec
     if (!new Set(["GET", "HEAD"]).has(request.method())) uploads.push(request.url());
   });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await page.waitForLoadState("networkidle");
   await chooseFiles(page, [fixture("landscape.jpg")]);
   await expect(page.getByText("JPEG · 240 × 120 px · 2.6 KiB", { exact: true })).toBeVisible();
@@ -202,6 +205,7 @@ test("damaged and unsupported input fails safely while cancel, retry, reset and 
   });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await page.waitForLoadState("networkidle");
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(page.getByText("Images and results cleared.", { exact: true })).toBeVisible();
@@ -255,6 +259,7 @@ test("damaged and unsupported input fails safely while cancel, retry, reset and 
 
 test("measures three real JPEG to PNG conversions", async ({ page }, info) => {
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await page.waitForLoadState("networkidle");
   const measurements: {
     file: string;

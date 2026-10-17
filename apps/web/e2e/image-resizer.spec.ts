@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { expect, type Page, type TestInfo, test } from "@playwright/test";
+import { waitForToolPageReady } from "./tool-readiness";
 
 const fixture = (name: string) => resolve("e2e/fixtures/images", name);
 const toolUrl = "/tools/image-resizer";
@@ -110,6 +111,7 @@ test("real JPEG, PNG and WebP images resize to independently decoded downloads",
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await expect(page).toHaveTitle(/Image resizer/);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     "href",
@@ -177,6 +179,7 @@ test("percentage, unlocked stretch, alpha and JPEG white background are explicit
   page,
 }, info) => {
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await selectImage(page, "transparent.png");
   await page.getByLabel("Resize by").selectOption("percentage");
   await page.getByLabel(/^Scale/).fill("50");
@@ -217,6 +220,7 @@ test("rejects empty, spoofed, damaged, animated and oversized inputs before offe
   page,
 }) => {
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await selectImage(page, "landscape.jpg");
   const bytes = await readFile(fixture("landscape.jpg"));
   await imageInput(page).setInputFiles({ name: "spoof.png", mimeType: "image/png", buffer: bytes });
@@ -265,6 +269,7 @@ test("keyboard controls, cancellation, retry, reset, URL cleanup and mobile layo
   `);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await selectImage(page, "noise-800.jpg");
   await page.evaluate(() => Reflect.set(window, "holdImageResize", true));
   await page.getByRole("button", { name: "Resize image", exact: true }).focus();
@@ -323,6 +328,7 @@ test("measures real resize output for small, medium and large bounded inputs", a
   }[] = [];
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   for (const name of ["landscape.jpg", "noise-800.jpg", "noise-2000.jpg"]) {
     await selectImage(page, name);
     await page.getByLabel("Width (px)").fill("120");

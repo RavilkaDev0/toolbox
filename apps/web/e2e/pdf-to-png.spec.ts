@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { expect, type Page, test } from "@playwright/test";
 import { unzipSync } from "fflate";
+import { waitForToolPageReady } from "./tool-readiness";
 
 declare global {
   interface Window {
@@ -139,6 +140,7 @@ test("renders every mixed-size and rotated page to a real ordered ZIP and repeat
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
   const response = await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   expect(response?.ok()).toBe(true);
   await expect(page.getByRole("heading", { name: "PDF to PNG", level: 1 })).toBeVisible();
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
@@ -218,6 +220,7 @@ test("accepts drag and drop, supports keyboard page selection on mobile, and dow
   });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await dropPdf(page, pdfFixture("split-pages.pdf"), "mixed-pages.pdf");
   await expect(page.getByText("PDF ready. 5 pages available.", { exact: true })).toBeVisible({
     timeout: 30_000,
@@ -260,6 +263,7 @@ test("preserves transparent areas and fills an opaque white background when sele
 }, info) => {
   test.setTimeout(90_000);
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await choosePdf(page, pdfFixture("pdf-to-png-transparent.pdf"));
   await expect(page.getByText("PDF ready. 1 page available.", { exact: true })).toBeVisible({
     timeout: 30_000,
@@ -290,6 +294,7 @@ test("preserves transparent areas and fills an opaque white background when sele
 test("rejects malformed, encrypted, interactive and oversized inputs", async ({ page }) => {
   test.setTimeout(90_000);
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   for (const [fixture, message] of [
     ["damaged.pdf", "A PDF is empty, damaged or has the wrong type."],
     ["encrypted.pdf", "Encrypted PDFs are not supported."],
@@ -317,6 +322,7 @@ test("cancels during PNG encoding without fake progress, then retries and releas
   test.setTimeout(90_000);
   await installLifecycleProbe(page);
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await choosePdf(page, pdfFixture("split-pages.pdf"));
   await expect(page.getByText("PDF ready. 5 pages available.", { exact: true })).toBeVisible({
     timeout: 30_000,
@@ -364,6 +370,7 @@ test("benchmarks real PNG output for three bounded image-backed PDFs", async ({ 
   test.setTimeout(180_000);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   const metrics: Array<{
     inputBytes: number;
     outputBytes: number;

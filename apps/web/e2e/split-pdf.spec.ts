@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { expect, test } from "@playwright/test";
 import { unzipSync } from "fflate";
 import { PDFDocument } from "pdf-lib";
+import { waitForToolPageReady } from "./tool-readiness";
 
 test.describe.configure({ mode: "serial" });
 
@@ -26,6 +27,7 @@ test("extracts selected pages in source order and downloads verified PDF without
     if (["warning", "error"].includes(message.type())) errors.push(message.text());
   });
   const response = await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   expect(response?.ok()).toBe(true);
   await expect(
     page.getByRole("heading", { level: 1, name: "Split PDF", exact: true }),
@@ -138,6 +140,7 @@ test("splits selected pages to a real ZIP with safe names, then supports retry a
     });
   });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   const bytes = Array.from(await readFile(fixture));
   await page.getByRole("region", { name: "File selection", exact: true }).evaluate((node, data) => {
     const transfer = new DataTransfer();
@@ -213,6 +216,7 @@ test("rejects malformed and oversized documents and remains keyboard accessible 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   const chooserPromise = page.waitForEvent("filechooser");
   await page.getByRole("button", { name: "Choose files", exact: true }).click();
   await (await chooserPromise).setFiles(fixture);
@@ -304,6 +308,7 @@ test("measures real split output for three bounded image-backed PDFs", async ({
   test.skip(browserName !== "chromium", "Record one unthrottled Chromium performance sample.");
   test.setTimeout(180_000);
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   const measurements: Array<{
     input: string;
     inputBytes: number;

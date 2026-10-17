@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { expect, type Page, type TestInfo, test } from "@playwright/test";
 import { inspectImage, parseContactVCard } from "@toolbox/core";
+import { waitForToolPageReady } from "./tool-readiness";
 
 const toolUrl = "/tools/contact-qr";
 const status = (page: Page) => page.getByRole("status");
@@ -32,6 +33,7 @@ test("creates a live Unicode contact QR and exports verified PNG, SVG and vCard 
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await expect(page.getByRole("heading", { name: "Contact QR code", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(status(page)).toContainText("Reset complete");

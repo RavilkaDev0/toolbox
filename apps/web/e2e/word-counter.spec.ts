@@ -1,5 +1,6 @@
 import { expect, type Page, test } from "@playwright/test";
 import { prepareClipboard } from "./clipboard-support";
+import { waitForToolPageReady } from "./tool-readiness";
 
 const toolUrl = "/tools/word-counter";
 const metric = (page: Page, label: string) =>
@@ -23,6 +24,7 @@ test("counts Unicode text locally, copies it, clears and resets by keyboard", as
 
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await expect(page.getByRole("heading", { name: "Word counter" })).toBeVisible();
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(status(page)).toContainText("Reset complete");
@@ -75,6 +77,7 @@ test("counts Unicode text locally, copies it, clears and resets by keyboard", as
 
 test("rejects text beyond the documented mobile input bound", async ({ page }) => {
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(status(page)).toContainText("Reset complete");
   const input = page.getByLabel("Text to analyze");

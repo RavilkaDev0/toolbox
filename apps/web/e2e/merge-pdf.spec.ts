@@ -2,6 +2,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { expect, type Page, type TestInfo, test } from "@playwright/test";
 import { decodePDFRawStream, PDFArray, PDFDocument, PDFName, PDFRawStream } from "pdf-lib";
+import { waitForToolPageReady } from "./tool-readiness";
 
 const fixture = (name: string) => resolve("e2e/fixtures/pdfs", name);
 const toolUrl = "/tools/merge-pdf";
@@ -56,6 +57,7 @@ test("real ordered merge preserves text, vectors, images, boxes and rotations wi
     if (["warning", "error"].includes(message.type())) errors.push(message.text());
   });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await select(page, ["a4.pdf", "rotated.pdf"]);
   await page.getByRole("button", { name: "Move document 2 up", exact: true }).focus();
   await page.keyboard.press("Enter");
@@ -99,6 +101,7 @@ test("add, actual drag order, remove, repeated selection and two-PDF minimum", a
   page,
 }, info) => {
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await select(page, ["a4.pdf"]);
   await expect(page.getByRole("button", { name: "Merge PDFs", exact: true })).toBeDisabled();
   await select(page, ["letter.pdf"]);
@@ -130,6 +133,7 @@ test("invalid, encrypted, active and resource-limited PDFs preserve the valid se
     if (["warning", "error"].includes(message.type())) errors.push(message.text());
   });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await select(page, ["a4.pdf"]);
   for (const name of [
     "damaged.pdf",
@@ -200,6 +204,7 @@ test("worker cancellation/reset/retry release resources and reject stale results
     });
   });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await select(page, ["image-4000.pdf", "image-4000.pdf"]);
   await page.getByRole("button", { name: "Merge PDFs", exact: true }).click();
   await page.getByRole("button", { name: "Cancel", exact: true }).press("Enter");
@@ -233,6 +238,7 @@ test("desktop/mobile screens, real preview and touch-sized controls", async ({ p
   for (const width of [390, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto(toolUrl);
+    await waitForToolPageReady(page);
     await select(page, ["a4.pdf", "letter.pdf"]);
     await output(page, info, `viewport-${width}`);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
@@ -271,6 +277,7 @@ test("hung worker times out and is terminated with a recoverable error", async (
     Object.defineProperty(window, "startedWorkers", { get: () => started });
   });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await page.waitForLoadState("networkidle");
   await page.clock.pauseAt(new Date("2030-01-01T00:01:00Z"));
   await page.getByLabel("Choose PDFs", { exact: true }).setInputFiles(fixture("letter.pdf"));
@@ -293,6 +300,7 @@ test("benchmarks real input/output at three sizes", async ({ page }, info) => {
   for (const width of [800, 2000, 4000]) {
     const name = `image-${width}.pdf`;
     await page.goto(toolUrl);
+    await waitForToolPageReady(page);
     await select(page, [name, "letter.pdf"]);
     const started = performance.now();
     const pdf = await output(page, info, `benchmark-${width}`);

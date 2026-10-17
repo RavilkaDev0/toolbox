@@ -2,6 +2,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { expect, test } from "@playwright/test";
 import { decodePDFRawStream, PDFArray, PDFDocument, PDFRawStream } from "pdf-lib";
+import { waitForToolPageReady } from "./tool-readiness";
 
 test.describe.configure({ mode: "serial" });
 
@@ -38,6 +39,7 @@ test("rotates selected pages in the browser, preserves page content, and downloa
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
   const response = await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   expect(response?.ok()).toBe(true);
   await expect(
     page.getByRole("heading", { level: 1, name: "Rotate PDF", exact: true }),
@@ -164,6 +166,7 @@ test("supports mobile file drop, cancellation, all-pages and selected left rotat
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(page.getByText("PDF and output cleared.", { exact: true })).toBeVisible();
   const bytes = Array.from(await readFile(fixture));
@@ -283,6 +286,7 @@ test("measures real rotate output for three bounded image-backed PDFs", async ({
   test.skip(browserName !== "chromium", "Record one unthrottled Chromium performance sample.");
   test.setTimeout(180_000);
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   const measurements: Array<{
     input: string;
     inputBytes: number;

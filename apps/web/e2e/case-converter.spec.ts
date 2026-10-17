@@ -1,5 +1,6 @@
 import { expect, type Page, test } from "@playwright/test";
 import { prepareClipboard } from "./clipboard-support";
+import { waitForToolPageReady } from "./tool-readiness";
 
 const toolUrl = "/tools/case-converter";
 const inputFor = (page: Page) => page.getByRole("textbox", { name: "Text to convert" });
@@ -20,6 +21,7 @@ test("converts and copies text locally with keyboard and mobile access", async (
   page.on("pageerror", () => consoleErrorCount++);
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await expect(page.getByRole("heading", { name: "Case converter" })).toBeVisible();
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(page.getByRole("status")).toContainText("Reset complete");
@@ -62,6 +64,7 @@ test("converts and copies text locally with keyboard and mobile access", async (
 
 test("rejects text beyond the documented bounded input size", async ({ page }) => {
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(page.getByRole("status")).toContainText("Reset complete");
   const input = inputFor(page);

@@ -4,7 +4,7 @@ import WebpConverterWorkspace from "./webp-converter-workspace";
 
 export function WebpConverterPage({ tool }: { tool: ToolDefinition }) {
   return (
-    <div className="page-shell">
+    <main className="container-site page max-w-workspace flex-1" id="main-content" tabIndex={-1}>
       <header className="section flex flex-col gap-4">
         <p className="text-sm font-medium text-muted-foreground">Image tools · Browser-local</p>
         <h1 className="text-4xl font-semibold tracking-tight">{tool.title}</h1>
@@ -48,6 +48,6 @@ export function WebpConverterPage({ tool }: { tool: ToolDefinition }) {
           </Link>
         </nav>
       </section>
-    </div>
+    </main>
   );
 }

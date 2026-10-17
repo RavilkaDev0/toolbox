@@ -2,6 +2,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { expect, type Page, type TestInfo, test } from "@playwright/test";
 import { inspectImage } from "@toolbox/core";
+import { waitForToolPageReady } from "./tool-readiness";
 
 const toolUrl = "/tools/qr-designer";
 const logoFixture = resolve("e2e/fixtures/images/landscape.png");
@@ -66,6 +67,7 @@ test("encodes short, Unicode and dense payloads into verified PNG and vector SVG
   const shortStarted = Date.now();
   const toolRegion = page.getByRole("region", { name: "QR designer workspace" });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await expect(page.getByRole("heading", { name: "QR designer", exact: true })).toBeVisible();
   await waitForVerified(page);
   const elapsedMs = Date.now() - shortStarted;
@@ -169,6 +171,7 @@ test("checks raster logos, rejects SVG input, supports keyboard cancellation and
   page.on("pageerror", (error) => errors.push(error.message));
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(toolUrl);
+  await waitForToolPageReady(page);
   await waitForVerified(page);
   const previousPreview = await page
     .getByRole("img", { name: /QR code preview/ })
