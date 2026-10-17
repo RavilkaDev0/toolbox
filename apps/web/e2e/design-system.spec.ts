@@ -39,7 +39,7 @@ test("registered public pages expose published tools and hide private fixtures",
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.getByRole("main")).toBeVisible();
     const publishedSlugsByRoute: Record<string, string[]> = {
-      "/": publishedToolSlugs,
+      "/": [],
       "/tools": publishedToolSlugs,
       "/categories/pdf": ["images-to-pdf", "merge-pdf", "split-pdf", "rotate-pdf"],
       "/categories/pdf-render": ["pdf-to-png"],

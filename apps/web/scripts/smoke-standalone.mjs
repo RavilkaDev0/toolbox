@@ -62,12 +62,15 @@ for (const pathname of pagePaths) {
   assert.equal(response.status, 200, `${pathname} must be served by the standalone server`);
   const html = await response.text();
   const canonical = /<link\b[^>]*rel="canonical"[^>]*href="([^"]+)"/i.exec(html)?.[1];
+  assert(canonical, `${pathname} must have a canonical URL`);
+  const canonicalUrl = new URL(canonical);
   assert.equal(
-    canonical,
+    canonicalUrl.href,
     new URL(pathname, siteUrl).href,
     `${pathname} canonical must be absolute`,
   );
-  assert(!canonical.includes("localhost"));
+  assert.equal(canonicalUrl.origin, siteUrl.origin);
+  assert(!canonicalUrl.href.includes("localhost"));
 
   const title = /<title>(.*?)<\/title>/i.exec(html)?.[1];
   const description = /<meta\b[^>]*name="description"[^>]*content="([^"]+)"/i.exec(html)?.[1];

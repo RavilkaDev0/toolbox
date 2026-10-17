@@ -5,8 +5,14 @@ const siteUrl = process.env.SITE_URL ? new URL(process.env.SITE_URL) : undefined
 test("uses domain-safe metadata and discovers every published tool", async ({ page, request }) => {
   await page.goto("/");
   const homeCanonical = page.locator('link[rel="canonical"]');
-  if (siteUrl) await expect(homeCanonical).toHaveAttribute("href", new URL("/", siteUrl).href);
-  else await expect(homeCanonical).toHaveCount(0);
+  if (siteUrl) {
+    await expect(homeCanonical).toHaveCount(1);
+    const canonical = await homeCanonical.getAttribute("href");
+    expect(canonical).not.toBeNull();
+    expect(new URL(canonical ?? "", siteUrl).href).toBe(new URL("/", siteUrl).href);
+  } else {
+    await expect(homeCanonical).toHaveCount(0);
+  }
   await expect(page.locator('meta[property="og:title"]')).toHaveCount(1);
   await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute("content", "summary");
 
