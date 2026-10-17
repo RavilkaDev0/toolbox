@@ -26,7 +26,7 @@ Final local checks passed:
 - `pnpm build` — Next.js standalone production build passed.
 - Playwright MCP opened the local preview at `/tools/case-converter`; the accessibility snapshot showed the expected page title, labeled mode/locale/editor/output controls, semantic status, related links and no console warnings/errors.
 - Desktop (1440×1000) and mobile (390×844) screenshots were captured and visually reviewed: [desktop](../evidence/tbx-018/case-converter-desktop.png), [mobile](../evidence/tbx-018/case-converter-mobile.png).
-- The generated standalone production server served `/` and `/tools` with HTTP 200; `/tools/case-converter` returned HTTP 404 as expected for a draft-only tool. A production `/tools` screenshot confirmed styled output and a catalog limited to published tools.
+- The generated standalone production server returned HTTP 200 for all nine published tool routes and HTTP 404 for the six draft routes, including Case Converter, as intended. Desktop/mobile route checks found no horizontal overflow, console errors or non-local/non-GET requests. A separate standalone Merge PDF interaction downloaded a real three-page PDF from mixed A4/Letter fixtures and independently verified its page count and dimensions; see the [suite report](TOOLBOX-15-TOOLS-FINAL-REPORT.md).
 
 The production build completed before the final test-only expectation correction; the final all-suite run then passed the exact checked-out source. The functional source did not change between that build and the final suite. The standalone smoke check ran against the generated standalone server output, including the static assets copied as required by Next.js standalone deployment instructions.
 

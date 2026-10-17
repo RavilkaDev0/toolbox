@@ -5,19 +5,19 @@
       "file": "landscape.jpg",
       "inputBytes": 2619,
       "outputBytes": 1230,
-      "durationMs": 351
+      "durationMs": 291
     },
     {
       "file": "noise-800.jpg",
       "inputBytes": 289744,
       "outputBytes": 308846,
-      "durationMs": 435
+      "durationMs": 443
     },
     {
       "file": "noise-2000.jpg",
       "inputBytes": 1807723,
       "outputBytes": 1945876,
-      "durationMs": 1466
+      "durationMs": 1469
     }
   ]
 }

@@ -16,9 +16,9 @@ One Chromium performance run measured sequential JPEG→PNG output:
 
 | Input | Input size | PNG output | Elapsed |
 | --- | ---: | ---: | ---: |
-| `landscape.jpg` | 2,619 B | 7,326 B | 788 ms |
-| `noise-800.jpg` | 289,744 B | 1,637,606 B | 560 ms |
-| `noise-2000.jpg` | 1,807,723 B | 10,229,573 B | 1,782 ms |
+| `landscape.jpg` | 2,619 B | 7,326 B | 669 ms |
+| `noise-800.jpg` | 289,744 B | 1,637,606 B | 659 ms |
+| `noise-2000.jpg` | 1,807,723 B | 10,229,573 B | 1,289 ms |
 
 These are single Chromium measurements on synthetic fixtures, not cross-device performance guarantees. JPEG→PNG may increase file size; the UI does not promise compression.
 

@@ -1,0 +1,61 @@
+- generic [active] [ref=f10e1]:
+  - link "Skip to main content" [ref=f10e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=f10e3]:
+    - generic [ref=f10e4]:
+      - link "Toolbox home" [ref=f10e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f10e11]: Toolbox.
+      - navigation "Main navigation" [ref=f10e12]:
+        - link "Categories" [ref=f10e13] [cursor=pointer]:
+          - /url: /#categories
+        - link "Our approach" [ref=f10e14] [cursor=pointer]:
+          - /url: /#privacy
+        - link "Tools" [ref=f10e15] [cursor=pointer]:
+          - /url: /tools
+  - main [ref=f10e19]:
+    - navigation "Breadcrumb" [ref=f10e20]:
+      - link "Tools" [ref=f10e21] [cursor=pointer]:
+        - /url: /tools
+      - generic [aria-hidden] [ref=f10e22]: /
+      - link "Utilities" [ref=f10e23] [cursor=pointer]:
+        - /url: /categories/utility
+      - generic [aria-hidden] [ref=f10e24]: /
+      - generic [ref=f10e25]: Word counter
+    - generic [ref=f10e26]:
+      - paragraph [ref=f10e27]: Utility tools · Browser-local
+      - heading "Word counter" [level=1] [ref=f10e28]
+      - paragraph [ref=f10e29]: Count words, sentences, lines and characters while you type or paste. Your text stays in this tab and is not uploaded.
+    - region "Word counter workspace" [ref=f10e30]:
+      - region "Tool workspace" [ref=f10e31]:
+        - heading "Tool workspace" [level=2] [ref=f10e32]
+        - generic [ref=f10e33]
+        - region "Preview" [ref=f10e46]
+    - region [ref=f10e73]:
+      - heading "How counts are defined" [level=2] [ref=f10e74]
+      - list [ref=f10e75]:
+        - listitem [ref=f10e76]: "Words are locale-aware word-like segments from the browser’s `Intl.Segmenter`. If that API is unavailable, fallback counts runs of Unicode letters/numbers with combining marks and internal apostrophes; this fallback is approximate for languages such as Chinese and Japanese."
+        - listitem [ref=f10e77]: "Characters with spaces count grapheme clusters (user-perceived characters), including all whitespace. Without spaces excludes grapheme clusters made only of Unicode whitespace. Browsers without `Intl.Segmenter` count Unicode code points for both."
+        - listitem [ref=f10e78]: UTF-16 code units and Unicode code points are also shown because they differ from grapheme clusters for emoji and combining marks.
+        - listitem [ref=f10e79]: "Lines are logical lines separated by LF, CRLF or CR; empty input has zero lines and a trailing line break adds an empty final line. Paragraphs are runs of non-empty lines separated by one or more blank/whitespace-only lines. Sentences count non-whitespace segments from `Intl.Segmenter`; fallback groups sentence-ending punctuation and counts any remaining text as one sentence."
+      - paragraph [ref=f10e80]: Input is limited to 100,000 UTF-16 code units to keep analysis bounded on mobile devices. Counts are descriptive and locale/API behavior can vary by browser.
+      - navigation "Related tools" [ref=f10e81]:
+        - link "Generate a password" [ref=f10e82] [cursor=pointer]:
+          - /url: /tools/password-generator
+        - link "Convert text case" [ref=f10e83] [cursor=pointer]:
+          - /url: /tools/case-converter
+        - link "Explore utility tools" [ref=f10e84] [cursor=pointer]:
+          - /url: /categories/utility
+  - contentinfo [ref=f10e85]:
+    - generic [ref=f10e86]:
+      - generic [ref=f10e87]:
+        - paragraph [ref=f10e88]: Toolbox.
+        - paragraph [ref=f10e89]: Thoughtful tools. Less friction.
+        - paragraph [ref=f10e90]: Built with privacy at the center.
+      - navigation "Footer navigation" [ref=f10e91]:
+        - link "Tool catalog" [ref=f10e92] [cursor=pointer]:
+          - /url: /tools
+        - link "Privacy approach" [ref=f10e93] [cursor=pointer]:
+          - /url: /#privacy
+  - button "Open Next.js Dev Tools" [ref=f10e99] [cursor=pointer]
+  - alert [ref=f10e103]

@@ -24,9 +24,9 @@ The isolated Chromium E2E run processed synthetic local fixtures once each. Thes
 
 | Input | Input bytes | WebP output bytes | Elapsed |
 | --- | ---: | ---: | ---: |
-| `landscape.jpg` | 2,619 | 1,230 | 351 ms |
-| `noise-800.jpg` | 289,744 | 308,846 | 435 ms |
-| `noise-2000.jpg` | 1,807,723 | 1,945,876 | 1,466 ms |
+| `landscape.jpg` | 2,619 | 1,230 | 291 ms |
+| `noise-800.jpg` | 289,744 | 308,846 | 443 ms |
+| `noise-2000.jpg` | 1,807,723 | 1,945,876 | 1,469 ms |
 
 Raw measurements: `docs/evidence/tbx-012/webp-converter-performance.json`.
 

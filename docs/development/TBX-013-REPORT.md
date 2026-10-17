@@ -23,15 +23,15 @@ Two exact browser-engine dependencies were added:
 
 Both packages are imported only through the QR tool's dynamic browser-engine import; neither is added to server processing. A combined styling package was considered but would provide less direct control over the required logo positioning and SVG safety constraints. The version-pinned lockfile was updated. No other dependency was introduced.
 
-## Checks recorded so far
+## Final local checks
 
 - `pnpm run build:packages` — passed, compiling core, contracts, UI and browser engines.
 - `pnpm --filter @toolbox/web run typecheck` — passed after separate T012 follow-up fixes (`f6c8a65`, `17c7f08`). The first attempt exposed T012 WebP API mismatches and a possibly-undefined E2E pixel value; those were fixed without running tests.
 - Targeted `pnpm exec biome check` on touched source/config files — passed; `git diff --check` — passed.
-- The final combined suite passed 159 unit/integration tests and 133 Playwright Chromium/WebKit scenarios, including dense payloads, PNG/SVG decode verification, invalid logos, keyboard cancellation/reset, mobile layouts, and no upload requests. `pnpm lint`, `pnpm typecheck`, and standalone production `pnpm build` passed. Desktop/mobile screenshots and real output evidence are in `docs/evidence/tbx-013/`.
+- The final combined suite passed 159 unit/integration tests and 133 Playwright Chromium/WebKit scenarios, including dense payloads, PNG/SVG decode verification, invalid logos, keyboard cancellation/reset, mobile layouts, and no upload requests. `pnpm lint`, `pnpm typecheck`, and standalone production `pnpm build` passed.
+- Desktop/mobile screenshots and actual scan-verified output sizes (11.7 KiB PNG, 3.9 KiB SVG) are in `docs/evidence/tbx-013/`.
+- Exact-head GitHub validation remains pending. The six TBX-013–018 tools remain draft until the final shared-branch `validate` passes.
 - Quantitative generation latency and cross-browser heap peak were not measured. Treat synchronous dense-code work and variation among physical cameras as remaining limitations, not as passing performance claims.
-
-The unit and Playwright tests are present in source, including Chromium/WebKit configurations, but their assertions have not yet been proven by a run. No functional or production-readiness claim is made before final verification. Screenshots, output sizes, throughput and memory data must be added to this report after the final runs.
 
 ## Remaining risks
 
