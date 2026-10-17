@@ -175,12 +175,6 @@ const homeJsBytes = [...(assetsByPage.get("/") ?? [])].reduce(
   0,
 );
 assert(chunks.length > 0, "standalone image must contain JavaScript chunks");
-assert(
-  (await Promise.all(chunks.map((file) => readFile(file, "utf8")))).some((chunk) =>
-    chunk.includes("pdfjsVersion"),
-  ),
-  "standalone JavaScript chunks must include the PDF.js runtime",
-);
 
 console.log(
   `Standalone smoke passed: ${pagePaths.length} pages, ${sitemapToolPaths.size} tools, ${assetPaths.size} static assets, ${fonts.length} local fonts, ${chunks.length} JS chunks (${totalChunkBytes} bytes total; largest ${largestChunkBytes} bytes), ${homeJsBytes} bytes of homepage JS, and PDF.js workers.`,
